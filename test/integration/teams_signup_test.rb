@@ -10,4 +10,15 @@ class TeamsSignupTest < ActionDispatch::IntegrationTest
     end
     assert_template 'teams/new'
   end
+
+  test "valid signup information" do
+    get signup_path
+    assert_difference 'Team.count', 1 do
+      post teams_path, params: { team: { name:  "Example Team",
+                                         password:              "password",
+                                         password_confirmation: "password" } }
+    end
+    follow_redirect!
+    assert_template 'teams/show'
+  end
 end
