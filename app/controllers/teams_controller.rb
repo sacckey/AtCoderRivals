@@ -10,6 +10,7 @@ class TeamsController < ApplicationController
   def create
     @team = Team.new(team_params)
     if @team.save
+      log_in @team
       flash[:success] = "Welcome to the AtCoder Rivals!"
       redirect_to @team
     else
