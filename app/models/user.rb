@@ -16,6 +16,7 @@ class User < ApplicationRecord
     self.find_or_create_by(provider: provider, uid: uid) do |user|
       user.user_name = user_name
       user.image_url = image_url
+      user.atcoder_id ||= uid
     end
   end
 end
