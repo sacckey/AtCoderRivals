@@ -20,6 +20,7 @@ gem 'bootsnap', require: false
 gem "nokogiri",                ">= 1.10.4"
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'

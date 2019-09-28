@@ -74,6 +74,10 @@ GEM
     crass (1.0.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.7.5)
+    dotenv-rails (2.7.5)
+      dotenv (= 2.7.5)
+      railties (>= 3.2, < 6.1)
     dry-inflector (0.1.2)
     erubi (1.8.0)
     excon (0.65.0)
@@ -435,6 +439,7 @@ DEPENDENCIES
   byebug (= 9.0.6)
   carrierwave (= 1.2.2)
   coffee-rails (= 4.2.2)
+  dotenv-rails
   faker (= 1.7.3)
   fog (= 1.42)
   guard (= 2.14.1)

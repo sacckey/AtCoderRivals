@@ -9,6 +9,6 @@ class ActiveSupport::TestCase
   include ApplicationHelper
 
   def is_logged_in?
-    !session[:team_id].nil?
+    !session[:user_id].nil?
   end
 end

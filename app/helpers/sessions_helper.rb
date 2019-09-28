@@ -1,21 +1,21 @@
 module SessionsHelper
-  def log_in(team)
-    session[:team_id] = team.id
+  def log_in(user)
+    session[:user_id] = user.id
   end
 
-  def current_team
-    if session[:team_id]
-      @current_team ||= Team.find_by(id: session[:team_id])
+  def current_user
+    if session[:user_id]
+      @current_user ||= User.find_by(id: session[:user_id])
     end
   end
 
   def logged_in?
-    !current_team.nil?
+    !current_user.nil?
   end
 
   def log_out
-    session.delete(:team_id)
-    @current_team = nil
+    session.delete(:user_id)
+    @current_user = nil
   end
 
 end

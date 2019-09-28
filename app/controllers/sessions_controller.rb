@@ -3,20 +3,20 @@ class SessionsController < ApplicationController
   end
 
   def create
-    team = Team.find_by(name: params[:session][:name].downcase)
-    if team && team.authenticate(params[:session][:password])
-      # チームログイン後にチーム情報のページにリダイレクトする
-      log_in team
-      redirect_to team
-    else
-      # エラーメッセージを作成する
-      flash.now[:danger] = 'Invalid name/password combination'
-      render 'new'
-    end
+    user = User.find_or_create_from_auth(request.env['omniauth.auth'])
+    log_in(user)
+    flash[:success] = "Welcome to the AtCoder Rivals!"
+    redirect_to user
+  end
+
+  def failure
+    flash[:danger] = 'Authentication failed.'
+    redirect_to login_path
   end
 
   def destroy
     log_out
-    redirect_to root_url
+    flash[:success] = "Logged out"
+    redirect_to root_path
   end
 end
