@@ -3,7 +3,7 @@ class User < ApplicationRecord
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { case_sensitive: false }
   validates :user_name, presence: true
-  validates :atcoder_id, presence: true
+  validates :atcoder_id, presence: { message: "ID can't be blank" }
 
   def self.find_or_create_from_auth(auth)
     provider = auth[:provider]

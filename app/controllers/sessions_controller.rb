@@ -9,6 +9,13 @@ class SessionsController < ApplicationController
     redirect_to user
   end
 
+  def login_as_sample_user
+    user = User.find(1)
+    log_in(user)
+    flash[:success] = "Welcome to the AtCoder Rivals!"
+    redirect_to user
+  end
+
   def failure
     flash[:danger] = 'Authentication failed.'
     redirect_to login_path
