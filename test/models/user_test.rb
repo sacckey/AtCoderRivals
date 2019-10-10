@@ -3,7 +3,7 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_id: "example_user")
+    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_id: "chokudai")
   end
 
   test "should be valid" do

@@ -25,7 +25,7 @@ class User < ApplicationRecord
 
     def atcoder_id_exist
       result = get_accepted_count(self)
-      errors.add(:atcoder_id, "IDが存在しません。") if result.nil?
+      errors.add(:atcoder_id, "ID does not exist.") if result.nil?
     end
 
     def get_accepted_count(user)
@@ -45,9 +45,9 @@ class User < ApplicationRecord
       if res.code == '200'
         result = JSON.parse(res.body)
       else
-        puts "#{res.code} #{res.message}"
-        puts "No such user_id"
-        puts "test"
+        # puts "#{res.code} #{res.message}"
+        # puts "No such user_id"
+        # puts "test"
         # exit 1
       end
     end
