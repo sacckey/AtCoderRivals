@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @contests = Contest.all.paginate(page: params[:page])
+    @history = History.where("atcoder_id = :atcoder_id", atcoder_id: @user.atcoder_id)
   end
 
   def edit
@@ -55,6 +57,4 @@ class UsersController < ApplicationController
     def admin_user
       redirect_to(root_url) unless current_user.admin?
     end
-
-
 end

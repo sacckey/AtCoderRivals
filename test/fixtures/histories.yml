@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  is_rated: false
+  place: 1
+  old_rating: 1
+  new_rating: 1
+  performance: 1
+  inner_performance: 1
+  contest_screen_name: MyString
+  contest_name: MyString
+  end_time: MyString
+
+two:
+  is_rated: false
+  place: 1
+  old_rating: 1
+  new_rating: 1
+  performance: 1
+  inner_performance: 1
+  contest_screen_name: MyString
+  contest_name: MyString
+  end_time: MyString

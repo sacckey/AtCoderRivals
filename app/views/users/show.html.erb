@@ -6,8 +6,16 @@
         <%= show_icon(@user) %>
         <%= @user.user_name %>
         <%= @user.atcoder_id %>
-        <%# <%= User.get_accepted_count(@user) %> 
       </h1>
     </section>
   </aside>
+  <div class="col-md-8">
+    <% if Contest.all.any? %>
+      <h3>Contests (<%= Contest.all.count %>)</h3>
+      <ol class="contests">
+        <%= render @contests %>
+      </ol>
+      <%= will_paginate @contests %>
+    <% end %>
+  </div>
 </div>

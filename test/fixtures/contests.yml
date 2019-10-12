@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  abbreviation: MyString
+  start_epoch_second: 1
+  duration_second: 1
+  title: MyString
+  rate_change: MyString
+
+two:
+  abbreviation: MyString
+  start_epoch_second: 1
+  duration_second: 1
+  title: MyString
+  rate_change: MyString

@@ -1,0 +1,15 @@
+<li id="contest-<%= contest.id %>">
+  <%# <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
+  
+  <%# link_to "#",  %>
+  <span class="contest_title"><%= link_to contest.title, "https://atcoder.jp/contests/#{contest.abbreviation}" %></span>
+  <span class="content"><%= contest.rate_change %> </span>
+  <span class="content">
+  <%= show_result(@history,contest) %>
+  </span>
+  <span class="timestamp">
+    <%= Time.at(contest.start_epoch_second) %>
+    <%= @user.atcoder_id %>
+    <%# Posted <%= time_ago_in_words(contest.created_at) %>
+  </span>
+</li>
