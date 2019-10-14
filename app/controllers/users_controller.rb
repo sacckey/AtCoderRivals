@@ -6,16 +6,20 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @contests = Contest.all.paginate(page: params[:page])
-    @history = History.where("atcoder_id = :atcoder_id", atcoder_id: @user.atcoder_id)
+    # @history = History.where("atcoder_id = :atcoder_id", atcoder_id: @user.atcoder_id)
   end
 
   def edit
     @user = User.find(params[:id])
+    @atcoder_user = @user.atcoder_user
   end
 
   def update
-    @user = User.find(params[:id])
-    if @user.update_attributes(user_params)
+    atcoder_id = params["atcoder_user"]["atcoder_id"]
+    @atcoder_user = AtcoderUser.find_or_create_atcoder_user(atcoder_id)
+
+    if @atcoder_user.id
+      @user.update_attributes!(atcoder_user_id: @atcoder_user.id)
       flash[:success] = "Profile updated"
       redirect_to @user
     else
@@ -36,7 +40,7 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:atcoder_id)
+      params.require(:user).permit(:atcoder_user_id)
     end
 
     # before action

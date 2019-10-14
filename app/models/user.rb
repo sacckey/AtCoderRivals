@@ -1,11 +1,12 @@
 class User < ApplicationRecord
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :following, through: :relationships, source: :followed
+  belongs_to :atcoder_user
+
   before_save { uid.downcase! }
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { case_sensitive: false }
   validates :user_name, presence: true
-  validates :atcoder_id, presence: { message: "ID can't be blank" }
-  validate :atcoder_id_exist
-  validate :history_exist
 
   def self.find_or_create_from_auth(auth)
     provider = auth[:provider]
@@ -17,73 +18,25 @@ class User < ApplicationRecord
     self.find_or_create_by(provider: provider, uid: uid) do |user|
       user.user_name = user_name
       user.image_url = image_url
-      user.atcoder_id ||= atcoder_id
+      user.atcoder_user_id = AtcoderUser.find_or_create_atcoder_user(atcoder_id).id
     end
   end
 
-  def get_history
-    uri = URI.parse("https://atcoder.jp/users/#{self.atcoder_id}/history/json")
-    result = call_api(uri)
+  # ユーザーをフォローする
+  def follow(other_user)
+    following << other_user
   end
 
-  def get_results(contest)
-    uri = URI.parse("https://atcoder.jp/contests/#{contest.abbreviation}/results/json")
-    results = call_api(uri)
+  # ユーザーをフォロー解除する
+  def unfollow(other_user)
+    relationships.find_by(followed_id: other_user.id).destroy
   end
 
-  def get_accepted_count
-    uri = URI.parse("https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{self.atcoder_id}")
-    result = call_api(uri)
-    if !result.nil?
-      ac_count=result["accepted_count"]
-    end
+  # 現在のユーザーがフォローしてたらtrueを返す
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   private
-    def atcoder_id_exist
-      result = get_accepted_count
-      errors.add(:atcoder_id, "ID does not exist.") if result.nil?
-    end
-
-    def history_exist
-      if errors.empty?
-        unless History.exists?(atcoder_id: self.atcoder_id)
-          create_history
-        end
-      end
-    end
-
-    def call_api(uri)
-      https = Net::HTTP.new(uri.host, uri.port)
-      https.use_ssl = true
-      res = https.start do
-        https.get(uri.request_uri)
-      end
-      if res.code == '200'
-        result = JSON.parse(res.body)
-      else
-        # puts "#{res.code} #{res.message}"
-        # puts "No such user_id"
-        # puts "test"
-        # exit 1
-      end
-    end
-
-    def create_history
-      history = self.get_history
-      history.each do |res|
-        History.create!(
-          atcoder_id: self.atcoder_id,
-          is_rated: res["IsRated"],
-          place: res["Place"],
-          old_rating: res["OldRating"],
-          new_rating: res["NewRating"],
-          performance: res["Performance"],
-          inner_performance: res["InnerPerformance"],
-          contest_screen_name: res["ContestScreenName"],
-          contest_name: res["ContestName"],
-          end_time: res["EndTime"]
-        )
-      end
-    end
+    
 end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  atcoder_id: MyString
+  accepted_count: 1
+  accepted_count_rank: 1
+  rated_point_sum: 1.5
+  rated_point_sum_rank: 1
+
+two:
+  atcoder_id: MyString
+  accepted_count: 1
+  accepted_count_rank: 1
+  rated_point_sum: 1.5
+  rated_point_sum_rank: 1

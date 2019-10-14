@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_12_071228) do
+ActiveRecord::Schema.define(version: 2019_10_13_140830) do
+
+  create_table "atcoder_users", force: :cascade do |t|
+    t.string "atcoder_id"
+    t.integer "accepted_count"
+    t.integer "accepted_count_rank"
+    t.float "rated_point_sum"
+    t.integer "rated_point_sum_rank"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accepted_count"], name: "index_atcoder_users_on_accepted_count"
+    t.index ["atcoder_id", "accepted_count"], name: "index_atcoder_users_on_atcoder_id_and_accepted_count"
+    t.index ["atcoder_id", "rated_point_sum"], name: "index_atcoder_users_on_atcoder_id_and_rated_point_sum"
+    t.index ["atcoder_id"], name: "index_atcoder_users_on_atcoder_id", unique: true
+    t.index ["rated_point_sum"], name: "index_atcoder_users_on_rated_point_sum"
+  end
 
   create_table "contests", force: :cascade do |t|
     t.string "abbreviation"
@@ -41,15 +56,26 @@ ActiveRecord::Schema.define(version: 2019_10_12_071228) do
     t.index ["contest_name"], name: "index_histories_on_contest_name"
   end
 
+  create_table "relationships", force: :cascade do |t|
+    t.integer "follower_id"
+    t.integer "followed_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followed_id"], name: "index_relationships_on_followed_id"
+    t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
+    t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider"
     t.string "uid"
     t.string "user_name"
     t.string "image_url"
-    t.string "atcoder_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false
+    t.integer "atcoder_user_id"
+    t.index ["atcoder_user_id"], name: "index_users_on_atcoder_user_id"
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 

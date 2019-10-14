@@ -23,7 +23,8 @@ User.create!(user_name:  "Example User",
   uid: "12345",
   provider:  "twitter",
   image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg",
-  atcoder_id: "chokudai")
+  atcoder_user_id: 1
+)
 
 # 99.times do |n|
 # user_name  = Faker::Name.name
