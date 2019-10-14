@@ -1,0 +1,5 @@
+<%= link_to show_icon(current_user), current_user %>
+<h1><%= current_user.user_name %></h1>
+<span><%= link_to "view my profile", current_user %></span>
+<span>AtCoder ID: <%= link_to "#{current_user.atcoder_user.atcoder_id}", "https://atcoder.jp/users/#{current_user.atcoder_user.atcoder_id}" %></span>
+<span><%= "#{current_user.atcoder_user.accepted_count}AC" %></span>

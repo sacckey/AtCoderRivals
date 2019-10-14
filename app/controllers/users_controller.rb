@@ -6,8 +6,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
-    @contests = Contest.all.paginate(page: params[:page])
     @history = @atcoder_user.histories
+    @contests = @atcoder_user.contests.paginate(page: params[:page])
   end
 
   def edit

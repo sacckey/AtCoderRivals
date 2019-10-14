@@ -1,3 +1,22 @@
+<% if logged_in? %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+    <%= render 'shared/user_info' %>
+    </section>
+  </aside>
+
+  <div class="col-md-8">
+    <% if @contests.any? %>
+      <h3>Contests (<%= Contest.all.size %>)</h3>
+      <ol class="contests">
+        <%= render @contests %>
+      </ol>
+      <%= will_paginate @contests %>
+    <% end %>
+  </div>
+</div>
+<% else %>
 <div class="center jumbotron">
   <h1>Welcome to the Sample App</h1>
 
@@ -9,6 +28,4 @@
 
   <%= link_to "Sign up now!", login_path, class: "btn btn-lg btn-primary" %>
 </div>
-
-<%= link_to image_tag("rails.png", alt: "Rails logo"),
-            'http://rubyonrails.org/' %>
+<% end %>

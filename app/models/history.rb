@@ -2,6 +2,17 @@ class History < ApplicationRecord
   belongs_to :atcoder_user
   belongs_to :contest
 
+  validates :is_rated, presence: true
+  validates :place, presence: true
+  validates :old_rating, presence: true
+  validates :new_rating, presence: true
+  validates :performance, presence: true
+  validates :inner_performance, presence: true
+  validates :contest_screen_name, presence: true
+  validates :end_time, presence: true
+  validates :atcoder_user_id, presence: true
+  validates :contest_id, presence: true
+
   def self.create_history(atcoder_user)
     if atcoder_user.histories.empty?
       history = atcoder_user.get_history

@@ -7,6 +7,8 @@ class User < ApplicationRecord
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { case_sensitive: false }
   validates :user_name, presence: true
+  validates :image_url, presence: true
+  validates :atcoder_user_id, presence: true
 
   def self.find_or_create_from_auth(auth)
     provider = auth[:provider]

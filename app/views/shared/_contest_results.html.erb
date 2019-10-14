@@ -1,0 +1,6 @@
+<% if @atcoder_user.contests.any? %>
+  <ol class="contests">
+    <%= render @contests %>
+  </ol>
+  <%= will_paginate @contests %>
+<% end %>

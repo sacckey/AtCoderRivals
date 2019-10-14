@@ -1,5 +1,6 @@
 class AtcoderUser < ApplicationRecord
-  has_many  :histories, dependent: :destroy
+  has_many :histories, dependent: :destroy
+  has_many :contests, through: :histories
 
   validates :atcoder_id, presence: { message: "ID can't be blank" }
   validates :accepted_count, presence: true
