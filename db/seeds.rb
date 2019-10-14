@@ -1,5 +1,5 @@
 def get_contests
-  uri = URI.parse("https://kenkoooo.com/atcoder/resources/contests.json")
+  uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
   result = call_api(uri)
 end
 
@@ -19,12 +19,12 @@ def call_api(uri)
   end
 end
 
-User.create!(user_name:  "Example User",
-  uid: "12345",
-  provider:  "twitter",
-  image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg",
-  atcoder_user_id: 1
-)
+# User.create!(user_name:  "Example User",
+#   uid: "12345",
+#   provider:  "twitter",
+#   image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg",
+#   atcoder_user_id: 1
+# )
 
 # 99.times do |n|
 # user_name  = Faker::Name.name

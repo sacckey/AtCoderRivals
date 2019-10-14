@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_13_140830) do
+ActiveRecord::Schema.define(version: 2019_10_14_051043) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 2019_10_13_140830) do
   end
 
   create_table "histories", force: :cascade do |t|
-    t.string "atcoder_id"
     t.boolean "is_rated"
     t.integer "place"
     t.integer "old_rating"
@@ -47,13 +46,13 @@ ActiveRecord::Schema.define(version: 2019_10_13_140830) do
     t.integer "performance"
     t.integer "inner_performance"
     t.string "contest_screen_name"
-    t.string "contest_name"
     t.string "end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["atcoder_id", "contest_name"], name: "index_histories_on_atcoder_id_and_contest_name", unique: true
-    t.index ["atcoder_id"], name: "index_histories_on_atcoder_id"
-    t.index ["contest_name"], name: "index_histories_on_contest_name"
+    t.integer "atcoder_user_id"
+    t.integer "contest_id"
+    t.index ["atcoder_user_id"], name: "index_histories_on_atcoder_user_id"
+    t.index ["contest_id"], name: "index_histories_on_contest_id"
   end
 
   create_table "relationships", force: :cascade do |t|

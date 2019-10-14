@@ -1,10 +1,12 @@
 class History < ApplicationRecord
+  belongs_to :atcoder_user
+  belongs_to :contest
+
   def self.create_history(atcoder_user)
-    unless History.exists?(atcoder_id: atcoder_user.atcoder_id)
+    if atcoder_user.histories.empty?
       history = atcoder_user.get_history
       history.each do |res|
-        History.create!(
-          atcoder_id: atcoder_user.atcoder_id,
+        atcoder_user.histories.create!(
           is_rated: res["IsRated"],
           place: res["Place"],
           old_rating: res["OldRating"],
@@ -12,8 +14,8 @@ class History < ApplicationRecord
           performance: res["Performance"],
           inner_performance: res["InnerPerformance"],
           contest_screen_name: res["ContestScreenName"],
-          contest_name: res["ContestName"],
-          end_time: res["EndTime"]
+          end_time: res["EndTime"],
+          contest_id: Contest.find_by(title: res["ContestName"]).id
         )
       end
     end

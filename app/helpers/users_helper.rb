@@ -13,9 +13,9 @@ module UsersHelper
   #   return ""
   # end
   def show_result(history,contest)
-    result = history.find{|hash| hash["contest_name"] == contest.title}
+    result = history.find_by(contest_id: contest.id)
     if result
-      return result["performance"]
+      return result.performance
     else
       return ""
     end

@@ -1,4 +1,6 @@
 class AtcoderUser < ApplicationRecord
+  has_many  :histories, dependent: :destroy
+
   validates :atcoder_id, presence: { message: "ID can't be blank" }
   validates :accepted_count, presence: true
   validates :accepted_count_rank, presence: true
@@ -7,18 +9,16 @@ class AtcoderUser < ApplicationRecord
   validate  :atcoder_id_exist
 
   def self.find_or_create_atcoder_user(atcoder_id)
-    self.find_or_create_by(atcoder_id: atcoder_id) do |atcoder_user|
+    atuser = self.find_or_create_by(atcoder_id: atcoder_id) do |atcoder_user|
       if user_info = atcoder_user.get_user_info
         atcoder_user.accepted_count = user_info["accepted_count"]
         atcoder_user.accepted_count_rank = user_info["accepted_count_rank"]
         atcoder_user.rated_point_sum = user_info["rated_point_sum"]
         atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
-
-        # unless History.exists?(atcoder_id: atcoder_id)
-        #   create_history
-        # end
       end
     end
+    History.create_history(atuser) if atuser.valid?
+    return atuser
   end
 
   def get_history
@@ -52,6 +52,14 @@ class AtcoderUser < ApplicationRecord
     #   History.create_history(atcoder_user)
     end
   end
+
+  # def history_exist
+  #   if histories.empty? && errors.empty?
+  #     History.create_history(self)
+
+  #     errors.add(:atcoder_id, "ID does not exist.") if histories.empty?
+  #   end
+  # end
 
   def call_api(uri)
     https = Net::HTTP.new(uri.host, uri.port)
