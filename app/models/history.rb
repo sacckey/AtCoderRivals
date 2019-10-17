@@ -2,7 +2,7 @@ class History < ApplicationRecord
   belongs_to :atcoder_user
   belongs_to :contest
 
-  validates :is_rated, presence: true
+  validates :is_rated, inclusion: {in: [true, false]}
   validates :place, presence: true
   validates :old_rating, presence: true
   validates :new_rating, presence: true

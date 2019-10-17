@@ -1,0 +1,17 @@
+<% provide(:title, 'User search') %>
+<h1>User Search</h1>
+
+<%= form_tag '/search', :method => 'get' do %>
+<%= render 'shared/error_messages' %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+<% end %>
+
+<ul class="users">
+  <% if @atcoder_user.valid? %>
+    <%= render @atcoder_user %>
+    <%= render 'shared/follow_form' %>
+  <% end %>
+</ul>

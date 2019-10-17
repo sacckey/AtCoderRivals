@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :logged_in_user
-  before_action :correct_user, only: [:show,:edit,:update]
+  before_action :correct_user, only: [:show,:edit,:update,:following]
   before_action :admin_user, only: [:index,:destroy]
 
   def show
@@ -38,18 +38,18 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def following
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @atcoder_user = @user.atcoder_user
+    @atcoder_users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
   private
 
     def user_params
       params.require(:user).permit(:atcoder_user_id)
-    end
-
-    # before action
-    def logged_in_user
-      unless logged_in?
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
     end
 
     def correct_user

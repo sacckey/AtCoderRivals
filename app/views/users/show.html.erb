@@ -8,6 +8,9 @@
         <%= @atcoder_user.atcoder_id %>
       </h1>
     </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
+    </section>
   </aside>
   <div class="col-md-8">
     <h3>Contests (<%= @atcoder_user.contests.size %>)</h3>
