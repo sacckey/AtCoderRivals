@@ -4,6 +4,7 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Search", '/search' %></li>
         <li><%= link_to "Help", help_path %></li>
         <% if logged_in? %>
           <% if current_user.admin? %>

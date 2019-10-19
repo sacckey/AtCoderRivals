@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_14_051043) do
+ActiveRecord::Schema.define(version: 2019_10_19_003315) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -55,6 +55,16 @@ ActiveRecord::Schema.define(version: 2019_10_14_051043) do
     t.index ["contest_id"], name: "index_histories_on_contest_id"
   end
 
+  create_table "problems", force: :cascade do |t|
+    t.string "problem_name"
+    t.string "problem_title"
+    t.integer "contest_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contest_id", "problem_name"], name: "index_problems_on_contest_id_and_problem_name"
+    t.index ["contest_id"], name: "index_problems_on_contest_id"
+  end
+
   create_table "relationships", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "followed_id"
@@ -63,6 +73,23 @@ ActiveRecord::Schema.define(version: 2019_10_14_051043) do
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "submissions", force: :cascade do |t|
+    t.integer "epoch_second"
+    t.integer "problem_id"
+    t.integer "contest_id"
+    t.integer "atcoder_user_id"
+    t.string "language"
+    t.float "point"
+    t.string "result"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["atcoder_user_id", "epoch_second"], name: "index_submissions_on_atcoder_user_id_and_epoch_second"
+    t.index ["atcoder_user_id"], name: "index_submissions_on_atcoder_user_id"
+    t.index ["contest_id"], name: "index_submissions_on_contest_id"
+    t.index ["epoch_second"], name: "index_submissions_on_epoch_second"
+    t.index ["problem_id"], name: "index_submissions_on_problem_id"
   end
 
   create_table "users", force: :cascade do |t|

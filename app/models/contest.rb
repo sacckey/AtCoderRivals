@@ -1,6 +1,8 @@
 class Contest < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :atcoder_users, through: :histories
+  has_many :submissions, dependent: :destroy
+  has_many :problems, dependent: :destroy  
 
   validates :abbreviation, presence: true
   validates :start_epoch_second, presence: true

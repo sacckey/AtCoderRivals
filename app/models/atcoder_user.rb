@@ -1,6 +1,7 @@
 class AtcoderUser < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :contests, through: :histories
+  has_many :submissions, dependent: :destroy
 
   validates :atcoder_id, presence: { message: "ID can't be blank" }
   validates :accepted_count, presence: true
@@ -18,13 +19,21 @@ class AtcoderUser < ApplicationRecord
         atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
       end
     end
-    History.create_history(atuser) if atuser.valid?
+    if atuser.valid?
+      History.create_history(atuser) 
+      Submission.create_submissions(atuser) 
+    end
     return atuser
   end
 
   def get_history
-    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{self.atcoder_id}/history/json")
+    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}/history/json")
     result = call_api(uri)
+  end
+
+  def get_submissions
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_id}")
+    results = call_api(uri)
   end
 
   def get_results(contest)
@@ -33,7 +42,7 @@ class AtcoderUser < ApplicationRecord
   end
 
   def get_user_info
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{self.atcoder_id}")
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_id}")
     result = call_api(uri)
   end
 

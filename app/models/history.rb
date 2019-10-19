@@ -16,8 +16,10 @@ class History < ApplicationRecord
   def self.create_history(atcoder_user)
     if atcoder_user.histories.empty?
       history = atcoder_user.get_history
+      history_list = []
       history.each do |res|
-        atcoder_user.histories.create!(
+        history_list << 
+        atcoder_user.histories.build(
           is_rated: res["IsRated"],
           place: res["Place"],
           old_rating: res["OldRating"],
@@ -29,13 +31,7 @@ class History < ApplicationRecord
           contest_id: Contest.find_by(title: res["ContestName"]).id
         )
       end
+      History.import history_list
     end
   end
-
-  #   self.find_or_create_by(provider: provider, uid: uid) do |user|
-  #     user.user_name = user_name
-  #     user.image_url = image_url
-  #     user.atcoder_id ||= atcoder_id
-  #   end
-  # end
 end

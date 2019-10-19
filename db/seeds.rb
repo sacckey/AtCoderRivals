@@ -3,6 +3,12 @@ def get_contests
   result = call_api(uri)
 end
 
+def get_problems
+  uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
+  result = call_api(uri)
+end
+
+
 def call_api(uri)
   https = Net::HTTP.new(uri.host, uri.port)
   https.use_ssl = true
@@ -41,8 +47,10 @@ end
 
 
 contests = get_contests
+contest_list = []
 contests.each do |contest|
-  Contest.create!(
+  contest_list << 
+  Contest.new(
     abbreviation: contest["id"],
     start_epoch_second: contest["start_epoch_second"],
     duration_second: contest["duration_second"],
@@ -50,3 +58,16 @@ contests.each do |contest|
     rate_change: contest["rate_change"]
   )
 end
+Contest.import contest_list
+
+problems = get_problems
+problem_list = []
+problems.each do |problem|
+  problem_list << 
+  Problem.new(
+    problem_name: problem["id"],
+    problem_title: problem["title"],
+    contest_id: Contest.find_by(abbreviation: problem["contest_id"]).id
+  )
+end
+Problem.import problem_list

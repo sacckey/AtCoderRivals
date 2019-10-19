@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  epoch_second: 1
+  problem: one
+  contest: one
+  atcoder_user: one
+  language: MyString
+  point: 1.5
+  result: MyString
+
+two:
+  epoch_second: 1
+  problem: two
+  contest: two
+  atcoder_user: two
+  language: MyString
+  point: 1.5
+  result: MyString
