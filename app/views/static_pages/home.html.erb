@@ -10,25 +10,73 @@
   </aside>
 
   <div class="col-md-8">
-    <% if @contests.any? %>
-      <h3>Contests (<%= Contest.all.size %>)</h3>
-      <ol class="contests">
-        <%= render @contests %>
-      </ol>
-      <%= will_paginate @contests %>
-    <% end %>
+    <!-- タブ・メニュー -->
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#submissions" data-toggle="tab">Submissions</a></li>
+      <li><a href="#contests" data-toggle="tab">Contests</a></li>
+    </ul>
+    <!-- タブ内容 -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="submissions">
+        <% if @submissions.any? %>
+          <h3>Submissions (<%= Submission.all.size %>)</h3>
+          <ol class="contests">
+            <%= render @submissions %>
+          </ol>
+          <%= will_paginate @submissions, :param_name => 'submissions' %>
+        <% end %>
+      </div>
+      <div class="tab-pane" id="contests">
+        <% if @contests.any? %>
+          <h3>Contests (<%= Contest.all.size %>)</h3>
+          <ol class="contests">
+            <%= render @contests %>
+          </ol>
+          <%= will_paginate @contests %>
+        <% end %>
+      </div>
+      <script>
+        if (location.hash) {
+          $('a[href=\'' + location.hash + '\']').tab('show');
+        }
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+          $('a[href="' + activeTab + '"]').tab('show');
+        }
+
+        $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
+          e.preventDefault()
+          var tab_name = this.getAttribute('href')
+          if (history.pushState) {
+            history.pushState(null, null, tab_name)
+          }
+          else {
+            location.hash = tab_name
+          }
+          localStorage.setItem('activeTab', tab_name)
+
+          $(this).tab('show');
+          return false;
+        });
+        $(window).on('popstate', function () {
+          var anchor = location.hash ||
+            $('a[data-toggle=\'tab\']').first().attr('href');
+          $('a[href=\'' + anchor + '\']').tab('show');
+        });
+      </script>
+    </div>
   </div>
 </div>
 <% else %>
-<div class="center jumbotron">
-  <h1>Welcome to the Sample App</h1>
+  <div class="center jumbotron">
+    <h1>Welcome to the Sample App</h1>
 
-  <h2>
-    This is the home page for the
-    <a href="https://railstutorial.jp/">Ruby on Rails Tutorial</a>
-    sample application.
-  </h2>
+    <h2>
+      This is the home page for the
+      <a href="https://railstutorial.jp/">Ruby on Rails Tutorial</a>
+      sample application.
+    </h2>
 
-  <%= link_to "Sign up now!", login_path, class: "btn btn-lg btn-primary" %>
-</div>
+    <%= link_to "Sign up now!", login_path, class: "btn btn-lg btn-primary" %>
+  </div>
 <% end %>

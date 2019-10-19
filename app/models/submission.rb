@@ -11,6 +11,8 @@ class Submission < ApplicationRecord
   validates :point, presence: true
   validates :result, presence: true
 
+  default_scope -> { order(epoch_second: :desc) }
+
   def self.create_submissions(atcoder_user)
     if atcoder_user.submissions.empty?
       submissions = atcoder_user.get_submissions

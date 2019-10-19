@@ -39,6 +39,12 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  def submission_feed
+    following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+    Submission.where("atcoder_user_id IN (#{following_ids})
+                     OR atcoder_user_id = :atcoder_user_id",user_id: id, atcoder_user_id: atcoder_user_id)
+  end
+
   private
     
 end

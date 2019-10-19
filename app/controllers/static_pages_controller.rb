@@ -3,8 +3,10 @@ class StaticPagesController < ApplicationController
     if logged_in?
       @user = current_user
       @atcoder_user = @user.atcoder_user
-      @contests = Contest.all.paginate(page: params[:page])
+      @contests = Contest.paginate(page: params[:page])
       @history = @atcoder_user.histories
+      @submissions = @user.submission_feed.paginate(page: params[:submissions])
+      # sizeとっておく？
     end
   end
 
