@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_19_075825) do
+ActiveRecord::Schema.define(version: 2019_10_20_085437) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -29,14 +29,16 @@ ActiveRecord::Schema.define(version: 2019_10_19_075825) do
   end
 
   create_table "contests", force: :cascade do |t|
-    t.string "abbreviation"
+    t.string "name"
     t.integer "start_epoch_second"
     t.integer "duration_second"
     t.string "title"
     t.string "rate_change"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name", "start_epoch_second"], name: "index_contests_on_name_and_start_epoch_second", unique: true
     t.index ["start_epoch_second"], name: "index_contests_on_start_epoch_second"
+    t.index ["title", "start_epoch_second"], name: "index_contests_on_title_and_start_epoch_second", unique: true
   end
 
   create_table "histories", force: :cascade do |t|
@@ -51,19 +53,17 @@ ActiveRecord::Schema.define(version: 2019_10_19_075825) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "atcoder_user_id"
-    t.integer "contest_id"
+    t.string "contest_title"
     t.index ["atcoder_user_id"], name: "index_histories_on_atcoder_user_id"
-    t.index ["contest_id"], name: "index_histories_on_contest_id"
   end
 
   create_table "problems", force: :cascade do |t|
-    t.string "problem_name"
-    t.string "problem_title"
-    t.integer "contest_id"
+    t.string "name"
+    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["contest_id", "problem_name"], name: "index_problems_on_contest_id_and_problem_name"
-    t.index ["contest_id"], name: "index_problems_on_contest_id"
+    t.string "contest_name"
+    t.index ["name"], name: "index_problems_on_name", unique: true
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -78,19 +78,17 @@ ActiveRecord::Schema.define(version: 2019_10_19_075825) do
 
   create_table "submissions", force: :cascade do |t|
     t.integer "epoch_second"
-    t.integer "problem_id"
-    t.integer "contest_id"
     t.integer "atcoder_user_id"
     t.string "language"
     t.float "point"
     t.string "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "contest_name"
+    t.string "problem_name"
     t.index ["atcoder_user_id", "epoch_second"], name: "index_submissions_on_atcoder_user_id_and_epoch_second"
     t.index ["atcoder_user_id"], name: "index_submissions_on_atcoder_user_id"
-    t.index ["contest_id"], name: "index_submissions_on_contest_id"
     t.index ["epoch_second"], name: "index_submissions_on_epoch_second"
-    t.index ["problem_id"], name: "index_submissions_on_problem_id"
   end
 
   create_table "users", force: :cascade do |t|

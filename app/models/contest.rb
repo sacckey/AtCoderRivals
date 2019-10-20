@@ -4,7 +4,7 @@ class Contest < ApplicationRecord
   has_many :submissions, dependent: :destroy
   has_many :problems, dependent: :destroy  
 
-  validates :abbreviation, presence: true
+  validates :name, presence: true
   validates :start_epoch_second, presence: true
   validates :duration_second, presence: true
   validates :title, presence: true

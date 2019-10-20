@@ -1,6 +1,6 @@
 class History < ApplicationRecord
   belongs_to :atcoder_user
-  belongs_to :contest
+  belongs_to :contest, foreign_key: :contest_title, primary_key: :title
 
   validates :is_rated, inclusion: {in: [true, false]}
   validates :place, presence: true
@@ -11,7 +11,7 @@ class History < ApplicationRecord
   validates :contest_screen_name, presence: true
   validates :end_time, presence: true
   validates :atcoder_user_id, presence: true
-  validates :contest_id, presence: true
+  validates :contest_title, presence: true
 
   default_scope -> { order(:place) }
 
@@ -31,7 +31,7 @@ class History < ApplicationRecord
             inner_performance: res["InnerPerformance"],
             contest_screen_name: res["ContestScreenName"],
             end_time: res["EndTime"],
-            contest_id: Contest.find_by(title: res["ContestName"]).id
+            contest_title: res["ContestName"]
           )
         rescue
           next

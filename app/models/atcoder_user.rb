@@ -8,7 +8,7 @@ class AtcoderUser < ApplicationRecord
   validates :accepted_count_rank, presence: true
   validates :rated_point_sum, presence: true
   validates :rated_point_sum_rank, presence: true
-  validates :image_url, presence: true  
+  validates :image_url, presence: true
   validate  :atcoder_id_exist
 
   def self.find_or_create_atcoder_user(atcoder_id)
@@ -21,10 +21,10 @@ class AtcoderUser < ApplicationRecord
         atcoder_user.image_url = atcoder_user.get_image_url
       end
     end
-    if atuser.valid?
-      History.create_history(atuser) 
-      Submission.create_submissions(atuser) 
-    end
+    # if atuser.valid?
+    #   History.create_history(atuser) 
+    #   Submission.create_submissions(atuser) 
+    # end
     return atuser
   end
 
@@ -39,7 +39,7 @@ class AtcoderUser < ApplicationRecord
   end
 
   def get_results(contest)
-    uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.abbreviation}/results/json")
+    uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.name}/results/json")
     results = call_api(uri)
   end
 

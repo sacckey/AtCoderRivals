@@ -8,9 +8,9 @@
   </span> 
   <span class="content">
     <%= link_to submission.contest.title,
-    "https://atcoder.jp/contests/#{submission.contest.abbreviation}" %>
-    <%= link_to submission.problem.problem_title,
-    "https://atcoder.jp/contests/#{submission.contest.abbreviation}/tasks/#{submission.problem.problem_name}" %>
+    "https://atcoder.jp/contests/#{submission.contest.name}" %>
+    <%= link_to submission.problem.title,
+    "https://atcoder.jp/contests/#{submission.contest.name}/tasks/#{submission.problem.name}" %>
     <%= submission.result %>
   </span>
 
