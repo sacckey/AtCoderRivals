@@ -13,23 +13,29 @@ class History < ApplicationRecord
   validates :atcoder_user_id, presence: true
   validates :contest_id, presence: true
 
+  default_scope -> { order(:place) }
+
   def self.create_history(atcoder_user)
     if atcoder_user.histories.empty?
       history = atcoder_user.get_history
       history_list = []
       history.each do |res|
-        history_list << 
-        atcoder_user.histories.build(
-          is_rated: res["IsRated"],
-          place: res["Place"],
-          old_rating: res["OldRating"],
-          new_rating: res["NewRating"],
-          performance: res["Performance"],
-          inner_performance: res["InnerPerformance"],
-          contest_screen_name: res["ContestScreenName"],
-          end_time: res["EndTime"],
-          contest_id: Contest.find_by(title: res["ContestName"]).id
-        )
+        begin 
+          history_list << 
+          atcoder_user.histories.build(
+            is_rated: res["IsRated"],
+            place: res["Place"],
+            old_rating: res["OldRating"],
+            new_rating: res["NewRating"],
+            performance: res["Performance"],
+            inner_performance: res["InnerPerformance"],
+            contest_screen_name: res["ContestScreenName"],
+            end_time: res["EndTime"],
+            contest_id: Contest.find_by(title: res["ContestName"]).id
+          )
+        rescue
+          next
+        end
       end
       History.import history_list
     end

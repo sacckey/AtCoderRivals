@@ -8,4 +8,13 @@ module ApplicationHelper
       page_title + " | " + base_title
     end
   end
+
+  def show_icon(user, size: 50)
+    if user.instance_of? AtcoderUser
+      alt = user.atcoder_id
+    else
+      alt = user.user_name
+    end
+    image_tag(user.image_url, alt: alt, class: "icon", size: size)
+  end
 end

@@ -2,10 +2,28 @@
   <%# <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
   
   <%# link_to "#",  %>
-  <span class="contest_title"><%= link_to contest.title, "https://atcoder.jp/contests/#{contest.abbreviation}" %></span>
-  <span class="content"><%= contest.rate_change %> </span>
+  <span class="contest_title">
+    <%= link_to contest.title, "https://atcoder.jp/contests/#{contest.abbreviation}" %>
+    <%= contest.rate_change %>  
+  </span>
   <span class="content">
-  <%= show_result(@history,contest) %>
+    <% histories = @user.contest_feed(contest) %>
+    <% if histories.exists? %>
+      <table class="table">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>place</th>
+              <th>name</th>
+              <th>performance</th>
+              <th>new rating</th>
+            </tr>
+        </thead>
+        <tbody>
+          <%= render histories %>
+        </tbody>
+      </table>
+    <% end %>
   </span>
   <span class="timestamp">
     <%= Time.at(contest.start_epoch_second) %>

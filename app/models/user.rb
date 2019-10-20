@@ -45,6 +45,13 @@ class User < ApplicationRecord
                      OR atcoder_user_id = :atcoder_user_id",user_id: id, atcoder_user_id: atcoder_user_id)
   end
 
+  def contest_feed(contest)
+    following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+    History.where("contest_id = :contest_id AND 
+      (atcoder_user_id IN (#{following_ids}) OR atcoder_user_id = :atcoder_user_id)",
+       user_id: id, contest_id: contest.id, atcoder_user_id: atcoder_user_id)
+  end
+
   private
     
 end

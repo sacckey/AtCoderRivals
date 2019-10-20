@@ -18,15 +18,19 @@ class Submission < ApplicationRecord
       submissions = atcoder_user.get_submissions
       submissions_list = []
       submissions.each do |submission|
-        submissions_list << 
-        atcoder_user.submissions.build(
-          epoch_second: submission["epoch_second"],
-          problem_id: Problem.find_by(problem_name: submission["problem_id"]).id,
-          contest_id: Contest.find_by(abbreviation: submission["contest_id"]).id,
-          language: submission["language"],
-          point: submission["point"],
-          result: submission["result"]
-        )
+        begin
+          submissions_list << 
+          atcoder_user.submissions.build(
+            epoch_second: submission["epoch_second"],
+            problem_id: Problem.find_by(problem_name: submission["problem_id"]).id,
+            contest_id: Contest.find_by(abbreviation: submission["contest_id"]).id,
+            language: submission["language"],
+            point: submission["point"],
+            result: submission["result"]
+          )
+        rescue
+          next
+        end
       end
       Submission.import submissions_list
     end

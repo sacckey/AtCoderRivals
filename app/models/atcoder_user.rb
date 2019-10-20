@@ -8,6 +8,7 @@ class AtcoderUser < ApplicationRecord
   validates :accepted_count_rank, presence: true
   validates :rated_point_sum, presence: true
   validates :rated_point_sum_rank, presence: true
+  validates :image_url, presence: true  
   validate  :atcoder_id_exist
 
   def self.find_or_create_atcoder_user(atcoder_id)
@@ -17,6 +18,7 @@ class AtcoderUser < ApplicationRecord
         atcoder_user.accepted_count_rank = user_info["accepted_count_rank"]
         atcoder_user.rated_point_sum = user_info["rated_point_sum"]
         atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
+        atcoder_user.image_url = atcoder_user.get_image_url
       end
     end
     if atuser.valid?
@@ -44,6 +46,17 @@ class AtcoderUser < ApplicationRecord
   def get_user_info
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_id}")
     result = call_api(uri)
+  end
+
+  def get_image_url
+    uri = "https://atcoder.jp/users/#{atcoder_id}"
+    charset = nil
+    html = open(uri) do |h|
+      charset = h.charset
+      h.read
+    end
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+    doc.at_css('.avatar').attribute('src').value
   end
 
   private

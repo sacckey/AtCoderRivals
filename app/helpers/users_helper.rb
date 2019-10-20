@@ -1,7 +1,4 @@
 module UsersHelper
-  def show_icon(user)
-    image_tag(user.image_url, alt: user.user_name, class: "icon")
-  end
 
   # def show_result(user,contest)
   #   results = user.get_results(contest)
@@ -12,12 +9,14 @@ module UsersHelper
   #   end
   #   return ""
   # end
-  def show_result(history,contest)
-    result = history.find_by(contest_id: contest.id)
-    if result
-      return result.performance
-    else
-      return ""
-    end
+  def show_result(contest)
+    History.where("contest_id = :contest_id", contest_id: contest.id)
+    # if results
+    #   results.each do |result|
+        
+    #   return result.performance
+    # else
+    #   return ""
+    # end
   end
 end
