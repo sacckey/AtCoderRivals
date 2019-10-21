@@ -32,7 +32,7 @@ class Submission < ApplicationRecord
           next
         end
       end
-      Submission.import submissions_list
+      Submission.import! submissions_list
     end
   end
 end

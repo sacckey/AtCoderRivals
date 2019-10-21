@@ -20,6 +20,8 @@ class UsersController < ApplicationController
     @atcoder_user = AtcoderUser.find_or_create_atcoder_user(atcoder_id)
 
     if @atcoder_user.valid?
+      History.create_history(@atcoder_user)
+      Submission.create_submissions(@atcoder_user)
       @user.update_attributes!(atcoder_user_id: @atcoder_user.id)
       flash[:success] = "Profile updated"
       redirect_to @user

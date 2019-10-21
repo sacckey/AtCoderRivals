@@ -37,7 +37,7 @@ class History < ApplicationRecord
           next
         end
       end
-      History.import history_list
+      History.import! history_list
     end
   end
 end
