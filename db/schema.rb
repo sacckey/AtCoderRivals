@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_085437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "contest_name"
-    t.index ["name"], name: "index_problems_on_name", unique: true
+    t.index ["name"], name: "index_problems_on_contest_id_and_name"
   end
 
   create_table "relationships", force: :cascade do |t|

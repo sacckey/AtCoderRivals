@@ -5,7 +5,7 @@ class AddForeignKeyToSubmissions < ActiveRecord::Migration[5.2]
 
     add_column :submissions, :contest_name, :string
     add_column :submissions, :problem_name, :string
-    add_foreign_key :submissions, :contests, column: :contest_name
-    add_foreign_key :submissions, :problems, column: :problem_name
+    add_foreign_key :submissions, :contests, column: :contest_name, primary_key: :name
+    add_foreign_key :submissions, :problems, column: :problem_name, primary_key: :name
   end
 end
