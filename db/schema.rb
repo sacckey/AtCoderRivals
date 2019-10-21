@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 2019_10_20_085437) do
     t.index ["name"], name: "index_contests_on_name", unique: true
     t.index ["start_epoch_second"], name: "index_contests_on_start_epoch_second"
     t.index ["title", "start_epoch_second"], name: "index_contests_on_title_and_start_epoch_second", unique: true
-    t.index ["title"], name: "index_contests_on_title", unique: true
   end
 
   create_table "histories", force: :cascade do |t|
@@ -55,7 +54,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_085437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "atcoder_user_id"
-    t.string "contest_title"
+    t.string "contest_name"
     t.index ["atcoder_user_id"], name: "index_histories_on_atcoder_user_id"
   end
 

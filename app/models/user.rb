@@ -47,9 +47,9 @@ class User < ApplicationRecord
 
   def contest_feed(contest)
     following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
-    History.where("contest_title = :contest_title AND 
+    History.where("contest_name = :contest_name AND 
       (atcoder_user_id IN (#{following_ids}) OR atcoder_user_id = :atcoder_user_id)",
-       user_id: id, contest_title: contest.title, atcoder_user_id: atcoder_user_id)
+       user_id: id, contest_name: contest.name, atcoder_user_id: atcoder_user_id)
   end
 
   private

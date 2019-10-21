@@ -49,6 +49,7 @@ end
 contests = get_contests
 contest_list = []
 contests.each do |contest|
+  # next if contest["id"].include? "bcu"
   contest_list << 
   Contest.new(
     name: contest["id"],
@@ -59,6 +60,22 @@ contests.each do |contest|
   )
 end
 Contest.import contest_list
+
+# contests = get_contests
+# contest_list = []
+# hash = Hash.new {0}
+# contests.each do |contest|
+#   hash[contest["title"]] += 1
+# end
+# hash.each do |k,v|
+#   puts k if v>=2
+# end
+
+
+
+
+
+
 
 problems = get_problems
 problem_list = []

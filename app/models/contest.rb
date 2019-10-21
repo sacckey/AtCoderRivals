@@ -1,5 +1,5 @@
 class Contest < ApplicationRecord
-  has_many :histories, foreign_key: :contest_title, primary_key: :title, dependent: :destroy
+  has_many :histories, foreign_key: :contest_name, primary_key: :name, dependent: :destroy
   has_many :atcoder_users, through: :histories
   has_many :submissions, foreign_key: :contest_name, primary_key: :name, dependent: :destroy
   has_many :problems, foreign_key: :contest_name, primary_key: :name, dependent: :destroy  
