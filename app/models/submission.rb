@@ -1,11 +1,11 @@
 class Submission < ApplicationRecord
-  belongs_to :problem
-  belongs_to :contest
+  belongs_to :problem, foreign_key: :problem_name, primary_key: :name
+  belongs_to :contest, foreign_key: :contest_name, primary_key: :name
   belongs_to :atcoder_user
 
   validates :epoch_second, presence: true
-  validates :problem_id, presence: true
-  validates :contest_id, presence: true
+  validates :problem_name, presence: true
+  validates :contest_name, presence: true
   validates :atcoder_user_id, presence: true
   validates :language, presence: true
   validates :point, presence: true
@@ -22,8 +22,8 @@ class Submission < ApplicationRecord
           submissions_list << 
           atcoder_user.submissions.build(
             epoch_second: submission["epoch_second"],
-            problem_id: Problem.find_by(problem_name: submission["problem_id"]).id,
-            contest_id: Contest.find_by(abbreviation: submission["contest_id"]).id,
+            problem_name: submission["problem_id"],
+            contest_name: submission["contest_id"],
             language: submission["language"],
             point: submission["point"],
             result: submission["result"]
@@ -32,7 +32,7 @@ class Submission < ApplicationRecord
           next
         end
       end
-      Submission.import submissions_list
+      Submission.import! submissions_list
     end
   end
 end

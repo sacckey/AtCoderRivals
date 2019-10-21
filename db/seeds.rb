@@ -51,7 +51,7 @@ contest_list = []
 contests.each do |contest|
   contest_list << 
   Contest.new(
-    abbreviation: contest["id"],
+    name: contest["id"],
     start_epoch_second: contest["start_epoch_second"],
     duration_second: contest["duration_second"],
     title: contest["title"],
@@ -65,9 +65,9 @@ problem_list = []
 problems.each do |problem|
   problem_list << 
   Problem.new(
-    problem_name: problem["id"],
-    problem_title: problem["title"],
-    contest_id: Contest.find_by(abbreviation: problem["contest_id"]).id
+    name:  problem["id"],
+    title: problem["title"],
+    contest_name:  problem["contest_id"]
   )
 end
 Problem.import problem_list

@@ -9,8 +9,8 @@ module UsersHelper
   #   end
   #   return ""
   # end
-  def show_result(contest)
-    History.where("contest_id = :contest_id", contest_id: contest.id)
+  # def show_result(contest)
+  #   History.where("contest_id = :contest_id", contest_id: contest.id)
     # if results
     #   results.each do |result|
         
@@ -18,5 +18,5 @@ module UsersHelper
     # else
     #   return ""
     # end
-  end
+  # end
 end
