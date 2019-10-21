@@ -37,8 +37,10 @@ ActiveRecord::Schema.define(version: 2019_10_20_085437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name", "start_epoch_second"], name: "index_contests_on_name_and_start_epoch_second", unique: true
+    t.index ["name"], name: "index_contests_on_name", unique: true
     t.index ["start_epoch_second"], name: "index_contests_on_start_epoch_second"
     t.index ["title", "start_epoch_second"], name: "index_contests_on_title_and_start_epoch_second", unique: true
+    t.index ["title"], name: "index_contests_on_title", unique: true
   end
 
   create_table "histories", force: :cascade do |t|
@@ -64,6 +66,7 @@ ActiveRecord::Schema.define(version: 2019_10_20_085437) do
     t.datetime "updated_at", null: false
     t.string "contest_name"
     t.index ["name"], name: "index_problems_on_contest_id_and_name"
+    t.index ["name"], name: "index_problems_on_name", unique: true
   end
 
   create_table "relationships", force: :cascade do |t|
