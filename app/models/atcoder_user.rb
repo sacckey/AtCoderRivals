@@ -21,10 +21,10 @@ class AtcoderUser < ApplicationRecord
         atcoder_user.image_url = atcoder_user.get_image_url
       end
     end
-    if atuser.valid?
-      History.create_history(atuser) 
-      Submission.create_submissions(atuser) 
-    end
+    # if atuser.valid?
+    #   History.create_history(atuser) 
+    #   Submission.create_submissions(atuser) 
+    # end
     return atuser
   end
 
