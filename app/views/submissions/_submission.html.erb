@@ -7,27 +7,36 @@
   <% problem_title = submission.problem.title %>
   <% problem_name = submission.problem.name %>
 
-  <%= link_to show_icon(atcoder_user), atcoder_user_url(atcoder_id) %>
   <span class="feed_title">
     <% res = submission.result%>
-    <% if res=="AC"%>
-      <span class="label label-success "><%= res %></span>
-    <% else %>
-      <span class="label label-warning"><%= res %></span>
-    <% end %>
-    <%= link_to atcoder_id, atcoder_user_url(atcoder_id), class: "name" %>
+    <div class="row">
+      <div class="col-md-1">
+        <%= link_to show_icon(atcoder_user), atcoder_user_url(atcoder_id) %>
+      </div>
+      <div class="col-md-11">
+        <div class="col-md-12">
+        <% if res=="AC"%>
+          <%= link_to res, submission_url(contest_name, submission.number), class: "btn btn-success btn-xs" %>
+        <% else %>
+          <%= link_to res, submission_url(contest_name, submission.number), class: "btn btn-warning btn-xs" %>
+        <% end %>
+        <%= link_to atcoder_id, atcoder_user_url(atcoder_id), class: "name" %>
+        </div>
+        <div class="col-md-12">
+          <span class="content">
+            <%= link_to contest_title, contest_url(contest_name) %>
+            <%= link_to problem_title, problem_url(contest_name, problem_name) %>
+          </span>
+        </div>
+        <div class="col-md-12 feed_footer">
+                        
+          <%= submission.language %>
+          <span class="timestamp"><%= Time.at(submission.epoch_second) %></span>
+  
+        </div>
+      </div>
+    </div>
   </span> 
-  <span class="content">
-    <%= link_to contest_title, contest_url(contest_name) %>
-    <%= link_to problem_title, problem_url(contest_name, problem_name) %>
-  </span>
-
-  <span class="feed_footer">
-    <%= submission.language %>
-    <span class="timestamp">
-      <%= Time.at(submission.epoch_second) %>
-    </span>
-  </span>
 </li>
 
 <% end %>

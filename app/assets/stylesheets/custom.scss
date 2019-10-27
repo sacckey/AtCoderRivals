@@ -304,6 +304,22 @@ input {
     .name{
       margin-left: 3px;
     }
+    .col-md-12{
+      padding: 0;
+    }
+    .col-md-6{
+      padding: 0;
+    }
+    .col-md-3{
+      padding: 0;
+    }
+    .col-md-2{
+      padding: 0;
+    }
+    .col-md-1{
+      padding-left: 15px;
+    }
+
   }
   .content {
     display: block;
@@ -321,15 +337,17 @@ input {
   }
   .feed_footer {
     color: $gray-light;
-    display: block;
-    .timestamp {
-      margin-left: 1em;
-    }
+  }
+  .timestamp {
+    margin-left: 3px;
   }
   .gravatar {
     float: left;
     margin-right: 10px;
     margin-top: 5px;
+  }
+  .detail {
+    margin-left: 0;
   }
 }
 

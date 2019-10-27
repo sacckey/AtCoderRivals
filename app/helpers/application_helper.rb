@@ -53,5 +53,9 @@ module ApplicationHelper
     "https://atcoder.jp/contests/#{contest_name}/standings?watching=#{atcoder_id}"
   end
 
+  def submission_url(contest_name, submission_number)
+    "https://atcoder.jp/contests/#{contest_name}/submissions/#{submission_number}"
+  end
+
   
 end

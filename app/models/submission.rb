@@ -3,6 +3,7 @@ class Submission < ApplicationRecord
   belongs_to :contest, foreign_key: :contest_name, primary_key: :name
   belongs_to :atcoder_user
 
+  validates :number, presence: true
   validates :epoch_second, presence: true
   validates :problem_name, presence: true
   validates :contest_name, presence: true
@@ -21,6 +22,7 @@ class Submission < ApplicationRecord
         begin
           submissions_list << 
           atcoder_user.submissions.build(
+            number: submission["id"],
             epoch_second: submission["epoch_second"],
             problem_name: submission["problem_id"],
             contest_name: submission["contest_id"],

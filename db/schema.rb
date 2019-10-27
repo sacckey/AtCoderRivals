@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_055539) do
+ActiveRecord::Schema.define(version: 2019_10_27_093129) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_055539) do
     t.datetime "updated_at", null: false
     t.string "contest_name"
     t.string "problem_name"
+    t.integer "number"
     t.index ["atcoder_user_id", "epoch_second"], name: "index_submissions_on_atcoder_user_id_and_epoch_second"
     t.index ["atcoder_user_id"], name: "index_submissions_on_atcoder_user_id"
     t.index ["epoch_second"], name: "index_submissions_on_epoch_second"
