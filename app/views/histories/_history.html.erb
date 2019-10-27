@@ -1,20 +1,15 @@
-<tr id="history-<%= history.id %>">
-  <%# <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
-  
-  <%# link_to "#",  %>
-  <%# <span class="contest_title"><%= link_to contest.title, "https://atcoder.jp/contests/#{contest.name}"</span> %>
+  <% atcoder_user = history.atcoder_user %>
+  <% atcoder_id = atcoder_user.atcoder_id %>
 
-  <%# <span class="content"><%= history.place %>
-  <%# <%= show_icon history.atcoder_user, size: 20 %>
-<td><%= show_icon history.atcoder_user, size: 30 %></td>
-<td><%= history.place %></td>
-<td><%= history.atcoder_user.atcoder_id %></td>
-<td><%= history.performance %></td>
-<td><%= history.new_rating %></td>
- 
-  <%# <span class="timestamp"> %>
-    <%# <%= Time.at(contest.start_epoch_second) %>
-    <%# <%= @atcoder_user.atcoder_id %>
-    <%# Posted <%= time_ago_in_words(contest.created_at) %>
-  <%# </span> %>
+<tr id="history-<%= history.id %>">
+<td><%= link_to show_icon(atcoder_user, size: 20), atcoder_user_url(atcoder_id) %></td>
+<td><%= link_to history.place, standings_url(contest_name, atcoder_id) %></td>
+<td><%= link_to atcoder_id, atcoder_user_url(atcoder_id), class: "#{color(history.old_rating)}" %></td>
+<% if history.is_rated %>
+  <td><span class=<%= "#{color(history.performance)}" %>><%= history.performance %></span></td>
+  <td><span class=<%= "#{color(history.new_rating)}" %>><%= history.new_rating %></span> (<%= "%+d" % (history.new_rating - history.old_rating) %>)</td>
+<% else %>
+  <td> - </td>
+  <td><span class=<%= "#{color(history.new_rating)}" %>><%= history.new_rating %></span></td>
+ <% end %>
 </tr>

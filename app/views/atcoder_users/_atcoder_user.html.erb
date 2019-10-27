@@ -1,4 +1,5 @@
 <li>
-  <%# <%= show_icon user %>
-  <%= link_to atcoder_user.atcoder_id, "https://atcoder.jp/users/#{atcoder_user.atcoder_id}" %>
+  <%= link_to show_icon(atcoder_user), atcoder_user_url(atcoder_user.atcoder_id) %>
+  <%= link_to atcoder_user.atcoder_id, atcoder_user_url(atcoder_user.atcoder_id), class: "atcoder_id" %>
+  <%= render 'shared/follow_form', atcoder_user: atcoder_user %>
 </li>

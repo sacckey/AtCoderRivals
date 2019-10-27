@@ -1,30 +1,32 @@
 <% if submission.contest %>
-
 <li id="submission-<%= submission.id %>">
-  <%# <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
-  <%= link_to show_icon(submission.atcoder_user), "https://atcoder.jp/users/#{submission.atcoder_user.atcoder_id}"%>
-  <%# link_to "#",  %>
-  <span class="contest_title">
-    <%= link_to submission.atcoder_user.atcoder_id,
-    "https://atcoder.jp/users/#{submission.atcoder_user.atcoder_id}" %>
+  <% atcoder_user = submission.atcoder_user %>
+  <% atcoder_id = atcoder_user.atcoder_id %>
+  <% contest_title = submission.contest.title %>
+  <% contest_name = submission.contest.name %>
+  <% problem_title = submission.problem.title %>
+  <% problem_name = submission.problem.name %>
+
+  <%= link_to show_icon(atcoder_user), atcoder_user_url(atcoder_id) %>
+  <span class="feed_title">
+    <% res = submission.result%>
+    <% if res=="AC"%>
+      <span class="label label-success "><%= res %></span>
+    <% else %>
+      <span class="label label-warning"><%= res %></span>
+    <% end %>
+    <%= link_to atcoder_id, atcoder_user_url(atcoder_id), class: "name" %>
   </span> 
   <span class="content">
-    <%= link_to submission.contest.title,
-    "https://atcoder.jp/contests/#{submission.contest.name}" %>
-    <%= link_to submission.problem.title,
-    "https://atcoder.jp/contests/#{submission.contest.name}/tasks/#{submission.problem.name}" %>
-    <%= submission.result %>
+    <%= link_to contest_title, contest_url(contest_name) %>
+    <%= link_to problem_title, problem_url(contest_name, problem_name) %>
   </span>
 
-  <span class="content"> </span>
-  <span class="content">
-  <%# <%= show_result(@history,contest) %> 
-  </span>
-  <span class="timestamp">
+  <span class="feed_footer">
     <%= submission.language %>
-    <%= Time.at(submission.epoch_second) %>
-    <%# <%= @atcoder_user.atcoder_id %>
-    <%# Posted <%= time_ago_in_words(contest.created_at) %>
+    <span class="timestamp">
+      <%= Time.at(submission.epoch_second) %>
+    </span>
   </span>
 </li>
 

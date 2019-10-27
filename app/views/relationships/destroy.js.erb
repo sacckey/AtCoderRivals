@@ -1,1 +1,2 @@
-$("#follow_form").html("<%= escape_javascript(render('shared/follow')) %>");
+$("#following").html('<%= current_user.following.count %>');
+$("#follow_form_<%= @atcoder_user.id %>").html("<%= escape_javascript(render('shared/follow',atcoder_user: @atcoder_user)) %>");

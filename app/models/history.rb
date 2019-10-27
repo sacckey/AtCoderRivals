@@ -31,7 +31,7 @@ class History < ApplicationRecord
           contest_screen_name: res["ContestScreenName"],
           end_time: res["EndTime"],
           contest_name: res["ContestScreenName"][/(.*?)\./,1]
-          )
+        )
       end
       History.import! history_list
     end

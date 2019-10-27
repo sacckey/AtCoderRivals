@@ -7,7 +7,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
     @history = @atcoder_user.histories
-    @contests = @atcoder_user.contests.paginate(page: params[:page])
+    @contests = @atcoder_user.contests.paginate(page: params[:contests])
+    @submissions = @atcoder_user.submissions.paginate(page: params[:submissions])
   end
 
   def edit

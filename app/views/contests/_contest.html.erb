@@ -1,15 +1,14 @@
+<% contest_title = contest.title %>
+<% contest_name = contest.name %>
+
 <li id="contest-<%= contest.id %>">
-  <%# <%= link_to gravatar_for(micropost.user, size: 50), micropost.user %>
-  
-  <%# link_to "#",  %>
-  <span class="contest_title">
-    <%= link_to contest.title, "https://atcoder.jp/contests/#{contest.name}" %>
-    <%= contest.rate_change %>  
+  <span class="feed_title">
+    <%= link_to contest_title, contest_url(contest_name) %>
   </span>
   <span class="content">
-    <% histories = @user.contest_feed(contest) %>
+    <% histories = @user.contest_feed(contest,@fol_ids) %>
     <% if histories.exists? %>
-      <table class="table">
+      <table class="table table-striped table-bordered ">
         <thead>
             <tr>
               <th>#</th>
@@ -20,14 +19,15 @@
             </tr>
         </thead>
         <tbody>
-          <%= render histories %>
+          <%= render histories, contest_name: contest_name %>
         </tbody>
       </table>
     <% end %>
   </span>
-  <span class="timestamp">
+  <span class="feed_footer">
+    rate change: <%= contest.rate_change %>
+    <span class="timestamp">
     <%= Time.at(contest.start_epoch_second) %>
-    <%# <%= @atcoder_user.atcoder_id %>
-    <%# Posted <%= time_ago_in_words(contest.created_at) %>
+    </span>
   </span>
 </li>

@@ -10,6 +10,8 @@ class User < ApplicationRecord
   validates :image_url, presence: true
   validates :atcoder_user_id, presence: true
 
+  attr_accessor :first_login
+
   def self.find_or_create_from_auth(auth)
     provider = auth[:provider]
     uid = auth[:uid]
@@ -21,8 +23,10 @@ class User < ApplicationRecord
       user.user_name = user_name
       user.image_url = image_url
       user.atcoder_user_id = AtcoderUser.find_or_create_atcoder_user(atcoder_id).id
+      user.first_login = true
     end
   end
+
 
   # ユーザーをフォローする
   def follow(other_user)
@@ -39,17 +43,23 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
-  def submission_feed
-    following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
-    Submission.where("atcoder_user_id IN (#{following_ids})
-                     OR atcoder_user_id = :atcoder_user_id",user_id: id, atcoder_user_id: atcoder_user_id)
+  def fol_ids
+    Relationship.where("SELECT followed_id FROM relationships WHERE follower_id = :user_id", user_id: id).map(&:followed_id)
   end
 
-  def contest_feed(contest)
-    following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+  def submission_feed(fol_ids)
+    # following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+    # Submission.where("atcoder_user_id IN (#{following_ids})
+    #                  OR atcoder_user_id = :atcoder_user_id",user_id: id, atcoder_user_id: atcoder_user_id)
+    Submission.where("atcoder_user_id IN (:fol_ids)
+    OR atcoder_user_id = :atcoder_user_id", fol_ids: fol_ids, user_id: id, atcoder_user_id: atcoder_user_id)
+  end
+
+  def contest_feed(contest, fol_ids)
+    # following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
     History.where("contest_name = :contest_name AND 
-      (atcoder_user_id IN (#{following_ids}) OR atcoder_user_id = :atcoder_user_id)",
-       user_id: id, contest_name: contest.name, atcoder_user_id: atcoder_user_id)
+      (atcoder_user_id IN (:fol_ids) OR atcoder_user_id = :atcoder_user_id)",
+      fol_ids: fol_ids, user_id: id, contest_name: contest.name, atcoder_user_id: atcoder_user_id)
   end
 
   private

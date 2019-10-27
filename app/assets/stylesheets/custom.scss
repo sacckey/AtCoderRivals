@@ -131,6 +131,9 @@ aside {
       margin-bottom: 3px;
       line-height: 1;
     }
+    span.atid{
+      margin-top: 10px;
+    }
     h1 {
       font-size: 1.4em;
       text-align: left;
@@ -188,6 +191,60 @@ aside {
   padding: 0;
 }
 
+a.atcoder_id{
+  float: left;
+}
+
+.follow_form {
+  .edit_relationship, .new_relationship{
+    display: inline-block;
+  }
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 20em;
+
+  .btn {
+    width:  8em;
+    // height: 50px;
+  }
+}
+
+/* user_search */
+.user_search {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+/* rate_color */
+.rate_gray{
+  color: gray;
+}
+.rate_brown{
+  color: #804000;
+}
+.rate_green{
+  color: green;
+}
+.rate_cyan{
+  color: #00C0C0;
+}
+.rate_blue{
+  color: blue;
+}
+.rate_yellow{
+  color: #C0C000;
+}
+.rate_orange{
+  color: #FF8000;
+}
+.rate_red{
+  color: red;
+}
+
+
+
+
+
 /* forms */
 
 input, textarea, select, .uneditable-input {
@@ -229,31 +286,45 @@ input {
 }
 
 
-/* microposts */
+/* feeds */
 
-.contests {
+.feeds {
   list-style: none;
   padding: 0;
   li {
-    padding: 10px 0;
     border-top: 1px solid #e8e8e8;
+    padding: 15px 0;
   }
-  .contest_title {
+  .feed_title {
     margin-top: 5em;
     padding-top: 0;
+    .label{
+      vertical-align: 1px;
+    }
+    .name{
+      margin-left: 3px;
+    }
   }
   .content {
     display: block;
-    margin-left: 60px;
-    img {
-      display: block;
-      padding: 5px 0;
+    table {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      th,td {
+        text-align: center;
+        .icon{
+          float: none;
+          margin: 0;
+        }
+      }
     }
   }
-  .timestamp {
+  .feed_footer {
     color: $gray-light;
     display: block;
-    margin-left: 60px;
+    .timestamp {
+      margin-left: 1em;
+    }
   }
   .gravatar {
     float: left;
