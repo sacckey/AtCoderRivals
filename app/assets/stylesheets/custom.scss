@@ -317,7 +317,8 @@ input {
       padding: 0;
     }
     .col-md-1{
-      padding-left: 15px;
+      // padding-left: 15px;
+      // padding-right: 3px;
     }
 
   }
@@ -373,4 +374,10 @@ span.picture {
 .btn-gray:hover{
   background: dimgray;
   color: white;
+}
+.btn-xs {
+  height: 19px;
+  line-height: normal;
+  font-weight: 500;
+  margin-bottom: 2px;
 }
