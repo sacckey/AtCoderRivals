@@ -22,6 +22,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'dotenv-rails'
 gem 'activerecord-import'
+gem 'whenever'
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'

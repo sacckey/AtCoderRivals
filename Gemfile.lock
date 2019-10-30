@@ -47,7 +47,7 @@ GEM
       tzinfo (~> 1.1)
     ansi (1.5.0)
     arel (9.0.0)
-    autoprefixer-rails (9.6.5)
+    autoprefixer-rails (9.7.0)
       execjs
     bcrypt (3.1.12)
     bindex (0.8.1)
@@ -64,6 +64,7 @@ GEM
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
+    chronic (0.10.2)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -82,7 +83,7 @@ GEM
       railties (>= 3.2, < 6.1)
     dry-inflector (0.2.0)
     erubi (1.9.0)
-    excon (0.67.0)
+    excon (0.68.0)
     execjs (2.7.0)
     faker (1.7.3)
       i18n (~> 0.5)
@@ -278,7 +279,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.3.0)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.13)
@@ -426,6 +427,8 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    whenever (1.0.0)
+      chronic (>= 0.6.3)
     will_paginate (3.1.7)
     xml-simple (1.1.5)
     xmlrpc (0.3.0)
@@ -469,6 +472,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (= 3.2.0)
   web-console (= 3.5.1)
+  whenever
   will_paginate (= 3.1.7)
 
 BUNDLED WITH

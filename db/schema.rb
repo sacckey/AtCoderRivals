@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_093129) do
     t.index ["atcoder_user_id", "epoch_second"], name: "index_submissions_on_atcoder_user_id_and_epoch_second"
     t.index ["atcoder_user_id"], name: "index_submissions_on_atcoder_user_id"
     t.index ["epoch_second"], name: "index_submissions_on_epoch_second"
+    t.index ["number"], name: "index_submissions_on_number", unique: true
   end
 
   create_table "users", force: :cascade do |t|
