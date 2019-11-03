@@ -1,6 +1,6 @@
 module Crawler extend self
-  # @logger = Logger.new(STDOUT)
-  @logger = Logger.new('log/crontab.log')
+  @logger = Logger.new(STDOUT)
+  # @logger = Logger.new('log/crontab.log')
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
