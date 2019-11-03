@@ -1,6 +1,5 @@
-# ローカル用のタスク
-namespace :bot do
-  desc "最近の提出をDBに保存するタスク"
+# 本番環境用のタスク
+desc "最近の提出をDBに保存するタスク"
   task recent_submissions: :environment do
     Crawler.get_recent_submissions
   end
@@ -15,4 +14,3 @@ namespace :bot do
       Crawler.get_histories
     end
   end
-end

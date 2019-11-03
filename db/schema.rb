@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_093129) do
+ActiveRecord::Schema.define(version: 2019_10_30_120037) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_093129) do
     t.datetime "updated_at", null: false
     t.integer "atcoder_user_id"
     t.string "contest_name"
+    t.index ["atcoder_user_id", "contest_name"], name: "index_histories_on_atcoder_user_id_and_contest_name", unique: true
     t.index ["atcoder_user_id"], name: "index_histories_on_atcoder_user_id"
   end
 
