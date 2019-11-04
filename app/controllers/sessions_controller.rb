@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
 
   def failure
     flash[:danger] = 'Authentication failed.'
-    redirect_to login_path
+    redirect_to root_path
   end
 
   def destroy

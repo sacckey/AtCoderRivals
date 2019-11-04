@@ -1,8 +1,35 @@
-<% provide(:title, "Help") %>
-<h1>Help</h1>
-<p>  Get help on the Ruby on Rails Tutorial at the
-  <a href="https://railstutorial.jp/help">Rails Tutorial help section</a>.
-  To get help on this sample app, see the
-  <a href="https://railstutorial.jp/#ebook"><em>Ruby on Rails Tutorial</em>
-  book</a>.
-</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= full_title(yield(:title)) %></title>
+    <%= render 'layouts/rails_default' %>
+    <%= render 'layouts/shim' %>
+  </head>
+  <body class="top">
+    <%# <%= render 'layouts/header' %>
+    <%# <div class="container"> %>
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
+      <div class="jumbotron jumbotron-extend">
+        <%# <%= render 'layouts/header' %> 
+        <div class="container-fluid jumbotron-container">
+          <div class="acr">
+            <h1>AtCoder Rivals</h1>
+          </div>
+          <div>
+            <a href="/auth/twitter" class="btn btn-primary btn-lg">
+              <span class="fab fa-twitter"></span>
+              Sign up with Twitter
+            </a>
+            <a href="/login_sample" class="btn btn-warning btn-lg">
+              Login as a sample user
+            </a>
+          </div>
+        </div>
+        <%# <%= render 'layouts/footer' %>
+      </div>
+      <%= debug(params) if Rails.env.development? %>
+    <%# </div> %>
+  </body>
+</html>

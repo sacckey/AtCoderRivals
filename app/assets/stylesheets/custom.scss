@@ -1,5 +1,36 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: rgb(98, 148, 255);
+    text-decoration: none;
+  }
+  body{
+    background-color:rgb(51, 51, 53);
+    color: #fff;
+  }
+  .content {
+    display: block;
+    table {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      th,td {
+        text-align: center;
+        .icon{
+          float: none;
+          margin: 0;
+        }
+      }
+      td{
+        background-color: rgb(70, 70, 70);
+      }
+    }
+  }
+}
 
 /* mixins, variables, etc. */
 
@@ -380,4 +411,60 @@ span.picture {
   line-height: normal;
   font-weight: 500;
   margin-bottom: 2px;
+}
+
+/* static pages */
+$brown: #5c4d42 !default;
+.list {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+.hoge {
+  background-image: image-url('bg-masthead.jpg');
+}
+
+.jumbotron-extend {
+  padding-top: 0;
+  position: relative;
+  height: 100vh;
+  min-height: 300px;
+  // background-image: image-url('bg-masthead.jpg');
+  background-size: cover;
+  // background-color:rgba(92,77,66,0.5);
+  // background-blend-mode: darken;
+  // background-blend-mode: lighten;
+
+  background: linear-gradient(to bottom, #{fade-out($brown, .2)} 0%,#{fade-out($brown, .2)} 100%), image-url('bg-masthead.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+
+  .jumbotron-container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-align: center;
+  }
+
+  .navbar-inverse{
+    background-color: rgba(255,255,255,0);
+    border-color: rgba(255,255,255,0);
+  }
+  .acr{
+    margin-bottom: 100px;
+  }
+  .btn{
+    margin: 0px 10px;
+    width: 220px;
+  }
+  .fab{
+    margin-right:5px;
+  }
+}
+
+.top {
+  padding: 0;
 }

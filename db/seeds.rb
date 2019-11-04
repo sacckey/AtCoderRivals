@@ -71,12 +71,6 @@ Contest.import contest_list
 #   puts k if v>=2
 # end
 
-
-
-
-
-
-
 problems = get_problems
 problem_list = []
 problems.each do |problem|
@@ -88,3 +82,14 @@ problems.each do |problem|
   )
 end
 Problem.import problem_list
+
+AtcoderUser.find_or_create_atcoder_user("chokudai")
+
+User.create!(
+  user_name:  "Example User",
+  uid: "12345",
+  provider:  "twitter",
+  # image_url: "https://pbs.twimg.com/profile_images/1191282670287740933/7b9Nf5E7_normal.jpg",
+  image_url: "icon.png",
+  atcoder_user_id: 1
+)

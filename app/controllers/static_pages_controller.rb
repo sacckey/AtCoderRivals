@@ -18,10 +18,13 @@ class StaticPagesController < ApplicationController
       @submissions = @user.submission_feed(@fol_ids).paginate(page: params[:submissions])
       # @submissions_size = @submissions.size
       # @submissions = @submissions.paginate(page: params[:submissions])
+    else
+      render layout: false
     end
   end
 
   def help
+    render layout: false
   end
 
   def about
