@@ -3,7 +3,7 @@ class StaticPagesController < ApplicationController
     if logged_in?
       @user = current_user
       @atcoder_user = @user.atcoder_user
-      @fol_ids = @user.fol_ids
+      @fol_ids = @user.get_fol_ids
 
       # @contests = History.where("atcoder_user_id IN (:fol_ids) OR atcoder_user_id = :atcoder_user_id",
       #   fol_ids: @fol_ids, user_id: @user.id, atcoder_user_id: @atcoder_user.id).map(&:contest)
