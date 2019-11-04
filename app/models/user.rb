@@ -44,8 +44,8 @@ class User < ApplicationRecord
   end
 
   def get_fol_ids
-    Relationship.where("SELECT followed_id FROM relationships WHERE follower_id = :user_id", user_id: id).map(&:followed_id)
-    # Relationship.where("follower_id = :user_id", user_id: id).map(&:followed_id)
+    # Relationship.where("SELECT followed_id FROM relationships WHERE follower_id = :user_id", user_id: id).map(&:followed_id)
+    Relationship.where("follower_id = :user_id", user_id: id).map(&:followed_id)
   end
 
   def submission_feed(fol_ids)
