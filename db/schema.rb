@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_120037) do
+ActiveRecord::Schema.define(version: 2019_11_04_003706) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2019_10_30_120037) do
     t.datetime "updated_at", null: false
     t.string "image_url"
     t.integer "rating"
+    t.string "etag", default: ""
     t.index ["accepted_count"], name: "index_atcoder_users_on_accepted_count"
     t.index ["atcoder_id", "accepted_count"], name: "index_atcoder_users_on_atcoder_id_and_accepted_count"
     t.index ["atcoder_id", "rated_point_sum"], name: "index_atcoder_users_on_atcoder_id_and_rated_point_sum"

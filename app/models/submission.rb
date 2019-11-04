@@ -19,22 +19,18 @@ class Submission < ApplicationRecord
       submissions = atcoder_user.get_submissions
       submissions_list = []
       submissions.each do |submission|
-        begin
-          # 2019/10/01 00:00:00 以降の提出を保存
-          if submission["epoch_second"] >= 1569855600
-            submissions_list << 
-            atcoder_user.submissions.build(
-              number: submission["id"],
-              epoch_second: submission["epoch_second"],
-              problem_name: submission["problem_id"],
-              contest_name: submission["contest_id"],
-              language: submission["language"],
-              point: submission["point"],
-              result: submission["result"]
-            )
-          end
-        rescue
-          next
+        # 2019/10/01 00:00:00 以降の提出を保存
+        if submission["epoch_second"] >= 1569855600
+          submissions_list << 
+          atcoder_user.submissions.build(
+            number: submission["id"],
+            epoch_second: submission["epoch_second"],
+            problem_name: submission["problem_id"],
+            contest_name: submission["contest_id"],
+            language: submission["language"],
+            point: submission["point"],
+            result: submission["result"]
+          )
         end
       end
       Submission.import! submissions_list

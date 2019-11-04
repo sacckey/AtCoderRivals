@@ -1,13 +1,14 @@
 module Crawler extend self
   @logger = Logger.new(STDOUT)
   # @logger = Logger.new('log/crontab.log')
+  @etag = File.read('lib/.cache')
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
     # atcoder_users = AtcoderUser.pluck(:atcoder_id)
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{Time.now.to_i-3600}")
     # uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/1572358980")
-    submissions = call_api(uri, use_etag: false)
+    submissions = call_api(uri)
     
     submissions_list = []
     if submissions
@@ -34,6 +35,7 @@ module Crawler extend self
     @logger.info("start: get_contests")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
     contests = call_api(uri)
+    File.write('lib/.cache', @etag)
 
     contest_list = []
     if contests
@@ -58,7 +60,7 @@ module Crawler extend self
   def get_problems
     @logger.info("start: get_problems")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
-    problems = call_api(uri, use_etag: false)
+    problems = call_api(uri)
     
     problem_list = []
     if problems
@@ -80,7 +82,7 @@ module Crawler extend self
     history_list = []
     AtcoderUser.find_each do |atcoder_user|
       uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
-      history = call_api(uri, use_etag: false)
+      history = call_api(uri)
       
       if history
         history.each do |res|
@@ -97,35 +99,63 @@ module Crawler extend self
             contest_name: res["ContestScreenName"][/(.*?)\./,1]
           )
         end
+        # ratingを更新
+        atcoder_user.update_attribute(:rating, history[-1]["NewRating"])
       end
-      sleep 10
+      sleep 5
     end
     History.import! history_list, on_duplicate_key_ignore: true
-    @logger.info("end: get_histories\n")
+    @logger.info("end: get_histories")
+  end
+
+  def get_submissions
+    @logger.info("start: get_submissions")
+    submissions_list = []
+    AtcoderUser.find_each do |atcoder_user|
+      uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
+      @etag = atcoder_user.etag
+      submissions = call_api(uri)
+      atcoder_user.update_attribute(:etag, @etag)
+      
+      if submissions
+        submissions.each do |submission|
+          if submission["epoch_second"] >= 1569855600
+            submissions_list <<
+            atcoder_user.submissions.build(
+              number: submission["id"],
+              epoch_second: submission["epoch_second"],
+              problem_name: submission["problem_id"],
+              contest_name: submission["contest_id"],
+              language: submission["language"],
+              point: submission["point"],
+              result: submission["result"]
+            )
+          end
+        end
+      end
+      sleep 5
+    end
+    Submission.import! submissions_list, on_duplicate_key_ignore: true
+    @logger.info("end: get_submissions\n")
   end
 
   private
 
-  @cache = {}
-
-  def call_api(uri, use_etag: true)
+  def call_api(uri)
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     https.open_timeout = 5
     https.read_timeout = 10
 
-    # etag = @cache[uri] ? @cache[uri][:etag] : ""
-    etag = File.read('lib/.cache')
-
     begin
       res = https.start do
-        https.get(uri.request_uri, {"If-None-Match"=>etag})
+        https.get(uri.request_uri, {"If-None-Match"=>@etag})
       end
 
       case res
       when Net::HTTPSuccess
         @logger.info("get: #{uri}")
-        File.write('lib/.cache', res["Etag"]) if use_etag
+        @etag = res["Etag"]
         return JSON.parse(res.body)
       when Net::HTTPRedirection
         @logger.info("cached: #{uri}")
