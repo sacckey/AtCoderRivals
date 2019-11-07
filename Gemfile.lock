@@ -464,6 +464,7 @@ DEPENDENCIES
   minitest (= 5.10.3)
   minitest-reporters (= 1.1.14)
   nokogiri (>= 1.10.4)
+  omniauth
   omniauth-rails_csrf_protection
   omniauth-twitter
   pg (= 0.20.0)

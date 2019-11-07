@@ -18,6 +18,7 @@ gem 'turbolinks',              '5.0.1'
 gem 'jbuilder',                '2.7.0'
 gem 'bootsnap', require: false
 gem "nokogiri",                ">= 1.10.4"
+gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'dotenv-rails'
 gem 'activerecord-import'
