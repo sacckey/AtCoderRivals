@@ -1,10 +1,19 @@
 <% provide(:title, "About") %>
 <h1>About</h1>
 <p>
-  <a href="https://railstutorial.jp/">Ruby on Rails Tutorial</a>
-  is a <a href="https://railstutorial.jp/#ebook">book</a> and
-  <a href="https://railstutorial.jp/#screencast">screencast</a>
-  to teach web development with
-  <a href="http://rubyonrails.org/">Ruby on Rails</a>.
-  This is the sample application for the tutorial.
+      <a href="https://atcoder.jp/"> AtCoder</a>のコンテストでのパフォーマンスやレート遷移、日々の精進などをライバルたちと比較し、モチベーション向上に繋げるためのアプリです。<br>
+      フォローしたユーザーの最近の提出とコンテスト成績を見ることができます。
+</p>
+<div class='screenshot'>
+      <%= image_tag('submissions.png', alt: 'submissions', width: '500px') %>
+      <%= image_tag('contests.png', alt: 'contests', width: '500px') %>
+</div>
+
+<h4>使い方</h4>
+<p>
+      <ol class="list">
+        <li>Twitterアカウントで登録/ログインします。登録無しで試してみたい方は、"Try without signing up"ボタンを押してください。</li>
+        <li>Account → Settingを押して、あなたのAtCoder IDを設定してください。</li>
+        <li>SearchからAtCoderユーザーを検索/フォローすると、そのユーザーの最近の提出とコンテスト結果を見ることができます。</li>
+      </ol>
 </p>

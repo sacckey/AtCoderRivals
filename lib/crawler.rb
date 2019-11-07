@@ -5,25 +5,25 @@ module Crawler extend self
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
-    # atcoder_users = AtcoderUser.pluck(:atcoder_id)
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{Time.now.to_i-3600}")
-    # uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/1572358980")
     submissions = call_api(uri)
     
     submissions_list = []
     if submissions
       submissions.each do |submission|
         if atcoder_user = AtcoderUser.find_by(atcoder_id: submission["user_id"])
-          submissions_list << 
-            atcoder_user.submissions.build(
-              number: submission["id"],
-              epoch_second: submission["epoch_second"],
-              problem_name: submission["problem_id"],
-              contest_name: submission["contest_id"],
-              language: submission["language"],
-              point: submission["point"],
-              result: submission["result"]
-            )
+          if submission["result"] !~ /WJ|WR|\d.*/
+            submissions_list << 
+              atcoder_user.submissions.build(
+                number: submission["id"],
+                epoch_second: submission["epoch_second"],
+                problem_name: submission["problem_id"],
+                contest_name: submission["contest_id"],
+                language: submission["language"],
+                point: submission["point"],
+                result: submission["result"]
+              )
+          end
         end
       end
       Submission.import! submissions_list, on_duplicate_key_ignore: true

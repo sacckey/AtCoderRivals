@@ -24,28 +24,32 @@
     <body class="top">
       <%# <%= render 'layouts/header' %>
       <%# <div class="container"> %>
-        <div class="jumbotron jumbotron-extend">
-          <%# <%= render 'layouts/header' %> 
-          <% flash.each do |message_type, message| %>
-          <div class="alert alert-<%= message_type %>"><%= message %></div>
-          <% end %>
-          <div class="container-fluid jumbotron-container">
-            <div class="acr">
-              <h1>AtCoder Rivals</h1>
-            </div>
-            <div>
-              <a href="/auth/twitter" class="btn btn-primary btn-lg">
-                <span class="fab fa-twitter"></span>
-                Sign up with Twitter
-              </a>
-              <a href="/login_sample" class="btn btn-warning btn-lg">
-                Login as a sample user
-              </a>
-            </div>
+      <div class="jumbotron jumbotron-extend">
+        <%# <%= render 'layouts/header' %> 
+        <% flash.each do |message_type, message| %>
+          <div class="alert alert-<%= message_type %>">
+            <%= message %>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
           </div>
-          <%# <%= render 'layouts/footer' %>
+        <% end %>
+        <div class="container-fluid jumbotron-container">
+          <div class="acr">
+            <h1>AtCoder Rivals</h1>
+          </div>
+          <div class="btns">
+            <%# <%= link_to "About", about_path, class: "btn btn-danger btn-lg" %>
+
+            <a href="/auth/twitter" class="btn btn-primary btn-lg">
+              <span class="fab fa-twitter"></span>
+              Sign up with Twitter
+            </a>
+            <a href="/login_sample" class="btn btn-warning btn-lg">
+              Try without signing up
+            </a>
+          </div>
         </div>
-        <%= debug(params) if Rails.env.development? %>
+      </div>
+      <%= debug(params) if Rails.env.development? %>
       <%# </div> %>
     </body>
   </html>

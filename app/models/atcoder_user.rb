@@ -12,6 +12,8 @@ class AtcoderUser < ApplicationRecord
   validates :rating, presence: true
   validate  :atcoder_id_exist
 
+ 
+
   def self.find_or_create_atcoder_user(atcoder_id)
     self.find_or_create_by(atcoder_id: atcoder_id) do |atcoder_user|
       if user_info = atcoder_user.get_user_info
@@ -65,13 +67,36 @@ class AtcoderUser < ApplicationRecord
     end
 
     def call_api(uri)
+      @logger = Logger.new(STDOUT)
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true
-      res = https.start do
-        https.get(uri.request_uri)
+      https.open_timeout = 5
+      https.read_timeout = 10
+  
+      begin
+        res = https.start do
+          https.get(uri.request_uri)
+        end
+  
+        case res
+        when Net::HTTPSuccess
+          @logger.info("get: #{uri}")
+          return JSON.parse(res.body)
+        when Net::HTTPRedirection
+          @logger.info("cached: #{uri}")
+        else
+          @logger.error("HTTP ERROR: code=#{res.code} message=#{res.message}")
+        end
+  
+      rescue IOError => e
+        @logger.error(e.message)
+      rescue TimeoutError => e
+        @logger.error(e.message)
+      rescue JSON::ParserError => e
+        @logger.error(e.message)
+      rescue => e
+        @logger.error(e.message)
       end
-      if res.code == '200'
-        result = JSON.parse(res.body)
-      end
+      return nil
     end
 end

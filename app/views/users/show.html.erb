@@ -9,6 +9,18 @@
     </section>
   </aside>
   <div class="col-md-8">
+    <div class="prof">
+      <%= link_to show_icon(@atcoder_user,size: 100), atcoder_user_url(@atcoder_user.atcoder_id) %>
+      <div class="info">
+        <h1>
+          <%= link_to @atcoder_user.atcoder_id, atcoder_user_url(@atcoder_user.atcoder_id), class: color(@atcoder_user.rating.to_i) %>
+        </h1>
+        <table>
+          <tr><th>Rating</th><td><span class=<%= color(@atcoder_user.rating.to_i) %>><%= @atcoder_user.rating %></span></td></tr>
+          <tr><th>AC</th><td><%= @atcoder_user.accepted_count %></td></tr>
+        </table>
+      </div>
+    </div>
     <%= render 'shared/feed' %>
   </div>
 </div>

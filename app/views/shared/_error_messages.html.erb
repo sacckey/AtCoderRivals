@@ -3,6 +3,7 @@
     <div class="alert alert-danger">
     <% errors =  @atcoder_user.errors.full_messages.select {|error| error.include?("Atcoder")} %>
       The form contains <%= pluralize(errors.count, "error") %>.
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     <ul>
     <% errors.each do |msg| %>

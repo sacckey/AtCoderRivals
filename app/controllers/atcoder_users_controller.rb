@@ -5,6 +5,7 @@ class AtcoderUsersController < ApplicationController
     if atcoder_id = params[:search]
       @atcoder_user = AtcoderUser.find_or_create_atcoder_user(atcoder_id)
     else
+      puts "test!!!!!!!!!"
       @atcoder_user = AtcoderUser.new
     end
   end
