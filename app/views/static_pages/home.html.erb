@@ -37,15 +37,11 @@
             <h1>AtCoder Rivals</h1>
           </div>
           <div class="btns">
-            <%# <%= link_to "About", about_path, class: "btn btn-danger btn-lg" %>
-
-            <a href="/auth/twitter" class="btn btn-primary btn-lg">
-              <span class="fab fa-twitter"></span>
-              Sign up with Twitter
-            </a>
-            <a href="/login_sample" class="btn btn-warning btn-lg">
-              Try without signing up
-            </a>
+            <%= link_to "About", about_path, class: "btn btn-danger btn-lg" %>
+            <%= link_to '/auth/twitter', class: "btn btn-primary btn-lg", method: :post do %>
+              <span class="fab fa-twitter"></span> Sign up with Twitter
+            <% end%>
+            <%= link_to "Try without signing up", "/login_sample", class: "btn btn-warning btn-lg" %>
           </div>
         </div>
       </div>
