@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = User.find(params[:id])
     atcoder_id = params["atcoder_user"]["atcoder_id"]
     @atcoder_user = AtcoderUser.find_or_create_atcoder_user(atcoder_id)
 
