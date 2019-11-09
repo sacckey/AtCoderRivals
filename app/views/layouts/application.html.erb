@@ -4,6 +4,13 @@
     <title><%= full_title(yield(:title)) %></title>
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
+    <%= favicon_link_tag('favicon.ico') %>
+    <%= favicon_link_tag('apple-touch-icon.png',
+                     {rel: 'apple-touch-icon',
+                      sizes: '180x180',
+                      typ: 'image/png'}) %>
+    <%= favicon_link_tag('site.webmanifest',{rel: 'manifest'}) %>
+
   </head>
   <body>
     <%= render 'layouts/header' %>
