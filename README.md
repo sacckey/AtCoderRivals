@@ -1,24 +1,29 @@
-# README
+# AtCoder Rivals
+<a href="https://atcoder.jp/" target="_break"> AtCoder</a>のコンテストでのパフォーマンスやレート遷移、日々の精進などをライバルたちと比較し、モチベーション向上に繋げるためのアプリです。<br>
+フォローしたユーザーの最近の提出とコンテスト成績を見ることができます。
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## How to use
+```
+$ git clone https://github.com/sackey24/AtCoderRivals.git
+$ cd AtCoderRivals
+$ bundle install --without production
+$ rails db:migrate
+$ rails db:seed
+```
 
-Things you may want to cover:
+### Server
+```
+$ rails server
+```
 
-* Ruby version
+### Crawler
+```
+クローラー起動
+$ bundle exec whenever --update-crontab
 
-* System dependencies
+クローラー終了
+$ bundle exec whenever --clear-crontab
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+サーバー起動後、http://localhost:3000/ にアクセスすることで、アプリケーションを動かすことができます。<br>
+※Twitter認証によるログイン機能は使えません。
