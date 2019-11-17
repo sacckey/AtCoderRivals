@@ -7,7 +7,7 @@ namespace :bot do
 
   desc "コンテストを取得するタスク"
   task contests: :environment do
-    # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出も取得する
+    # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
     if Crawler.get_contests
       sleep 5
       Crawler.get_problems
@@ -15,6 +15,7 @@ namespace :bot do
       Crawler.get_histories
       sleep 5
       Crawler.get_submissions
+      Crawler.update_rating
     end
   end
 

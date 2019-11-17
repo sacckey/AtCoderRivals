@@ -99,8 +99,6 @@ module Crawler extend self
             contest_name: res["ContestScreenName"][/(.*?)\./,1]
           )
         end
-        # ratingを更新
-        atcoder_user.update_attribute(:rating, history[-1]["NewRating"])
       end
       sleep 5
     end
@@ -137,6 +135,12 @@ module Crawler extend self
     end
     Submission.import! submissions_list, on_duplicate_key_ignore: true
     @logger.info("end: get_submissions\n")
+  end
+
+  def update_rating
+    AtcoderUser.find_each do |atcoder_user|
+      atcoder_user.update_attribute(:rating, atcoder_user.histories.reorder(end_time: :desc).first.new_rating)
+    end
   end
 
   private
