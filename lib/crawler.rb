@@ -143,6 +143,26 @@ module Crawler extend self
     end
   end
 
+  def update_atcoder_user_info
+    @logger.info("start: update_atcoder_user_info")
+    info_list = []
+    AtcoderUser.find_each do |atcoder_user|
+      uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
+      # @etag = atcoder_user.etag
+      @etag = ""
+      if info = call_api(uri)
+        atcoder_user.accepted_count = info["accepted_count"]
+        atcoder_user.accepted_count_rank = info["accepted_count_rank"]
+        atcoder_user.rated_point_sum = info["rated_point_sum"]
+        atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
+        info_list << atcoder_user
+      end
+      sleep 5
+    end
+    AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
+    @logger.info("end: update_atcoder_user_info\n")
+  end
+
   private
 
   def call_api(uri)

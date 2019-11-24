@@ -13,3 +13,7 @@ end
 every 1.day, at: '0:45 am' do
   rake "bot:user_submissions"
 end
+
+every 1.day, at: '0:32 am' do
+  rake "bot:atcoder_user_info"
+end

@@ -22,3 +22,8 @@ desc "ユーザー毎に提出を取得するタスク"
 task user_submissions: :environment do
   Crawler.get_submissions
 end
+
+desc "AtCoderユーザーのAC数等を更新するタスク"
+task atcoder_user_info: :environment do
+  Crawler.update_atcoder_user_info
+end
