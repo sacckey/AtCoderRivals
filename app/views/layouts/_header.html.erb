@@ -2,6 +2,17 @@
   <div class="container">
     <%= link_to "AtCoder Rivals", root_path, id: "logo" %>
     <nav>
+    <div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarEexample">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+
+    <div class="collapse navbar-collapse" id="navbarEexample">
+
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>
           <li><%= link_to "Home", root_path %></li>
@@ -27,6 +38,9 @@
           <li><%= link_to "Log in", root_path %></li>
         <% end %>
       </ul>
+
+    </div>
+
     </nav>
   </div>
 </header>
