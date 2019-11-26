@@ -1,5 +1,9 @@
 <li>
+<div class="col-xs-6">
   <%= link_to show_icon(atcoder_user), atcoder_user_url(atcoder_user.atcoder_id) %>
   <%= link_to atcoder_user.atcoder_id, atcoder_user_url(atcoder_user.atcoder_id), class: "atcoder_id" %>
+</div>
+<div class="col-xs-6">
   <%= render 'shared/follow_form', atcoder_user: atcoder_user %>
+</div>
 </li>

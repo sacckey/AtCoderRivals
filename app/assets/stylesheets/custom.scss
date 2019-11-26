@@ -279,16 +279,15 @@ a.atcoder_id{
 }
 
 .follow_form {
-  .edit_relationship, .new_relationship{
-    display: inline-block;
-  }
-  text-align: right;
-  margin-top: 10px;
-  margin-right: 20em;
+  // .edit_relationship, .new_relationship{
+  //   display: inline-block;
+  // }
+  // text-align: right;
+  // margin-right: 20em;
 
   .btn {
     width:  8em;
-    // height: 50px;
+    margin-top: 10px;
   }
 }
 
