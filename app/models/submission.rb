@@ -20,7 +20,7 @@ class Submission < ApplicationRecord
       submissions_list = []
       submissions.each do |submission|
         # 2019/10/01 00:00:00 以降の提出を保存
-        if submission["epoch_second"] >= 1569855600
+        if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
           submissions_list << 
           atcoder_user.submissions.build(
             number: submission["id"],

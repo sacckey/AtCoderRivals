@@ -117,7 +117,7 @@ module Crawler extend self
       
       if submissions
         submissions.each do |submission|
-          if submission["epoch_second"] >= 1569855600
+          if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
             submissions_list <<
             atcoder_user.submissions.build(
               number: submission["id"],
