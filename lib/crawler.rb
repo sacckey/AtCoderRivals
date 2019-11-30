@@ -1,7 +1,7 @@
 module Crawler extend self
   @logger = Logger.new(STDOUT)
   # @logger = Logger.new('log/crontab.log')
-  @etag = File.read('lib/.cache')
+  @etag = User.find(1).uid
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
@@ -35,7 +35,7 @@ module Crawler extend self
     @logger.info("start: get_contests")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
     contests = call_api(uri)
-    File.write('lib/.cache', @etag)
+    User.find(1).update_attribute(:uid, @etag)
 
     contest_list = []
     if contests
