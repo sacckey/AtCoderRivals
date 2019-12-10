@@ -29,6 +29,7 @@ def create_submissions(atcoder_user)
 end
 
 def call_api(uri)
+  sleep 1
   https = Net::HTTP.new(uri.host, uri.port)
   https.use_ssl = true
   res = https.start do
@@ -47,7 +48,6 @@ end
 contests = get_contests
 contest_list = []
 contests.each do |contest|
-  # next if contest["id"].include? "bcu"
   contest_list << 
   Contest.new(
     name: contest["id"],

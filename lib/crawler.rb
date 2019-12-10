@@ -100,7 +100,6 @@ module Crawler extend self
           )
         end
       end
-      sleep 1
     end
     History.import! history_list, on_duplicate_key_ignore: true
     @logger.info("end: get_histories")
@@ -131,7 +130,6 @@ module Crawler extend self
           end
         end
       end
-      sleep 1
     end
     Submission.import! submissions_list, on_duplicate_key_ignore: true
     @logger.info("end: get_submissions\n")
@@ -157,7 +155,6 @@ module Crawler extend self
         atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
         info_list << atcoder_user
       end
-      sleep 1
     end
     AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
     @logger.info("end: update_atcoder_user_info\n")
@@ -166,6 +163,7 @@ module Crawler extend self
   private
 
   def call_api(uri)
+    sleep 1
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     https.open_timeout = 5

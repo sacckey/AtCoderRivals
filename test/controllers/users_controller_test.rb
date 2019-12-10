@@ -7,7 +7,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get signup_path
+    get root_path
     assert_response :success
   end
 
@@ -15,31 +15,31 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should redirect show when not logged in" do
     get users_path(@user)
     assert_not flash.empty?
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect edit when not logged in" do
     get edit_user_path(@user)
     assert_not flash.empty?
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect update when not logged in" do
-    patch user_path(@user), params: { user: { atcoder_id: @user.atcoder_id} }
+    patch user_path(@user), params: { user: { atcoder_user_id: @user.atcoder_user_id} }
     assert_not flash.empty?
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect index when not logged in" do
     get users_path
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   test "should redirect destroy when not logged in" do
     assert_no_difference 'User.count' do
       delete user_path(@other_user)
     end
-    assert_redirected_to login_url
+    assert_redirected_to root_url
   end
 
   # 不正なユーザーに対するテスト
@@ -57,7 +57,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect update when logged in as wrong user" do
     log_in_as(@other_user)
-    patch user_path(@user), params: { user: { atcoder_id: @user.atcoder_id} }
+    patch user_path(@user), params: { atcoder_user: { atcoder_id: "chokudai"} }
     assert_redirected_to root_url
   end
 
@@ -65,7 +65,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should not allow the admin attribute to be edited via the web" do
     log_in_as(@other_user)
     assert_not @other_user.admin?
-    patch user_path(@other_user), params: { user: { admin: true } }
+    patch user_path(@other_user), params: { user: { admin: true }, atcoder_user: { atcoder_id: "chokudai"} }
     assert_not @other_user.admin?
   end
 

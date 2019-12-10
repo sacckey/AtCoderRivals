@@ -3,7 +3,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
   def setup
-    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_id: "chokudai")
+    @atcoder_user = atcoder_users(:chokudai)
+    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_user_id: @atcoder_user.id)
   end
 
   test "should be valid" do
@@ -25,8 +26,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "atcoder_id should be present" do
-    @user.atcoder_id = "     "
+  test "atcoder_user_id should be present" do
+    @user.atcoder_user_id = nil
     assert_not @user.valid?
   end
 
@@ -35,12 +36,5 @@ class UserTest < ActiveSupport::TestCase
     duplicate_user.uid = @user.uid.upcase
     @user.save
     assert_not duplicate_user.valid?
-  end
-
-  test "uid should be saved as lower-case" do
-    mixed_case_uid = "ExAMPle"
-    @user.uid = mixed_case_uid
-    @user.save
-    assert_equal mixed_case_uid.downcase, @user.reload.uid
   end
 end

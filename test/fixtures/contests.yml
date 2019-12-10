@@ -1,15 +1,13 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+abc100:
+  name: 'abc100'
+  start_epoch_second: 1529150400
+  duration_second: 6000
+  title: 'AtCoder Beginner Contest 100'
+  rate_change: ' ~ 1199'
 
-one:
-  name: MyString
-  start_epoch_second: 1
-  duration_second: 1
-  title: MyString
-  rate_change: MyString
-
-two:
-  name: MyString
-  start_epoch_second: 1
-  duration_second: 1
-  title: MyString
-  rate_change: MyString
+# two:
+#   name: MyString
+#   start_epoch_second: 1
+#   duration_second: 1
+#   title: MyString
+#   rate_change: MyString

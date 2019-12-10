@@ -67,6 +67,7 @@ class AtcoderUser < ApplicationRecord
     end
 
     def call_api(uri)
+      sleep 1
       @logger = Logger.new(STDOUT)
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true

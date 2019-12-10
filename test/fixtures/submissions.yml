@@ -1,19 +1,37 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   epoch_second: 1
-  problem: one
-  contest: one
-  atcoder_user: one
-  language: MyString
-  point: 1.5
-  result: MyString
+  problem_name: 'abc100_a'
+  contest_name: 'abc100'
+  atcoder_user: 'chokudai'
+  language: 'C#'
+  point: 100.0
+  result: 'WA'
 
 two:
-  epoch_second: 1
-  problem: two
-  contest: two
-  atcoder_user: two
-  language: MyString
-  point: 1.5
-  result: MyString
+  epoch_second: 2
+  problem_name: 'abc100_a'
+  contest_name: 'abc100'
+  atcoder_user: 'tourist'
+  language: 'C++'
+  point: 100.0
+  result: 'AC'
+
+most_recent:
+  epoch_second: 1575190800
+  problem_name: 'abc100_a'
+  contest_name: 'abc100'
+  atcoder_user: 'tourist'
+  language: 'C++'
+  point: 100.0
+  result: 'AC'
+
+<% 5.upto(34) do |n| %>
+submission_<%= n %>:
+  epoch_second: <%=n %>
+  problem_name: 'abc100_a'
+  contest_name: 'abc100'
+  atcoder_user: 'chokudai'
+  language: "C#"
+  point: 100.0
+  result: 'WA'
+<% end %>

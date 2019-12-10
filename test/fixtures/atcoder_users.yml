@@ -1,15 +1,28 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  atcoder_id: MyString
-  accepted_count: 1
+chokudai:
+  atcoder_id: "chokudai"
+  accepted_count: 10
   accepted_count_rank: 1
-  rated_point_sum: 1.5
+  rated_point_sum: 100.0
   rated_point_sum_rank: 1
+  image_url: "https://img.atcoder.jp/icons/6a4376b4c8a89762d6153dc31b711a36.jpg"
+  rating: 3000
 
-two:
-  atcoder_id: MyString
-  accepted_count: 1
-  accepted_count_rank: 1
-  rated_point_sum: 1.5
-  rated_point_sum_rank: 1
+tourist:
+  atcoder_id: "tourist"
+  accepted_count: 5
+  accepted_count_rank: 2
+  rated_point_sum: 50.0
+  rated_point_sum_rank: 2
+  image_url: https://img.atcoder.jp/icons/267f5de4d8768543b1570f07e47b5316.jpg
+  rating: 4000
+
+    #   t.string "atcoder_id"
+    # t.integer "accepted_count"
+    # t.integer "accepted_count_rank"
+    # t.float "rated_point_sum"
+    # t.integer "rated_point_sum_rank"
+    # t.datetime "created_at", null: false
+    # t.datetime "updated_at", null: false
+    # t.string "image_url"
+    # t.integer "rating"
+    # t.string "etag", default: ""

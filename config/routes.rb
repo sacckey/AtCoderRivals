@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   get  '/about',   to: 'static_pages#about'
   get  '/contact', to: 'static_pages#contact'
-  get  '/signup',  to: 'sessions#new'
+  # get  '/signup',  to: 'sessions#new'
   get  '/login_sample',   to: 'sessions#login_as_sample_user'
   delete '/logout',  to: 'sessions#destroy'
   get  '/search',  to: 'atcoder_users#search'

@@ -24,8 +24,9 @@ class ActiveSupport::TestCase
         :uid => user.uid,
         :info =>  {:name => user.user_name, :image => user.image_url}
       })
-      get "/auth/twitter"
+      post "/auth/twitter"
       follow_redirect!
     end
   end
+
 end

@@ -8,11 +8,8 @@ desc "コンテストを取得するタスク"
 task contests: :environment do
   # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
   if Crawler.get_contests
-    sleep 1
     Crawler.get_problems
-    sleep 1
     Crawler.get_histories
-    sleep 1
     Crawler.get_submissions
     Crawler.update_rating
   end
