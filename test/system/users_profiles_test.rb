@@ -21,10 +21,9 @@ class UsersProfilesTest < ApplicationSystemTestCase
     assert_title full_title(@user.user_name)
     assert_selector 'h1', text: @user.user_name
     assert_selector 'section.user_info > a > img'
-    assert_text "WA"
     assert_selector 'div.pagination'
     @user.atcoder_user.submissions.paginate(page: 1).each do |submission|
-      assert_text submission.epoch_second
+      assert_text Time.at(submission.epoch_second)
     end
   end
 end

@@ -1,13 +1,14 @@
-# one:
-#   is_rated: false
-#   place: 1
-#   old_rating: 1
-#   new_rating: 1
-#   performance: 1
-#   inner_performance: 1
-#   contest_screen_name: MyString
-#   contest_name: MyString
-#   end_time: MyString
+chokudai_abc100:
+  is_rated: false
+  place: 1
+  old_rating: 3000
+  new_rating: 3000
+  performance: 3000
+  inner_performance: 3000
+  contest_screen_name: 'abc100'
+  contest_name: 'abc100'
+  end_time: "1000"
+  atcoder_user: chokudai
 
 # two:
 #   is_rated: false

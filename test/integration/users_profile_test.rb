@@ -15,11 +15,14 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select 'h1', text: @user.user_name
     assert_select 'section.user_info > a > img'
     assert_match "AC", response.body
-    assert_match "WA", response.body
-    # assert_select 'div.pagination'
-    # @user.atcoder_user.submissions.paginate(page: 1).each do |submission|
-    # # puts submission.result
-    #   assert_match submission.language, response.body
-    # end
+    assert_select 'div.pagination'
+    @user.atcoder_user.submissions.paginate(page: 1).each do |submission|
+      assert_match Time.at(submission.epoch_second).to_s, response.body
+    end
+
+    @user.atcoder_user.histories.paginate(page: 1).each do |history|
+      assert_match Time.at(history.contest.start_epoch_second).to_s, response.body
+    end
+
   end
 end

@@ -5,7 +5,7 @@ one:
   atcoder_user: 'chokudai'
   language: 'C#'
   point: 100.0
-  result: 'WA'
+  result: 'AC'
 
 two:
   epoch_second: 2
@@ -25,7 +25,7 @@ most_recent:
   point: 100.0
   result: 'AC'
 
-<% 5.upto(34) do |n| %>
+<% 4.upto(33) do |n| %>
 submission_<%= n %>:
   epoch_second: <%=n %>
   problem_name: 'abc100_a'
