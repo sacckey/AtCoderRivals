@@ -21,7 +21,7 @@ class User < ApplicationRecord
     first_login = false
 
     user = self.find_or_initialize_by(provider: provider, uid: uid) {first_login = true}
-    user.update_attributes(
+    user.update_attributes!(
       user_name: user_name,
       image_url: image_url,
       atcoder_user_id: AtcoderUser.find_or_create_atcoder_user(atcoder_id).id,

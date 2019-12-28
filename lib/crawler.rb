@@ -1,6 +1,7 @@
 module Crawler extend self
   @logger = Logger.new(STDOUT)
   # @logger = Logger.new('log/crontab.log')
+  # sampleユーザーのuidカラムに、etagを保存する
   @etag = User.find(1).uid
 
   def get_recent_submissions
