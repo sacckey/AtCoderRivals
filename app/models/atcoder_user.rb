@@ -15,6 +15,12 @@ class AtcoderUser < ApplicationRecord
  
 
   def self.find_or_create_atcoder_user(atcoder_id)
+
+    # 入力されたidに';'か' 'が入っていた場合は、それよりも前の英数字列をidにして検索する
+    if m = /(\w*)[; ]/.match(atcoder_id)
+      atcoder_id = m[1]
+    end
+
     self.find_or_create_by(atcoder_id: atcoder_id) do |atcoder_user|
       if user_info = atcoder_user.get_user_info
         atcoder_user.accepted_count = user_info["accepted_count"]
