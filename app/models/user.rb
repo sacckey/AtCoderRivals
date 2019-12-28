@@ -29,13 +29,6 @@ class User < ApplicationRecord
     )
 
     return user
-
-    # self.find_or_create_by(provider: provider, uid: uid) do |user|
-    #   user.user_name = user_name
-    #   user.image_url = image_url
-    #   user.atcoder_user_id = AtcoderUser.find_or_create_atcoder_user(atcoder_id).id
-    #   user.first_login = true
-    # end
   end
 
 
