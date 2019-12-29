@@ -4,70 +4,73 @@
 @import "font-awesome";
 
 
-/* dark mode
+// dark mode
+
+$color-link: #1d9bd1;
+$color-base: #1a1d21;
+$color-primary: #d2d2d2;
+$color-secondary: #898989;
+
 @media (prefers-color-scheme: dark) {
-  // タブ 
-  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    color: #fff;
-    cursor: default;
-    background-color: rgb(50, 50, 50);
-    border: 1px solid #ddd;
-    border-bottom-color: transparent;
-  }
-
-  // pagination
-  // 押せるボタン
-  .pagination > li > a{
-    background-color:rgb(50, 50, 50);
-    color: rgb(98, 148, 255);
-  }
-
-  // アクティブなボタン
-  .pagination > .active > a{
-    background-color: rgb(98, 148, 255);
-  }
-
-  // 押せないボタン
-  .pagination > .disabled > a{
-    color: #777777;
-    // cursor: not-allowed;
-    background-color:rgb(50, 50, 50);
-    &:hover {
-      background-color:rgb(50, 50, 50);
-    }
-  }
-
   // universal
-  a {
-    color: rgb(98, 148, 255);
-    text-decoration: none;
-  }
+  // a {
+  //   color: $color-link;
+  //   text-decoration: none;
+  // }
   body{
-    background-color:rgb(50, 50, 50);
-    color: #fff;
+    background-color: $color-base;
+    color: $color-primary;
   }
 
-  .content {
-    display: block;
-    table {
-      margin-top: 2px;
-      margin-bottom: 2px;
-      th,td {
-        text-align: center;
-        .icon{
-          float: none;
-          margin: 0;
-        }
-      }
-      td{
-        background-color: rgb(60, 60, 60);
-      }
-    }
-  }
+  // タブ 
+  // .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  //   color: $color-primary;
+  //   cursor: default;
+  //   background-color: $color-base;
+  //   border: 1px solid $color-secondary;
+  //   border-bottom-color: transparent;
+  // }
+
+  // // pagination
+  // // 押せるボタン
+  // .pagination > li > a{
+  //   background-color: $color-base;
+  //   color: $color-link;
+  // }
+
+  // // アクティブなボタン
+  // .pagination > .active > a{
+  //   background-color: $color-link;
+  // }
+
+  // // 押せないボタン
+  // .pagination > .disabled > a{
+  //   color: #777777;
+  //   // cursor: not-allowed;
+  //   background-color: $color-base;
+  //   &:hover {
+  //     background-color: $color-base;
+  //   }
+  // }
+
+  // .content {
+  //   display: block;
+  //   table {
+  //     margin-top: 2px;
+  //     margin-bottom: 2px;
+  //     th,td {
+  //       text-align: center;
+  //       .icon{
+  //         float: none;
+  //         margin: 0;
+  //       }
+  //     }
+  //     td{
+  //       background-color: rgb(60, 60, 60);
+  //     }
+  //   }
+  // }
 }
-*/
-
-
 
 
 /* mixins, variables, etc. */
@@ -576,4 +579,3 @@ $brown: #5c4d42 !default;
     margin-left: 120px;
   }
 }
-
