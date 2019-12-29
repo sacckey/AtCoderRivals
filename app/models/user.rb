@@ -17,10 +17,10 @@ class User < ApplicationRecord
     uid = auth[:uid]
     user_name = auth[:info][:name]
     image_url = auth[:info][:image]
-    atcoder_id = "chokudai"
     first_login = false
 
     user = self.find_or_initialize_by(provider: provider, uid: uid) {first_login = true}
+    atcoder_id = user.atcoder_user.atcoder_id || "chokudai"
     user.update_attributes!(
       user_name: user_name,
       image_url: image_url,
