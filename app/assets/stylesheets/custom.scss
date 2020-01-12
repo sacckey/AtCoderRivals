@@ -3,73 +3,101 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
-
 // dark mode
-
 $color-link: #1d9bd1;
 $color-base: #1a1d21;
+$color-base: #202124;
+$color-base2: #2a2b2e;
 $color-primary: #d2d2d2;
 $color-secondary: #898989;
-
+$color-table: #616161;
 @media (prefers-color-scheme: dark) {
-  // universal
-  // a {
-  //   color: $color-link;
-  //   text-decoration: none;
+  // .rate_blue{
+  //   color: lighten(blue, 12%);
   // }
+
+  // universal
+  a {
+    color: $color-link;
+  }
   body{
     background-color: $color-base;
     color: $color-primary;
   }
 
-  // タブ 
-  // .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-  //   color: $color-primary;
-  //   cursor: default;
-  //   background-color: $color-base;
-  //   border: 1px solid $color-secondary;
-  //   border-bottom-color: transparent;
-  // }
+  // header
+  .navbar {
+    background-color: $color-base2;
+    a#logo{
+      color: $color-primary;
+    }
+  }
+  .navbar-inverse .navbar-nav > li > a {
+    color: $color-secondary;
+  }
 
-  // // pagination
-  // // 押せるボタン
-  // .pagination > li > a{
-  //   background-color: $color-base;
-  //   color: $color-link;
-  // }
+  // paginationタブ 
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: $color-primary;
+    background-color: $color-base;
+    border: 1px solid $color-secondary;
+    border-bottom-color: transparent;
+  }
+  // 押せるボタン
+  .pagination > li > a{
+    background-color: $color-base;
+    color: $color-link;
+  }
+  // 押せないボタン
+  .pagination > .disabled > a{
+    color: $color-secondary;
+    background-color: $color-base;
+    &:hover {
+      background-color: $color-base;
+    }
+  }
+  // アクティブなボタン
+  .pagination > .active > a{
+    background-color: $color-link;
+  }
 
-  // // アクティブなボタン
-  // .pagination > .active > a{
-  //   background-color: $color-link;
-  // }
+  // table
+  .content {
+    table {
+      th {
+        background-color: $color-base2;
+      }
+      td{
+        background-color: $color-base;
+      }
+    }
+  }
+}
 
-  // // 押せないボタン
-  // .pagination > .disabled > a{
-  //   color: #777777;
-  //   // cursor: not-allowed;
-  //   background-color: $color-base;
-  //   &:hover {
-  //     background-color: $color-base;
-  //   }
-  // }
-
-  // .content {
-  //   display: block;
-  //   table {
-  //     margin-top: 2px;
-  //     margin-bottom: 2px;
-  //     th,td {
-  //       text-align: center;
-  //       .icon{
-  //         float: none;
-  //         margin: 0;
-  //       }
-  //     }
-  //     td{
-  //       background-color: rgb(60, 60, 60);
-  //     }
-  //   }
-  // }
+/* rate_color */
+.rate_gray{
+  color: gray;
+}
+.rate_brown{
+  color: #804000;
+}
+.rate_green{
+  color: green;
+}
+.rate_cyan{
+  color: #00C0C0;
+}
+.rate_blue{
+  color: blue;
+}
+.rate_yellow{
+  color: #C0C000;
+}
+.rate_orange{
+  color: #FF8000;
+}
+.rate_red{
+  color: red;
 }
 
 
@@ -136,8 +164,6 @@ h4 {
   padding-bottom: 5px;
   border-bottom: 1px solid $gray-medium-light;
 }
-
-
 
 p {
   font-size: 1.1em;
@@ -299,36 +325,6 @@ a.atcoder_id{
   margin-top: 30px;
   margin-bottom: 50px;
 }
-
-/* rate_color */
-.rate_gray{
-  color: gray;
-}
-.rate_brown{
-  color: #804000;
-}
-.rate_green{
-  color: green;
-}
-.rate_cyan{
-  color: #00C0C0;
-}
-.rate_blue{
-  color: blue;
-}
-.rate_yellow{
-  color: #C0C000;
-}
-.rate_orange{
-  color: #FF8000;
-}
-.rate_red{
-  color: red;
-}
-
-
-
-
 
 /* forms */
 
