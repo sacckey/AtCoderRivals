@@ -166,6 +166,8 @@ module Crawler extend self
 
   def update_rating
     AtcoderUser.find_each do |atcoder_user|
+      next if atcoder_user.histories.size == 0
+      new_rating = atcoder_user.histories.reorder(end_time: :desc).first.new_rating
       atcoder_user.update_attribute(:rating, atcoder_user.histories.reorder(end_time: :desc).first.new_rating)
     end
   end
