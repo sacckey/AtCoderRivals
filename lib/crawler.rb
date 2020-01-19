@@ -108,36 +108,14 @@ module Crawler extend self
 
   def get_submissions
     @logger.info("start: get_submissions")
-    submissions_list = []
     AtcoderUser.find_each do |atcoder_user|
-      uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
-      @etag = atcoder_user.etag
-      submissions = call_api(uri)
-      atcoder_user.update_attribute(:etag, @etag)
-      
-      if submissions
-        submissions.each do |submission|
-          if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
-            submissions_list <<
-            atcoder_user.submissions.build(
-              number: submission["id"],
-              epoch_second: submission["epoch_second"],
-              problem_name: submission["problem_id"],
-              contest_name: submission["contest_id"],
-              language: submission["language"],
-              point: submission["point"],
-              result: submission["result"]
-            )
-          end
-        end
-      end
+      get_user_submissions(atcoder_user)
     end
-    Submission.import! submissions_list, on_duplicate_key_ignore: true
     @logger.info("end: get_submissions\n")
   end
 
   def get_user_submissions(atcoder_user)
-    @logger.info("start: get_submissions")
+    @logger.info("start: get #{atcoder_user.atcoder_id}'s submissions")
     submissions_list = []
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
     @etag = atcoder_user.etag
@@ -161,7 +139,7 @@ module Crawler extend self
       end
     end
     Submission.import! submissions_list, on_duplicate_key_ignore: true
-    @logger.info("end: get_submissions\n")
+    @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions\n")
   end
 
   def update_rating
