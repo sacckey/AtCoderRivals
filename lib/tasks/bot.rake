@@ -11,7 +11,6 @@ namespace :bot do
     if Crawler.get_contests
       Crawler.get_problems
       Crawler.get_histories
-      Crawler.get_submissions
       Crawler.update_rating
     end
   end
