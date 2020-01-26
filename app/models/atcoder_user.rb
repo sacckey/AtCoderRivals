@@ -40,13 +40,18 @@ class AtcoderUser < ApplicationRecord
   def set_image_url_and_rating
     uri = "https://atcoder.jp/users/#{atcoder_id}"
     charset = nil
-    html = open(uri) do |h|
-      charset = h.charset
-      h.read
+    begin
+      html = open(uri) do |h|
+        charset = h.charset
+        h.read
+      end
+      doc = Nokogiri::HTML.parse(html, nil, charset)
+      self.image_url = doc.at_css('.avatar').attribute('src').value
+      self.rating = doc.css('#main-container > div.row > div.col-sm-9 > table.dl-table > tr:nth-child(2) > td > span').children.text.to_i
+    rescue => e
+      self.image_url = "//img.atcoder.jp/assets/icon/avatar.png"
+      self.rating = 0
     end
-    doc = Nokogiri::HTML.parse(html, nil, charset)
-    self.image_url = doc.at_css('.avatar').attribute('src').value
-    self.rating = doc.css('#main-container > div.row > div.col-sm-9 > table.dl-table > tr:nth-child(2) > td > span').children.text.to_i
   end
 
   def get_history
