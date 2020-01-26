@@ -69,6 +69,21 @@ class AtcoderUser < ApplicationRecord
     results = call_api(uri)
   end
 
+  def get_point_count
+    hash = Submission.where("atcoder_user_id=:atcoder_user_id AND result = 'AC'", atcoder_user_id: id).select(:problem_name).distinct.joins("INNER JOIN problems ON submissions.problem_name = problems.name").group("problems.point").count
+    point_sum = 0
+    point_count ={}
+    hash.keys.each do |key|
+      if key
+        v = hash[key]
+        point_count[key.to_i] = v
+        point_sum+=key.to_i*v
+      end
+    end
+    point_count["sum"] = point_sum
+    return point_count
+  end
+
   private
 
     def atcoder_id_exist

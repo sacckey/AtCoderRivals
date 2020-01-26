@@ -71,6 +71,11 @@ class User < ApplicationRecord
       fol_ids: fol_ids, user_id: id, contest_name: contest.name, atcoder_user_id: atcoder_user_id)
   end
 
+  def atcoder_users
+    fol_ids = get_fol_ids
+    AtcoderUser.where("id IN (:fol_ids) OR id = :atcoder_user_id", fol_ids: fol_ids, atcoder_user_id: atcoder_user_id)
+  end
+
   private
     
 end

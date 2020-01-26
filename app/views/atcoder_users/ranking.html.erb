@@ -1,0 +1,53 @@
+<% provide(:title, 'Ranking') %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <%= render 'shared/user_info' %>
+    </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
+    </section>
+  </aside>
+
+  <% points = Problem.get_points %>
+  <div class="col-md-8">
+    <h3>Ranking</h3>
+      <span class="content">
+          <table class="table table-striped table-bordered ">
+            <thead>
+                <tr>
+                  <th>#</th>
+                  <th>name</th>
+                  <% points.keys.each do |point| %>
+                    <th><%= point %></th>
+                  <%end%>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>total</th>
+                  <% points.values.each do |point| %>
+                    <th><%= point %></th>
+                  <%end%>
+                </tr>
+            </thead>
+            <tbody>
+            <% @atcoder_users.each do |atcoder_user| %>
+              <% point_count = atcoder_user.get_point_count %>
+              <tr>
+                  <td><%= link_to show_icon(atcoder_user, size: 20), atcoder_user_url(atcoder_user.atcoder_id) %></td>
+                  <td><%= link_to atcoder_user.atcoder_id, atcoder_user_url(atcoder_user.atcoder_id), class: "#{color(atcoder_user.rating)}" %></td>
+                  <% points.keys.each do |point| %>
+                    <% if count = point_count[point] %>
+                      <td><%= count %></td>
+                    <% else %>
+                      <td>0</td>
+                    <% end %>
+                  <%end%>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+      </span>
+
+  </div>
+</div>

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get  '/login_sample',   to: 'sessions#login_as_sample_user'
   delete '/logout',  to: 'sessions#destroy'
   get  '/search',  to: 'atcoder_users#search'
+  get  '/ranking',  to: 'atcoder_users#ranking'
   # get  '/help',    to: 'static_pages#help'
   # get  '/login',   to: 'sessions#new'
   # post '/login',   to: 'sessions#create'

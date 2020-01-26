@@ -8,4 +8,9 @@ class AtcoderUsersController < ApplicationController
       @atcoder_user = AtcoderUser.new
     end
   end
+
+  def ranking
+    @user = current_user
+    @atcoder_users = @user.atcoder_users
+  end
 end
