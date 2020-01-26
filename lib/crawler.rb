@@ -60,7 +60,7 @@ module Crawler extend self
 
   def get_problems
     @logger.info("start: get_problems")
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/merged-problems.json")
     problems = call_api(uri)
     
     problem_list = []
@@ -70,7 +70,8 @@ module Crawler extend self
         Problem.new(
           name:  problem["id"],
           title: problem["title"],
-          contest_name:  problem["contest_id"]
+          contest_name:  problem["contest_id"],
+          point: problem["point"]
         )
       end
       Problem.import! problem_list, on_duplicate_key_ignore: true
@@ -124,7 +125,7 @@ module Crawler extend self
     
     if submissions
       submissions.each do |submission|
-        if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
+        if submission["result"] !~ /WJ|WR|\d.*/
           submissions_list <<
           atcoder_user.submissions.build(
             number: submission["id"],

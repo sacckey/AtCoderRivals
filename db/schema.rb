@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_04_003706) do
+ActiveRecord::Schema.define(version: 2020_01_25_120129) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id"
@@ -67,8 +67,9 @@ ActiveRecord::Schema.define(version: 2019_11_04_003706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "contest_name"
-    t.index ["name"], name: "index_problems_on_contest_id_and_name"
+    t.float "point"
     t.index ["name"], name: "index_problems_on_name", unique: true
+    t.index ["point"], name: "index_problems_on_point"
   end
 
   create_table "relationships", force: :cascade do |t|
