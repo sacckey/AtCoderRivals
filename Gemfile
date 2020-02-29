@@ -9,7 +9,7 @@ gem "mini_magick",             ">= 4.9.4"
 gem 'will_paginate',           '3.1.7'
 gem 'bootstrap-will_paginate', '1.0.0'
 gem "bootstrap-sass",          ">= 3.4.1"
-gem 'puma',                    '3.12.2'
+gem 'puma',                    '3.12.3'
 gem 'sass-rails',              '5.0.6'
 gem 'uglifier',                '3.2.0'
 gem 'coffee-rails',            '4.2.2'
