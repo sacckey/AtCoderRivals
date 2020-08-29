@@ -20,8 +20,8 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_template 'users/edit'
     atcoder_id = "tourist"
     patch user_path(@user), params: { atcoder_user: { atcoder_id: atcoder_id} }
-    assert_not flash.empty?
     assert_redirected_to @user
+    assert_not flash.empty?
     @user.reload
     assert_equal atcoder_id,  @user.atcoder_user.atcoder_id
   end

@@ -40,9 +40,14 @@ class AtcoderUser < ApplicationRecord
   def set_image_url_and_rating
     uri = "https://atcoder.jp/users/#{atcoder_id}"
     charset = nil
-    html = open(uri) do |h|
-      charset = h.charset
-      h.read
+    begin
+      html = open(uri) do |h|
+        charset = h.charset
+        h.read
+      end
+    rescue OpenURI::HTTPError => e
+      @logger.error(e.message)
+      return
     end
     doc = Nokogiri::HTML.parse(html, nil, charset)
     self.image_url = doc.at_css('.avatar').attribute('src').value
