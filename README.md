@@ -4,7 +4,7 @@
 
 ## How to use
 ```
-$ git clone https://github.com/sackey24/AtCoderRivals.git
+$ git clone https://github.com/sacckey/AtCoderRivals.git
 $ cd AtCoderRivals
 $ bundle install --without production
 $ rails db:migrate
