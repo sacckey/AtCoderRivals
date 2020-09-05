@@ -8,28 +8,33 @@ module Crawler extend self
     @logger.info("start: get_recent_submissions")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{Time.now.to_i-3600}")
     submissions = call_api(uri)
-    
-    submissions_list = []
-    if submissions
-      submissions.each do |submission|
-        if atcoder_user = AtcoderUser.find_by(atcoder_id: submission["user_id"])
-          if submission["result"] !~ /WJ|WR|\d.*/
-            submissions_list << 
-              atcoder_user.submissions.build(
-                number: submission["id"],
-                epoch_second: submission["epoch_second"],
-                problem_name: submission["problem_id"],
-                contest_name: submission["contest_id"],
-                language: submission["language"],
-                point: submission["point"],
-                result: submission["result"]
-              )
-          end
-        end
-      end
-      # Submission.import! submissions_list, on_duplicate_key_ignore: true
-      Submission.import! submissions_list, on_duplicate_key_update: {conflict_target: [:number], columns: [:language]}
+    if submissions.blank?
+      @logger.info("end: get_recent_submissions\n")
+      return
     end
+    
+    submission_list = []
+    submissions.each do |submission|
+      next if submission["result"] =~ /WJ|WR|\d.*/
+      next if Submission.find_by(number: submission["id"])
+
+      atcoder_user = AtcoderUser.find_by(atcoder_id: submission["user_id"])
+      next if atcoder_user.nil?
+
+      submission_list << 
+        {
+          atcoder_user_id: atcoder_user.id,
+          number: submission["id"],
+          epoch_second: submission["epoch_second"],
+          problem_name: submission["problem_id"],
+          contest_name: submission["contest_id"],
+          language: submission["language"],
+          point: submission["point"],
+          result: submission["result"]
+        }
+    end
+
+    Submission.import! submission_list
     @logger.info("end: get_recent_submissions\n")
   end
 
@@ -40,43 +45,50 @@ module Crawler extend self
     # TODO: redisに保存するように変更する
     User.find(1).update_attribute(:uid, @etag)
 
+    if contests.blank?
+      @logger.info("end: get_contests")
+      return
+    end
+
     contest_list = []
-    if contests
-      contests.each do |contest|
-        contest_list << 
-        Contest.new(
+    contests.each do |contest|
+      next if Contest.find_by(name: contest["id"])
+
+      contest_list << 
+        {
           name: contest["id"],
           start_epoch_second: contest["start_epoch_second"],
           duration_second: contest["duration_second"],
           title: contest["title"],
           rate_change: contest["rate_change"]
-        )
-      end
-      Contest.import! contest_list, on_duplicate_key_ignore: true
-      @logger.info("end: get_contests")
-    else
-      @logger.info("end: get_contests\n")
-      nil
+        }
     end
+    Contest.import! contest_list
+    @logger.info("end: get_contests")
   end
 
   def get_problems
     @logger.info("start: get_problems")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
     problems = call_api(uri)
+
+    if problems.blank?
+      @logger.info("end: get_problems")
+      return
+    end
     
     problem_list = []
-    if problems
-      problems.each do |problem|
-        problem_list << 
-        Problem.new(
-          name:  problem["id"],
-          title: problem["title"],
-          contest_name:  problem["contest_id"]
-        )
-      end
-      Problem.import! problem_list, on_duplicate_key_ignore: true
+    problems.each do |problem|
+      next if Problem.find_by(name: problem["id"])
+
+      problem_list << 
+      {
+        name:  problem["id"],
+        title: problem["title"],
+        contest_name:  problem["contest_id"]
+      }
     end
+    Problem.import! problem_list
     @logger.info("end: get_problems")
   end
 
@@ -86,25 +98,28 @@ module Crawler extend self
     AtcoderUser.find_each do |atcoder_user|
       uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
       history = call_api(uri)
+
+      next if history.blank?
       
-      if history
-        history.each do |res|
-          history_list << 
-          atcoder_user.histories.build(
-            is_rated: res["IsRated"],
-            place: res["Place"],
-            old_rating: res["OldRating"],
-            new_rating: res["NewRating"],
-            performance: res["Performance"],
-            inner_performance: res["InnerPerformance"],
-            contest_screen_name: res["ContestScreenName"],
-            end_time: res["EndTime"],
-            contest_name: res["ContestScreenName"][/(.*?)\./,1]
-          )
-        end
+      history.each do |res|
+        next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: res["ContestScreenName"][/(.*?)\./,1])
+
+        history_list << 
+        {
+          atcoder_user_id: atcoder_user.id,
+          is_rated: res["IsRated"],
+          place: res["Place"],
+          old_rating: res["OldRating"],
+          new_rating: res["NewRating"],
+          performance: res["Performance"],
+          inner_performance: res["InnerPerformance"],
+          contest_screen_name: res["ContestScreenName"],
+          end_time: res["EndTime"],
+          contest_name: res["ContestScreenName"][/(.*?)\./,1]
+        }
       end
     end
-    History.import! history_list, on_duplicate_key_ignore: true
+    History.import! history_list
     @logger.info("end: get_histories")
   end
 
@@ -118,37 +133,42 @@ module Crawler extend self
 
   def get_user_submissions(atcoder_user)
     @logger.info("start: get #{atcoder_user.atcoder_id}'s submissions")
-    submissions_list = []
+    submission_list = []
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
     @etag = atcoder_user.etag
     submissions = call_api(uri)
     atcoder_user.update_attribute(:etag, @etag)
-    
-    if submissions
-      submissions.each do |submission|
-        if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
-          submissions_list <<
-          atcoder_user.submissions.build(
-            number: submission["id"],
-            epoch_second: submission["epoch_second"],
-            problem_name: submission["problem_id"],
-            contest_name: submission["contest_id"],
-            language: submission["language"],
-            point: submission["point"],
-            result: submission["result"]
-          )
-        end
-      end
+
+    if submissions.blank?
+      @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
+      return
     end
-    Submission.import! submissions_list, on_duplicate_key_ignore: true
-    @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions\n")
+    
+    submissions.each do |submission|
+      next if submission["epoch_second"] < 1569855600 || submission["result"] =~ /WJ|WR|\d.*/
+      next if Submission.find_by(number: submission["id"])
+
+      submission_list <<
+      {
+        atcoder_user_id: atcoder_user.id,
+        number: submission["id"],
+        epoch_second: submission["epoch_second"],
+        problem_name: submission["problem_id"],
+        contest_name: submission["contest_id"],
+        language: submission["language"],
+        point: submission["point"],
+        result: submission["result"]
+      }
+    end
+    Submission.import! submission_list
+    @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
   end
 
   def update_rating
     AtcoderUser.find_each do |atcoder_user|
-      next if atcoder_user.histories.size == 0
+      next if atcoder_user.histories.blank?
       new_rating = atcoder_user.histories.reorder(end_time: :desc).first.new_rating
-      atcoder_user.update_attribute(:rating, atcoder_user.histories.reorder(end_time: :desc).first.new_rating)
+      atcoder_user.update_attribute(:rating, new_rating)
     end
   end
 
@@ -159,16 +179,18 @@ module Crawler extend self
       uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
       # @etag = atcoder_user.etag
       @etag = ""
-      if info = call_api(uri)
-        atcoder_user.accepted_count = info["accepted_count"]
-        atcoder_user.accepted_count_rank = info["accepted_count_rank"]
-        atcoder_user.rated_point_sum = info["rated_point_sum"]
-        atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
-        info_list << atcoder_user
-      end
+      info = call_api(uri)
+
+      next if info.blank?
+
+      atcoder_user.accepted_count = info["accepted_count"]
+      atcoder_user.accepted_count_rank = info["accepted_count_rank"]
+      atcoder_user.rated_point_sum = info["rated_point_sum"]
+      atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
+      info_list << atcoder_user
     end
     AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
-    @logger.info("end: update_atcoder_user_info\n")
+    @logger.info("end: update_atcoder_user_info")
   end
 
   private
