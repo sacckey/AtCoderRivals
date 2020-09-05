@@ -27,7 +27,8 @@ module Crawler extend self
           end
         end
       end
-      Submission.import! submissions_list, on_duplicate_key_ignore: true
+      # Submission.import! submissions_list, on_duplicate_key_ignore: true
+      Submission.import! submissions_list, on_duplicate_key_update: {conflict_target: [:number], columns: [:language]}
     end
     @logger.info("end: get_recent_submissions\n")
   end
@@ -36,6 +37,7 @@ module Crawler extend self
     @logger.info("start: get_contests")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
     contests = call_api(uri)
+    # TODO: redisに保存するように変更する
     User.find(1).update_attribute(:uid, @etag)
 
     contest_list = []
