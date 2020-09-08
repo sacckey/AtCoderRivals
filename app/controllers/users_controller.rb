@@ -19,12 +19,22 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     atcoder_id = params["atcoder_user"]["atcoder_id"]
-    @atcoder_user = AtcoderUser.find_or_create_atcoder_user(atcoder_id)
+    # 入力されたidに';'か' 'が入っていた場合は、それよりも前の英数字列をidにして検索する
+    if m = /(\w*)[; ]/.match(atcoder_id)
+      atcoder_id = m[1]
+    end
+    @atcoder_user = AtcoderUser.find_or_initialize_by(atcoder_id: atcoder_id)
+    @atcoder_user.set_info if is_new_user = @atcoder_user.new_record?
 
     if @atcoder_user.valid?
-      History.create_history(@atcoder_user)
-      Submission.create_submissions(@atcoder_user)
-      @user.update_attributes!(atcoder_user_id: @atcoder_user.id)
+      if is_new_user
+        # TODO: sidekiqに積む
+        api_client = APIClient.new
+        api_client.get_user_history(@atcoder_user)
+        api_client.get_user_submissions(@atcoder_user)
+      end
+
+      @user.update!(atcoder_user: @atcoder_user)
       flash[:success] = "Profile updated"
       redirect_to @user
     else

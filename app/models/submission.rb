@@ -12,28 +12,6 @@ class Submission < ApplicationRecord
   validates :point, presence: true
   validates :result, presence: true
 
+  # TODO: 消す
   default_scope -> { order(epoch_second: :desc) }
-
-  def self.create_submissions(atcoder_user)
-    if atcoder_user.submissions.empty?
-      submissions = atcoder_user.get_submissions
-      submissions_list = []
-      submissions.each do |submission|
-        # 2019/10/01 00:00:00 以降の提出を保存
-        if submission["epoch_second"] >= 1569855600 && submission["result"] !~ /WJ|WR|\d.*/
-          submissions_list << 
-          atcoder_user.submissions.build(
-            number: submission["id"],
-            epoch_second: submission["epoch_second"],
-            problem_name: submission["problem_id"],
-            contest_name: submission["contest_id"],
-            language: submission["language"],
-            point: submission["point"],
-            result: submission["result"]
-          )
-        end
-      end
-      Submission.import! submissions_list
-    end
-  end
 end

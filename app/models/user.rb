@@ -20,15 +20,11 @@ class User < ApplicationRecord
     first_login = false
 
     user = self.find_or_initialize_by(provider: provider, uid: uid) {first_login = true}
-    if user.atcoder_user
-      atcoder_id = user.atcoder_user.atcoder_id
-    else
-      atcoder_id = "chokudai"
-    end
-    user.update_attributes!(
+    atcoder_user = user.atcoder_user || AtcoderUser.find_by(atcoder_id: 'chokudai')
+    user.update!(
       user_name: user_name,
       image_url: image_url,
-      atcoder_user_id: AtcoderUser.find_or_create_atcoder_user(atcoder_id).id,
+      atcoder_user: atcoder_user,
       first_login: first_login
     )
 
