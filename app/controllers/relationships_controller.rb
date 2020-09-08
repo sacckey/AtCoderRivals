@@ -5,9 +5,6 @@ class RelationshipsController < ApplicationController
     @atcoder_user = AtcoderUser.find(params[:followed_id])
     current_user.follow(@atcoder_user)
 
-    History.create_history(@atcoder_user)
-    Submission.create_submissions(@atcoder_user)
-
     respond_to do |format|
       format.html { redirect_to '/search' }
       format.js

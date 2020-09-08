@@ -1,4 +1,4 @@
-<% if @atcoder_user.errors.any? %>
+<% if @atcoder_user && @atcoder_user.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
     <% errors =  @atcoder_user.errors.full_messages.select {|error| error.include?("Atcoder")} %>

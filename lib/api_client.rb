@@ -1,8 +1,11 @@
-module Crawler extend self
-  @logger = Logger.new(STDOUT)
-  # @logger = Logger.new('log/crontab.log')
-  # sampleユーザーのuidカラムに、etagを保存する
-  @etag = User.find(1).uid
+class APIClient
+  def initialize
+    @logger = Logger.new(STDOUT)
+    # @logger = Logger.new('log/crontab.log')
+    # sampleユーザーのuidカラムに、etagを保存する
+    # TODO: redisに保存するように変更する
+    @etag = User.find_by_id(1)&.uid || ""
+  end
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
@@ -123,6 +126,35 @@ module Crawler extend self
     @logger.info("end: get_histories")
   end
 
+  def get_user_history(atcoder_user)
+    @logger.info("start: get #{atcoder_user.atcoder_id}'s history")
+    history_list = []
+    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
+    history = call_api(uri)
+
+    return if history.blank?
+    
+    history.each do |res|
+      next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: res["ContestScreenName"][/(.*?)\./,1])
+
+      history_list << 
+      {
+        atcoder_user_id: atcoder_user.id,
+        is_rated: res["IsRated"],
+        place: res["Place"],
+        old_rating: res["OldRating"],
+        new_rating: res["NewRating"],
+        performance: res["Performance"],
+        inner_performance: res["InnerPerformance"],
+        contest_screen_name: res["ContestScreenName"],
+        end_time: res["EndTime"],
+        contest_name: res["ContestScreenName"][/(.*?)\./,1]
+      }
+    end
+    History.import! history_list
+    @logger.info("end: get #{atcoder_user.atcoder_id}'s history")
+  end
+
   def get_submissions
     @logger.info("start: get_submissions")
     AtcoderUser.find_each do |atcoder_user|
@@ -193,7 +225,27 @@ module Crawler extend self
     @logger.info("end: update_atcoder_user_info")
   end
 
-  private
+  def get_atcoder_user_info(atcoder_user)
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
+    # @etag = atcoder_user.etag
+    @etag = ""
+    user_info = call_api(uri)
+
+    return if user_info.blank?
+
+    atcoder_user.accepted_count = user_info["accepted_count"]
+    atcoder_user.accepted_count_rank = user_info["accepted_count_rank"]
+    atcoder_user.rated_point_sum = user_info["rated_point_sum"]
+    atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
+    atcoder_user.save!
+  end
+
+  def get_contest_result(contest)
+    uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.name}/results/json")
+    results = call_api(uri)
+  end
+
+  # private
 
   def call_api(uri)
     sleep 1
@@ -211,7 +263,8 @@ module Crawler extend self
       when Net::HTTPSuccess
         @logger.info("get: #{uri}")
         @etag = res["Etag"]
-        return JSON.parse(res.body)
+        return JSON.parse(res.body) if res.sub_type == 'json'
+        return res.body
       when Net::HTTPRedirection
         @logger.info("cached: #{uri}")
       else

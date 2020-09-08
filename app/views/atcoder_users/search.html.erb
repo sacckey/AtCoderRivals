@@ -18,7 +18,7 @@
     <% end %>
 
     <ul class="users follow">
-      <% if @atcoder_user.valid? %>
+      <% if @atcoder_user&.valid? %>
         <%= render @atcoder_user %>
       <% end %>
     </ul>
