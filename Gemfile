@@ -50,8 +50,11 @@ group :test do
   gem 'guard-minitest'
 end
 
-group :production do
+group :production, :test do
   gem 'pg'
+end
+
+group :production do
   gem 'fog'
 end
 
