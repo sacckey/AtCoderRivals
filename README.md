@@ -1,5 +1,5 @@
 # AtCoder Rivals
-![Ruby](https://github.com/sacckey/AtCoderRivals/actions?query=workflow%3ARuby)
+[![Ruby](https://github.com/sacckey/AtCoderRivals/workflows/Ruby/badge.svg)](https://github.com/sacckey/AtCoderRivals/actions?query=workflow%3ARuby)
 
 <a href="https://atcoder.jp/" target="_break"> AtCoder</a>のコンテストでのパフォーマンスやレート遷移、日々の精進などをライバルたちと比較し、モチベーション向上に繋げるためのアプリです。<br>
 フォローしたユーザーの最近の提出とコンテスト成績を見ることができます。
