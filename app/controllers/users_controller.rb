@@ -23,17 +23,9 @@ class UsersController < ApplicationController
     if m = /(\w*)[; ]/.match(atcoder_id)
       atcoder_id = m[1]
     end
-    @atcoder_user = AtcoderUser.find_or_initialize_by(atcoder_id: atcoder_id)
-    @atcoder_user.set_info if is_new_user = @atcoder_user.new_record?
+    @atcoder_user = AtcoderUser.find_or_create_by(atcoder_id: atcoder_id)
 
     if @atcoder_user.valid?
-      if is_new_user
-        # TODO: sidekiqに積む
-        api_client = APIClient.new
-        api_client.get_user_history(@atcoder_user)
-        api_client.get_user_submissions(@atcoder_user)
-      end
-
       @user.update!(atcoder_user: @atcoder_user)
       flash[:success] = "Profile updated"
       redirect_to @user

@@ -225,7 +225,7 @@ class APIClient
     @logger.info("end: update_atcoder_user_info")
   end
 
-  def get_atcoder_user_info(atcoder_user)
+  def set_atcoder_user_info(atcoder_user)
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
     # @etag = atcoder_user.etag
     @etag = ""
@@ -237,7 +237,7 @@ class APIClient
     atcoder_user.accepted_count_rank = user_info["accepted_count_rank"]
     atcoder_user.rated_point_sum = user_info["rated_point_sum"]
     atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
-    atcoder_user.save!
+    # atcoder_user.save!
   end
 
   def get_contest_result(contest)

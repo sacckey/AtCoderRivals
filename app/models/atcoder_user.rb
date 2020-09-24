@@ -4,30 +4,33 @@ class AtcoderUser < ApplicationRecord
   has_many :submissions, dependent: :destroy
 
   validates :atcoder_id, presence: { message: "ID does not exist." }
-  validates :accepted_count, presence: true
-  validates :accepted_count_rank, presence: true
-  validates :rated_point_sum, presence: true
-  validates :rated_point_sum_rank, presence: true
-  validates :image_url, presence: true
-  validates :rating, presence: true
+
+  after_initialize :set_info, if: :new_record?
+  after_create :get_history_and_submissions
 
   def set_info
-    if set_image_url_and_rating
-      APIClient.new.get_atcoder_user_info(self)
-    else
-      self.atcoder_id = nil
-    end
+    @api_client = APIClient.new
+    return unless set_image_url_and_rating
+
+    @api_client.set_atcoder_user_info(self)
   end
 
   def set_image_url_and_rating
     uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
-    html = APIClient.new.call_api(uri)
-    return if html.blank?
+    html = @api_client.call_api(uri)
+    return self.atcoder_id = nil if html.blank?
 
     doc = Nokogiri::HTML.parse(html)
     self.image_url = doc.at_css('.avatar').attribute('src').value
     # TODO: ragingはここではなくhistoryの情報から取得するようにする(default: 0にする)
     self.rating = doc.css("#main-container > div.row > div.col-md-9.col-sm-12 > table > tr:nth-child(2) > td > span").children.text.to_i
+  end
+
+  def get_history_and_submissions
+    @api_client ||= APIClient.new
+    # TODO: sidekiqに積む
+    @api_client.get_user_history(self)
+    @api_client.get_user_submissions(self)
   end
 
   private
