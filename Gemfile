@@ -27,6 +27,7 @@ gem 'activerecord-import'
 gem 'whenever'
 gem 'font-awesome-sass'
 gem "omniauth-rails_csrf_protection"
+gem "sidekiq"
 
 group :development, :test do
   gem 'sqlite3'

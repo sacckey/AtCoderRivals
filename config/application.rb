@@ -19,9 +19,10 @@ module AtCoderRivals
     # JavaScriptが無効になっていた場合でも動作するように
     config.action_view.embed_authenticity_token_in_remote_forms = true
 
-    # libディレクトリを読み込む 下は非推奨の書き方
+    # libディレクトリを読み込む
     config.paths.add 'lib', eager_load: true
-    # config.autoload_paths += %W(#{config.root}/lib)
-    # config.enable_dependency_loading = true
+
+    # ActiveJobのアダプターにsidekiqを使用する
+    config.active_job.queue_adapter = :sidekiq
   end
 end

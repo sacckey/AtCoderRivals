@@ -1,5 +1,5 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :twitter, ENV['APP_ID'], ENV['APP_SECRET']
+  provider :twitter, ENV.fetch('TWITTER_API_KEY'), ENV.fetch('TWITTER_API_SECRET_KEY')
 end
 
 OmniAuth.config.on_failure = Proc.new { |env|
