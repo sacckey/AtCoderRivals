@@ -27,10 +27,7 @@ class AtcoderUser < ApplicationRecord
   end
 
   def get_history_and_submissions
-    @api_client ||= APIClient.new
-    # TODO: sidekiqに積む
-    @api_client.get_user_history(self)
-    @api_client.get_user_submissions(self)
+    FetchHistoryAndSubmissionsJob.perform_later(self)
   end
 
   private
