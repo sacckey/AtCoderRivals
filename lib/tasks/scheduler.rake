@@ -10,7 +10,9 @@ task contests: :environment do
   # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
   if api_client.get_contests
     api_client.get_problems
-    api_client.get_histories
+
+    contest = Contest.last
+    api_client.fetch_contest_result(contest)
     api_client.update_rating
   end
 end

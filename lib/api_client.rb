@@ -240,9 +240,30 @@ class APIClient
     # atcoder_user.save!
   end
 
-  def get_contest_result(contest)
+  def fetch_contest_result(contest)
     uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.name}/results/json")
     results = call_api(uri)
+    history_list = []
+    results.each do |result|
+      next unless atcoder_user = AtcoderUser.find_by(atcoder_id: result["UserScreenName"])
+      next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: contest.name)
+
+      history_list << 
+      {
+        atcoder_user_id: atcoder_user.id,
+        is_rated: result["IsRated"],
+        place: result["Place"],
+        old_rating: result["OldRating"],
+        new_rating: result["NewRating"],
+        performance: result["Performance"],
+        inner_performance: result["Performance"],
+        contest_screen_name: result["ContestScreenName"],
+        end_time: result["EndTime"],
+        contest_name: contest.name
+      }
+    end
+
+    History.import! history_list
   end
 
   def fetch_accepted_count
