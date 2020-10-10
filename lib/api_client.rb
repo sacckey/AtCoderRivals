@@ -169,7 +169,7 @@ class APIClient
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
     @etag = atcoder_user.etag
     submissions = call_api(uri)
-    atcoder_user.update_attribute(:etag, @etag)
+    atcoder_user.update(etag: @etag)
 
     if submissions.blank?
       @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
@@ -204,27 +204,29 @@ class APIClient
     end
   end
 
-  def update_atcoder_user_info
-    @logger.info("start: update_atcoder_user_info")
-    info_list = []
-    AtcoderUser.find_each do |atcoder_user|
-      uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
-      # @etag = atcoder_user.etag
-      @etag = ""
-      info = call_api(uri)
+  # 廃止
+  # def update_atcoder_user_info
+  #   @logger.info("start: update_atcoder_user_info")
+  #   info_list = []
+  #   AtcoderUser.find_each do |atcoder_user|
+  #     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
+  #     # @etag = atcoder_user.etag
+  #     @etag = ""
+  #     info = call_api(uri)
 
-      next if info.blank?
+  #     next if info.blank?
 
-      atcoder_user.accepted_count = info["accepted_count"]
-      atcoder_user.accepted_count_rank = info["accepted_count_rank"]
-      atcoder_user.rated_point_sum = info["rated_point_sum"]
-      atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
-      info_list << atcoder_user
-    end
-    AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
-    @logger.info("end: update_atcoder_user_info")
-  end
+  #     atcoder_user.accepted_count = info["accepted_count"]
+  #     atcoder_user.accepted_count_rank = info["accepted_count_rank"]
+  #     atcoder_user.rated_point_sum = info["rated_point_sum"]
+  #     atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
+  #     info_list << atcoder_user
+  #   end
+  #   AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
+  #   @logger.info("end: update_atcoder_user_info")
+  # end
 
+  # 廃止
   def set_atcoder_user_info(atcoder_user)
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
     # @etag = atcoder_user.etag
@@ -234,15 +236,43 @@ class APIClient
     return if user_info.blank?
 
     atcoder_user.accepted_count = user_info["accepted_count"]
-    atcoder_user.accepted_count_rank = user_info["accepted_count_rank"]
     atcoder_user.rated_point_sum = user_info["rated_point_sum"]
-    atcoder_user.rated_point_sum_rank = user_info["rated_point_sum_rank"]
     # atcoder_user.save!
   end
 
   def get_contest_result(contest)
     uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.name}/results/json")
     results = call_api(uri)
+  end
+
+  def fetch_accepted_count
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/ac.json")
+    accepted_counts = call_api(uri)
+    atcoder_users = []
+    accepted_counts.each do |accepted_count|
+      atcoder_user = AtcoderUser.find_by(atcoder_id: accepted_count["user_id"])
+      next if atcoder_user.blank?
+
+      atcoder_user.accepted_count = accepted_count["problem_count"]
+      atcoder_users << atcoder_user
+    end
+
+    AtcoderUser.import! atcoder_users, on_duplicate_key_update: [:accepted_count]
+  end
+
+  def fetch_rated_point_sum
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/sums.json")
+    rated_point_sums = call_api(uri)
+    atcoder_users = []
+    rated_point_sums.each do |rated_point_sum|
+      atcoder_user = AtcoderUser.find_by(atcoder_id: rated_point_sum["user_id"])
+      next if atcoder_user.blank?
+
+      atcoder_user.rated_point_sum = rated_point_sum["point_sum"]
+      atcoder_users << atcoder_user
+    end
+
+    AtcoderUser.import! atcoder_users, on_duplicate_key_update: [:rated_point_sum]
   end
 
   # private
