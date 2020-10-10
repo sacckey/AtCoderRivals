@@ -1,4 +1,5 @@
 # ローカル用のタスク
+# TODO: 必要ないのでそのうち消す
 namespace :bot do
   desc "最近の提出を取得するタスク"
   task recent_submissions: :environment do
@@ -22,8 +23,9 @@ namespace :bot do
     APIClient.new.get_submissions
   end
 
-  desc "AtCoderユーザーのAC数等を更新するタスク"
-  task atcoder_user_info: :environment do
-    APIClient.new.update_atcoder_user_info
-  end
+  # 廃止
+  # desc "AtCoderユーザーのAC数等を更新するタスク"
+  # task atcoder_user_info: :environment do
+  #   APIClient.new.update_atcoder_user_info
+  # end
 end

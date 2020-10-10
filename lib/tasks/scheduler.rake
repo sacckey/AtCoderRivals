@@ -20,7 +20,18 @@ task user_submissions: :environment do
   APIClient.new.get_submissions
 end
 
-desc "AtCoderユーザーのAC数等を更新するタスク"
-task atcoder_user_info: :environment do
-  APIClient.new.update_atcoder_user_info
+# 廃止
+# desc "AtCoderユーザーのAC数等を更新するタスク"
+# task atcoder_user_info: :environment do
+#   APIClient.new.update_atcoder_user_info
+# end
+
+desc "AtCoderユーザーのAC数を更新するタスク"
+task accepted_count: :environment do
+  APIClient.new.fetch_accepted_count
+end
+
+desc "AtCoderユーザーのACした問題のポイントの合計を更新するタスク"
+task rated_point_sum: :environment do
+  APIClient.new.fetch_rated_point_sum
 end

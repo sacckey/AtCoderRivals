@@ -10,18 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_231745) do
+ActiveRecord::Schema.define(version: 2020_09_28_232628) do
 
   create_table "atcoder_users", force: :cascade do |t|
-    t.string "atcoder_id"
-    t.integer "accepted_count"
-    t.integer "accepted_count_rank"
-    t.float "rated_point_sum"
-    t.integer "rated_point_sum_rank"
+    t.string "atcoder_id", null: false
+    t.integer "accepted_count", default: 0, null: false
+    t.float "rated_point_sum", default: 0.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image_url"
-    t.integer "rating"
+    t.string "image_url", default: "https://img.atcoder.jp/assets/icon/avatar.png", null: false
+    t.integer "rating", default: 0, null: false
     t.string "etag", default: ""
     t.index ["accepted_count"], name: "index_atcoder_users_on_accepted_count"
     t.index ["atcoder_id", "accepted_count"], name: "index_atcoder_users_on_atcoder_id_and_accepted_count"

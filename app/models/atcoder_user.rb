@@ -12,7 +12,8 @@ class AtcoderUser < ApplicationRecord
     @api_client = APIClient.new
     return unless set_image_url_and_rating
 
-    @api_client.set_atcoder_user_info(self)
+    # API廃止のため削除
+    # @api_client.set_atcoder_user_info(self)
   end
 
   def set_image_url_and_rating
