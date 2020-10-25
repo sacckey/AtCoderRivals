@@ -50,9 +50,4 @@ class SubmissionTest < ActiveSupport::TestCase
     @submission.number = nil
     assert_not @submission.valid?
   end
-
-  # order
-  test "order should be most recent first" do
-    assert_equal submissions(:most_recent), Submission.first
-  end
 end

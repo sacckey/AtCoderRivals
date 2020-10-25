@@ -16,7 +16,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select 'section.user_info > a > img'
     assert_match "AC", response.body
     assert_select 'div.pagination'
-    @user.atcoder_user.submissions.paginate(page: 1).each do |submission|
+    @user.atcoder_user.submissions.order(epoch_second: :desc).paginate(page: 1).each do |submission|
       assert_match Time.at(submission.epoch_second).to_s, response.body
     end
 

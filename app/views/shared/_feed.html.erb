@@ -6,22 +6,18 @@
     <!-- タブ内容 -->
     <div class="tab-content">
       <div class="tab-pane active" id="submissions">
-        <% if @submissions.any? %>
-          <h3>Submissions</h3>
-          <ol class="feeds">
-            <%= render @submissions %>
-          </ol>
-          <%= will_paginate @submissions, :param_name => 'submissions' %>
-        <% end %>
+        <h3>Submissions</h3>
+        <ol class="feeds">
+          <%= render @submissions %>
+        </ol>
+        <%= will_paginate @submissions, :param_name => 'submissions' %>
       </div>
       <div class="tab-pane" id="contests">
-        <% if @contests.any? %>
-          <h3>Contests</h3>
-          <ol class="feeds">
-            <%= render @contests %>
-          </ol>
-          <%= will_paginate @contests, :param_name => 'contests' %>
-        <% end %>
+        <h3>Contests</h3>
+        <ol class="feeds">
+          <%= render @contests %>
+        </ol>
+        <%= will_paginate @contests, :param_name => 'contests' %>
       </div>
       <script>
         if (location.hash) {

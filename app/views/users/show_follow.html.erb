@@ -6,7 +6,7 @@
     </section>
     <section class="stats">
       <%= render 'shared/stats' %>
-      <% if @atcoder_users.any? %>
+      <% if @atcoder_users.present? %>
         <div class="user_avatars">
           <% @atcoder_users.each do |user| %>
             <%# <%= link_to gravatar_for(user, size: 30), user %>
@@ -17,7 +17,7 @@
   </aside>
   <div class="col-md-8">
     <h3><%= @title %></h3>
-    <% if @atcoder_users.any? %>
+    <% if @atcoder_users.present? %>
       <ul class="users follow">
         <%= render @atcoder_users %>
       </ul>

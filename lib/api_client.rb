@@ -199,7 +199,7 @@ class APIClient
   def update_rating
     AtcoderUser.find_each do |atcoder_user|
       next if atcoder_user.histories.blank?
-      new_rating = atcoder_user.histories.reorder(end_time: :desc).first.new_rating
+      new_rating = atcoder_user.histories.order(end_time: :desc).first.new_rating
       atcoder_user.update_attribute(:rating, new_rating)
     end
   end

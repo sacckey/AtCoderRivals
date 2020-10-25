@@ -2,22 +2,35 @@ class StaticPagesController < ApplicationController
   def home
     if logged_in?
       @user = current_user
-      @atcoder_user = @user.atcoder_user
-      @fol_ids = @user.get_fol_ids
+      @feed_atcoder_user_ids = @user.get_fol_ids << @user.atcoder_user.id
 
-      # @contests = History.where("atcoder_user_id IN (:fol_ids) OR atcoder_user_id = :atcoder_user_id",
-      #   fol_ids: @fol_ids, user_id: @user.id, atcoder_user_id: @atcoder_user.id).map(&:contest)
+      contest_names = History.where(atcoder_user_id: @feed_atcoder_user_ids).pluck(:contest_name)
+      @contests = Contest.where(name: contest_names).order(start_epoch_second: :desc).paginate(page: params[:contests])
+      # scoped preload
+      # ActiveRecord::Associations::Preloader.new.preload(@contests, :histories, History.where(atcoder_user_id: feed_atcoder_user_ids))
+      # @contests = Contest.where("name IN (#{contest_names})",fol_ids: @fol_ids, atcoder_user_id: @atcoder_user.id).paginate(page: params[:contests])
 
-      contest_names = "SELECT contest_name FROM histories WHERE atcoder_user_id in (:fol_ids) OR atcoder_user_id = :atcoder_user_id"
-      @contests = Contest.where("name IN (#{contest_names})",fol_ids: @fol_ids, atcoder_user_id: @atcoder_user.id).paginate(page: params[:contests])
+      # @users = User.where(id: [1,2])
+      # ActiveRecord::Associations::Preloader.new.preload(@users, :relationships, Relationship.where(followed_id: 3))
+      # ActiveRecord::Associations::Preloader.new.preload(@users, :relationships)
 
-      # @contests_size = @contests.size      
-      # @contests = @contests.paginate(page: params[:contests])
+      # @users.each do |user|
+      #   user.relationships.each do |rel|
+      #     puts rel.id
+      #   end
+      # end
 
-      # @history = @atcoder_user.histories
-      @submissions = @user.submission_feed(@fol_ids).paginate(page: params[:submissions])
-      # @submissions_size = @submissions.size
-      # @submissions = @submissions.paginate(page: params[:submissions])
+
+      # @contests.each do |contest|
+      #   contest.histories.each do |his|
+      #     puts his.new_rating
+      #   end
+      # end
+
+      @submissions = Submission.where(atcoder_user_id: @feed_atcoder_user_ids)
+                                .includes(:atcoder_user, :contest, :problem)
+                                .order(epoch_second: :desc)
+                                .paginate(page: params[:submissions])
     else
       render layout: false
     end

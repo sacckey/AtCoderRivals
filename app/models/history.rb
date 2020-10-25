@@ -12,7 +12,4 @@ class History < ApplicationRecord
   validates :end_time, presence: true
   validates :atcoder_user_id, presence: true
   validates :contest_name, presence: true
-
-  # TODO: 消す
-  default_scope -> { order(:place) }
 end
