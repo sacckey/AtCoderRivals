@@ -6,9 +6,12 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
-    @history = @atcoder_user.histories
-    @contests = @atcoder_user.contests.paginate(page: params[:contests])
-    @submissions = @atcoder_user.submissions.paginate(page: params[:submissions])
+    @feed_atcoder_user_ids = @atcoder_user.id
+    @contests = @atcoder_user.contests.order(start_epoch_second: :desc).paginate(page: params[:contests])
+    @submissions = @atcoder_user.submissions
+                                .includes(:atcoder_user, :contest, :problem)
+                                .order(epoch_second: :desc)
+                                .paginate(page: params[:submissions])
   end
 
   def edit

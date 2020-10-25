@@ -48,23 +48,7 @@ class User < ApplicationRecord
   end
 
   def get_fol_ids
-    # Relationship.where("SELECT followed_id FROM relationships WHERE follower_id = :user_id", user_id: id).map(&:followed_id)
-    Relationship.where("follower_id = :user_id", user_id: id).map(&:followed_id)
-  end
-
-  def submission_feed(fol_ids)
-    # following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
-    # Submission.where("atcoder_user_id IN (#{following_ids})
-    #                  OR atcoder_user_id = :atcoder_user_id",user_id: id, atcoder_user_id: atcoder_user_id)
-    Submission.where("atcoder_user_id IN (:fol_ids)
-    OR atcoder_user_id = :atcoder_user_id", fol_ids: fol_ids, user_id: id, atcoder_user_id: atcoder_user_id)
-  end
-
-  def contest_feed(contest, fol_ids)
-    # following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
-    History.where("contest_name = :contest_name AND 
-      (atcoder_user_id IN (:fol_ids) OR atcoder_user_id = :atcoder_user_id)",
-      fol_ids: fol_ids, user_id: id, contest_name: contest.name, atcoder_user_id: atcoder_user_id)
+    Relationship.where(follower_id: id).pluck(:followed_id)
   end
 
   private

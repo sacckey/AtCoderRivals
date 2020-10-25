@@ -11,7 +11,4 @@ class Submission < ApplicationRecord
   validates :language, presence: true
   validates :point, presence: true
   validates :result, presence: true
-
-  # TODO: 消す
-  default_scope -> { order(epoch_second: :desc) }
 end

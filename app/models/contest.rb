@@ -9,7 +9,4 @@ class Contest < ApplicationRecord
   validates :duration_second, presence: true
   validates :title, presence: true
   validates :rate_change, presence: true
-
-  # TODO: 消す
-  default_scope -> { order(start_epoch_second: :desc) }
 end
