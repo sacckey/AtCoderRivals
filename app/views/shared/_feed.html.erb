@@ -10,14 +10,18 @@
         <ol class="feeds">
           <%= render @submissions %>
         </ol>
-        <%= will_paginate @submissions, :param_name => 'submissions' %>
+        <ul class="pagination">
+          <li class="prev"><%= link_to_prev_page @submissions, 'Prev', param_name: 'submissions' %></li>
+          <li class="page active"><%= link_to @submissions.current_page,'javascript:void(0);' %></li>
+          <li class="next"><%= link_to_next_page @submissions, 'Next', param_name: 'submissions' %></li>
+        </ul>
       </div>
       <div class="tab-pane" id="contests">
         <h3>Contests</h3>
         <ol class="feeds">
           <%= render @contests %>
         </ol>
-        <%= will_paginate @contests, :param_name => 'contests' %>
+        <%= paginate @contests, param_name: 'contests' %>
       </div>
       <script>
         if (location.hash) {

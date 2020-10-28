@@ -7,11 +7,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
     @feed_atcoder_user_ids = @atcoder_user.id
-    @contests = @atcoder_user.contests.order(start_epoch_second: :desc).paginate(page: params[:contests])
+    @contests = @atcoder_user.contests.order(start_epoch_second: :desc).page(params[:contests]).per(30)
     @submissions = @atcoder_user.submissions
                                 .includes(:atcoder_user, :contest, :problem)
                                 .order(epoch_second: :desc)
-                                .paginate(page: params[:submissions])
+                                .page(params[:submissions])
+                                .per(30)
+                                .without_count
   end
 
   def edit
