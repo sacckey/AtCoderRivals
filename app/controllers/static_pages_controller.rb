@@ -24,8 +24,6 @@ class StaticPagesController < ApplicationController
                                 .page(params[:submissions])
                                 .per(30)
                                 .without_count
-
-                                # .paginate(page: params[:submissions])
     else
       render layout: false
     end

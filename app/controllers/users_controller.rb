@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.order(id: :asc).page(params[:page]).per(30)
   end
 
   def destroy
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     @title = "Following"
     @user  = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
-    @atcoder_users = @user.following.paginate(page: params[:page])
+    @atcoder_users = @user.following.page(params[:page]).per(30)
     render 'show_follow'
   end
 
