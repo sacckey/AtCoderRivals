@@ -7,11 +7,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
     @feed_atcoder_user_ids = @atcoder_user.id
-    @contests = @atcoder_user.contests.order(start_epoch_second: :desc).paginate(page: params[:contests])
+    @contests = @atcoder_user.contests.order(start_epoch_second: :desc).page(params[:contests]).per(30)
     @submissions = @atcoder_user.submissions
                                 .includes(:atcoder_user, :contest, :problem)
                                 .order(epoch_second: :desc)
-                                .paginate(page: params[:submissions])
+                                .page(params[:submissions])
+                                .per(30)
+                                .without_count
   end
 
   def edit
@@ -38,7 +40,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.order(id: :asc).page(params[:page]).per(30)
   end
 
   def destroy
@@ -51,7 +53,7 @@ class UsersController < ApplicationController
     @title = "Following"
     @user  = User.find(params[:id])
     @atcoder_user = @user.atcoder_user
-    @atcoder_users = @user.following.paginate(page: params[:page])
+    @atcoder_users = @user.following.page(params[:page]).per(30)
     render 'show_follow'
   end
 

@@ -3,14 +3,12 @@ source 'https://rubygems.org'
 ruby '2.7.1'
 
 gem 'rails',                   '6.0.3.3'
-gem "actionview"
+gem 'actionview'
 gem 'bcrypt'
 gem 'faker'
 gem 'carrierwave'
-gem "mini_magick"
-gem 'will_paginate'
-gem 'bootstrap-will_paginate'
-gem "bootstrap-sass"
+gem 'mini_magick'
+gem 'bootstrap-sass'
 gem 'puma'
 gem 'sass-rails'
 gem 'uglifier'
@@ -19,15 +17,17 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'bootsnap', require: false
-gem "nokogiri"
+gem 'nokogiri'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'dotenv-rails'
 gem 'activerecord-import'
 gem 'whenever'
 gem 'font-awesome-sass'
-gem "omniauth-rails_csrf_protection"
-gem "sidekiq"
+gem 'omniauth-rails_csrf_protection'
+gem 'sidekiq'
+gem 'kaminari'
+gem 'kaminari-bootstrap', '~> 3.0.1'
 
 group :development, :test do
   gem 'sqlite3'

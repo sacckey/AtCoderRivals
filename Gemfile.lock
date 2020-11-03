@@ -65,7 +65,7 @@ GEM
       nokogiri (~> 1.6)
       rest-client (~> 2.0)
     ansi (1.5.0)
-    autoprefixer-rails (9.8.6.3)
+    autoprefixer-rails (10.0.1.0)
       execjs
     bcrypt (3.1.15)
     bindex (0.8.1)
@@ -74,8 +74,6 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    bootstrap-will_paginate (1.0.0)
-      will_paginate
     builder (3.2.4)
     byebug (9.0.6)
     capybara (3.33.0)
@@ -335,6 +333,21 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.3.1)
     jwt (2.2.2)
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
+    kaminari-core (1.2.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -516,7 +529,6 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
-    will_paginate (3.3.0)
     xml-simple (1.1.5)
     xmlrpc (0.3.0)
     xpath (3.2.0)
@@ -532,7 +544,6 @@ DEPENDENCIES
   bcrypt
   bootsnap
   bootstrap-sass
-  bootstrap-will_paginate
   byebug (= 9.0.6)
   capybara
   carrierwave
@@ -545,6 +556,8 @@ DEPENDENCIES
   guard-minitest
   jbuilder
   jquery-rails
+  kaminari
+  kaminari-bootstrap (~> 3.0.1)
   listen
   mini_magick
   minitest
@@ -568,7 +581,6 @@ DEPENDENCIES
   uglifier
   web-console
   whenever
-  will_paginate
 
 RUBY VERSION
    ruby 2.7.1p83
