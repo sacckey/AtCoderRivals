@@ -12,7 +12,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_template 'users/index'
     assert_select 'ul.pagination'
-    first_page_of_users = User.page(1)
+    first_page_of_users = User.order(id: :asc).page(1)
     first_page_of_users.each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.user_name
       unless user == @admin
