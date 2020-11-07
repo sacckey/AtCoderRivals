@@ -1,4 +1,4 @@
-<% if submission.contest %>
+<% if submission.contest && submission.problem %>
 <li id="submission-<%= submission.id %>">
   <% atcoder_user = submission.atcoder_user %>
   <% atcoder_id = atcoder_user.atcoder_id %>

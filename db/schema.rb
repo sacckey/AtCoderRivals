@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_28_232628) do
+ActiveRecord::Schema.define(version: 2020_11_06_234533) do
 
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id", null: false
@@ -22,8 +22,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.integer "rating", default: 0, null: false
     t.string "etag", default: ""
     t.index ["accepted_count"], name: "index_atcoder_users_on_accepted_count"
-    t.index ["atcoder_id", "accepted_count"], name: "index_atcoder_users_on_atcoder_id_and_accepted_count"
-    t.index ["atcoder_id", "rated_point_sum"], name: "index_atcoder_users_on_atcoder_id_and_rated_point_sum"
     t.index ["atcoder_id"], name: "index_atcoder_users_on_atcoder_id", unique: true
     t.index ["rated_point_sum"], name: "index_atcoder_users_on_rated_point_sum"
   end
@@ -36,10 +34,8 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.string "rate_change"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name", "start_epoch_second"], name: "index_contests_on_name_and_start_epoch_second", unique: true
     t.index ["name"], name: "index_contests_on_name", unique: true
     t.index ["start_epoch_second"], name: "index_contests_on_start_epoch_second"
-    t.index ["title", "start_epoch_second"], name: "index_contests_on_title_and_start_epoch_second", unique: true
   end
 
   create_table "histories", force: :cascade do |t|
@@ -56,7 +52,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.integer "atcoder_user_id"
     t.string "contest_name"
     t.index ["atcoder_user_id", "contest_name"], name: "index_histories_on_atcoder_user_id_and_contest_name", unique: true
-    t.index ["atcoder_user_id"], name: "index_histories_on_atcoder_user_id"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -65,7 +60,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "contest_name"
-    t.index ["name"], name: "index_problems_on_contest_id_and_name"
     t.index ["name"], name: "index_problems_on_name", unique: true
   end
 
@@ -76,7 +70,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.datetime "updated_at", null: false
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
-    t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
   create_table "submissions", force: :cascade do |t|
@@ -91,7 +84,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_232628) do
     t.string "problem_name"
     t.integer "number"
     t.index ["atcoder_user_id", "epoch_second"], name: "index_submissions_on_atcoder_user_id_and_epoch_second"
-    t.index ["atcoder_user_id"], name: "index_submissions_on_atcoder_user_id"
     t.index ["epoch_second"], name: "index_submissions_on_epoch_second"
     t.index ["number"], name: "index_submissions_on_number", unique: true
   end
