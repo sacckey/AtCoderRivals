@@ -9,7 +9,6 @@ class AtcoderUser < ApplicationRecord
   after_create :get_history_and_submissions
 
   def set_info
-    @api_client = APIClient.new
     return unless set_image_url_and_rating
 
     # API廃止のため削除
@@ -17,8 +16,9 @@ class AtcoderUser < ApplicationRecord
   end
 
   def set_image_url_and_rating
+    api_client = APIClient.new
     uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
-    html = @api_client.call_api(uri)
+    html = api_client.call_api(uri)
     return self.atcoder_id = nil if html.blank?
 
     doc = Nokogiri::HTML.parse(html)
