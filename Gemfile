@@ -28,9 +28,9 @@ gem 'omniauth-rails_csrf_protection'
 gem 'sidekiq'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
+gem 'pg'
 
 group :development, :test do
-  gem 'sqlite3'
   gem 'byebug',  '9.0.6', platform: :mri
   gem 'capybara'
   gem 'selenium-webdriver'
@@ -51,9 +51,9 @@ group :test do
   gem 'guard-minitest'
 end
 
-group :production, :test do
-  gem 'pg'
-end
+# group :production, :test do
+#   gem 'pg'
+# end
 
 group :production do
   gem 'fog'

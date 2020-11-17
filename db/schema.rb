@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2020_11_06_234533) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "atcoder_users", force: :cascade do |t|
     t.string "atcoder_id", null: false
     t.integer "accepted_count", default: 0, null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 2020_11_06_234533) do
     t.string "end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "atcoder_user_id"
+    t.bigint "atcoder_user_id"
     t.string "contest_name"
     t.index ["atcoder_user_id", "contest_name"], name: "index_histories_on_atcoder_user_id_and_contest_name", unique: true
   end
@@ -74,7 +77,7 @@ ActiveRecord::Schema.define(version: 2020_11_06_234533) do
 
   create_table "submissions", force: :cascade do |t|
     t.integer "epoch_second"
-    t.integer "atcoder_user_id"
+    t.bigint "atcoder_user_id"
     t.string "language"
     t.float "point"
     t.string "result"
@@ -96,7 +99,7 @@ ActiveRecord::Schema.define(version: 2020_11_06_234533) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false
-    t.integer "atcoder_user_id"
+    t.bigint "atcoder_user_id"
     t.index ["atcoder_user_id"], name: "index_users_on_atcoder_user_id"
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
