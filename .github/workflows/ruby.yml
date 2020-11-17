@@ -50,8 +50,8 @@ jobs:
         bundle install --path vendor/bundle --without production
     - name: Set env
       run: |
-        run: echo 'RAILS_ENV=test' >> $GITHUB_ENV
-        run: echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_database' >> $GITHUB_ENV
+        echo 'RAILS_ENV=test' >> $GITHUB_ENV
+        echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_database' >> $GITHUB_ENV
     - name: setup DB
       run: |
         bundle exec rails db:schema:load
