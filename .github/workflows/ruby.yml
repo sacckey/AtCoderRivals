@@ -52,6 +52,7 @@ jobs:
       run: |
         echo 'RAILS_ENV=test' >> $GITHUB_ENV
         echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_database' >> $GITHUB_ENV
+        echo 'REDIS_URL=redis://localhost:6379' >> $GITHUB_ENV
     - name: setup DB
       run: |
         bundle exec rails db:schema:load
