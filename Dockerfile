@@ -10,7 +10,7 @@ COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install -j4
 COPY . /myapp
 
-# アセットのプリコンパイルtest
+# アセットのプリコンパイル
 RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile \
  && yarn cache clean \
  && rm -rf node_modules tmp/cache
