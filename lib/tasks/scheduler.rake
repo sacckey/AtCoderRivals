@@ -37,3 +37,11 @@ desc "AtCoderユーザーのACした問題のポイントの合計を更新す�
 task rated_point_sum: :environment do
   APIClient.new.fetch_rated_point_sum
 end
+
+desc "AtCoderユーザーのratingとimage_urlを更新するタスク"
+task image_url_and_rating: :environment do
+  AtcoderUser.find_each do |atcoder_user|
+    atcoder_user.set_image_url_and_rating
+    atcoder_user.save
+  end
+end
