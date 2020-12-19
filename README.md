@@ -8,23 +8,8 @@
 ```
 $ git clone https://github.com/sacckey/AtCoderRivals.git
 $ cd AtCoderRivals
-$ bundle install --without production
-$ rails db:migrate
-$ rails db:seed
-```
-
-### Server
-```
-$ rails server
-```
-
-### Crawler
-```
-クローラー起動
-$ bundle exec whenever --update-crontab
-
-クローラー終了
-$ bundle exec whenever --clear-crontab
+$ docker-compose up
+$ docker-compose exec web rails db:seed
 ```
 
 サーバー起動後、http://localhost:3000/ にアクセスすることで、アプリケーションを動かすことができます。<br>
