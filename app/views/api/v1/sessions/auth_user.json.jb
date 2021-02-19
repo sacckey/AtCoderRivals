@@ -1,0 +1,11 @@
+json = {}
+
+json[:auth_user] =
+  {
+    user_id: current_user.id,
+    following_count: current_user.following_count,
+    atcoder_id: @atcoder_user.atcoder_id,
+    rating: @atcoder_user.rating
+  }
+
+json

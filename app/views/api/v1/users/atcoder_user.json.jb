@@ -1,0 +1,3 @@
+json = {
+  atcoder_user: @atcoder_user.atcoder_id
+}

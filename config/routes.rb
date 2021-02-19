@@ -1,5 +1,20 @@
 require "sidekiq/web"
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      resources :users do
+        member do
+          get :following
+          get :atcoder_user
+        end
+      end
+
+      namespace :sessions do
+        get :auth_user
+      end
+      resources :sessions
+    end
+  end
   # login
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/auth/failure', to: 'sessions#failure'

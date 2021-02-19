@@ -1,0 +1,6 @@
+json = {}
+
+json[:error] = {
+  code: code,
+  message: message
+}

@@ -1,0 +1,10 @@
+json = {}
+
+json[:following] = @atcoder_users.map do |atcoder_user|
+  {
+    atcoder_id: atcoder_user.atcoder_id,
+    image_url: atcoder_user.image_url
+  }
+end
+
+json

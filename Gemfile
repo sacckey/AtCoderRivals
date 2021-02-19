@@ -29,6 +29,9 @@ gem 'sidekiq'
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'pg'
+gem 'jb'
+gem 'rack-cors'
+gem 'firebase-auth-rails'
 
 group :development, :test do
   gem 'byebug',  '9.0.6', platform: :mri

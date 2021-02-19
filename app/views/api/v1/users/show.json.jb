@@ -1,0 +1,28 @@
+json = {
+  atcoder_user: @atcoder_user.atcoder_id
+}
+
+json[:contests] = @contests.map do |contest|
+  {
+    name: contest.name,
+    start_epoch_second: contest.start_epoch_second,
+    duration_second: contest.duration_second,
+    title: contest.title,
+    rate_change: contest.rate_change
+  }
+end
+
+json[:submissions] = @submissions.map do |submission|
+  {
+    epoch_second: submission.epoch_second,
+    atcoder_user_id: submission.atcoder_user_id,
+    language: submission.language,
+    point: submission.point,
+    result: submission.result,
+    contest_name: submission.contest_name,
+    problem_name: submission.problem_name,
+    number: submission.number
+  }
+end
+
+json

@@ -121,6 +121,15 @@ GEM
     faraday (0.17.3)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.1)
+    firebase-auth-rails (0.1.2)
+      firebase_id_token (~> 2.3, >= 2.3.0)
+      jwt (~> 2.1, >= 2.1.0)
+      rails
+    firebase_id_token (2.4.0)
+      httparty (~> 0.16, >= 0.16.2)
+      jwt (~> 2.1, >= 2.1.0)
+      redis (~> 4.0, >= 4.0.1)
+      redis-namespace (~> 1.6, >= 1.6.0)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (2.2.0)
@@ -318,6 +327,9 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    httparty (0.18.1)
+      mime-types (~> 3.0)
+      multi_xml (>= 0.5.2)
     httpclient (2.8.3)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
@@ -325,6 +337,7 @@ GEM
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     ipaddress (0.8.3)
+    jb (0.8.0)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     jquery-rails (4.4.0)
@@ -376,6 +389,7 @@ GEM
       ruby-progressbar
     msgpack (1.3.3)
     multi_json (1.15.0)
+    multi_xml (0.6.0)
     multipart-post (2.1.1)
     nenv (0.3.0)
     netrc (0.11.0)
@@ -410,6 +424,8 @@ GEM
     puma (4.3.5)
       nio4r (~> 2.0)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.3)
@@ -455,6 +471,8 @@ GEM
       nokogiri (~> 1.5)
       optimist (~> 3.0)
     redis (4.2.2)
+    redis-namespace (1.8.1)
+      redis (>= 3.0.4)
     regexp_parser (1.7.1)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -549,10 +567,12 @@ DEPENDENCIES
   coffee-rails
   dotenv-rails
   faker
+  firebase-auth-rails
   fog
   font-awesome-sass
   guard
   guard-minitest
+  jb
   jbuilder
   jquery-rails
   kaminari
@@ -567,6 +587,7 @@ DEPENDENCIES
   omniauth-twitter
   pg
   puma
+  rack-cors
   rails (= 6.0.3.3)
   rails-controller-testing
   sass-rails

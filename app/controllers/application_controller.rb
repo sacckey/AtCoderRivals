@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  # TODO: APIだけを対象にする
+  skip_forgery_protection
+
+  include Firebase::Auth::Authenticable
   include SessionsHelper
 
   private
