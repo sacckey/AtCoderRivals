@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
   def setup
-    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_user_id: 1)
+    @user = User.new(provider: "twitter", uid: "12345", twitter_uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_user_id: 1)
     OmniAuth.config.test_mode = true
   end
 

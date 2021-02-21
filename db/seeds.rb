@@ -7,7 +7,8 @@ User.create!(
   uid: "12345",
   provider:  "twitter",
   image_url: "icon.png",
-  atcoder_user: chokudai
+  atcoder_user: chokudai,
+  twitter_uid: "12345"
 )
 
 api_client.get_contests

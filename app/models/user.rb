@@ -26,7 +26,8 @@ class User < ApplicationRecord
       user_name: user_name,
       image_url: image_url,
       atcoder_user: atcoder_user,
-      first_login: first_login
+      first_login: first_login,
+      twitter_uid: uid
     )
 
     return user

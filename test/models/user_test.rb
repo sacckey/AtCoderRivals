@@ -4,7 +4,7 @@ class UserTest < ActiveSupport::TestCase
 
   def setup
     @atcoder_user = atcoder_users(:chokudai)
-    @user = User.new(provider: "twitter", uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_user_id: @atcoder_user.id)
+    @user = User.new(provider: "twitter", uid: "12345", twitter_uid: "12345", user_name: "example user", image_url: "https://pbs.twimg.com/profile_images/1066244463725445120/m-owVBJX_normal.jpg", atcoder_user_id: @atcoder_user.id)
   end
 
   test "should be valid" do
