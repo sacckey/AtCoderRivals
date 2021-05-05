@@ -32,7 +32,6 @@ gem 'pg'
 gem 'jb'
 gem 'rack-cors'
 gem 'firebase-auth-rails'
-gem "mimemagic", "~> 0.3.10"
 
 group :development, :test do
   gem 'byebug',  '9.0.6', platform: :mri
