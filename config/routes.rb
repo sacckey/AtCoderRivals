@@ -2,19 +2,30 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      # TODO: 不要なルーティングを消す
       resources :users do
         member do
           get :following
           get :atcoder_user
+          get :feeds
+          get :submissions
+          get :contests
         end
+      end
+
+      namespace :timeline do
+        get :feeds
+        get :submissions
+        get :contests
       end
 
       namespace :sessions do
         get :auth_user
       end
-      resources :sessions
+      resources :sessions, only: [:create]
     end
   end
+
   # login
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/auth/failure', to: 'sessions#failure'

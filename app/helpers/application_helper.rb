@@ -1,6 +1,4 @@
 module ApplicationHelper
-  include Firebase::Auth::Authenticable
-
   def full_title(page_title = '')
     base_title = "AtCoder Rivals"
     if page_title.empty?

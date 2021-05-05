@@ -49,6 +49,7 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  # TODO: 名前を変える
   def get_fol_ids
     Relationship.where(follower_id: id).pluck(:followed_id)
   end
