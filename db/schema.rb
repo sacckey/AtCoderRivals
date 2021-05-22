@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_015219) do
+ActiveRecord::Schema.define(version: 2021_05_21_000213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 2021_02_20_015219) do
 
   create_table "contests", force: :cascade do |t|
     t.string "name"
-    t.integer "start_epoch_second"
-    t.integer "duration_second"
+    t.bigint "start_epoch_second"
+    t.bigint "duration_second"
     t.string "title"
     t.string "rate_change"
     t.datetime "created_at", null: false
