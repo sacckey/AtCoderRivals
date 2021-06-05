@@ -39,10 +39,12 @@ class API::V1::TimelineController < API::V1::BaseController
   def submissions
     @user = current_user
     @atcoder_user = @user.atcoder_user
-    @feed_atcoder_user_ids = @user.get_fol_ids << @atcoder_user.id
 
-    @submissions = Submission.where(atcoder_user_id: @feed_atcoder_user_ids)
+    @submissions = Submission.where(atcoder_user_id: Relationship.where(follower_id: @user.id).select(:followed_id))
+                              .or(Submission.where(atcoder_user_id: @atcoder_user.id))
                               .includes(:atcoder_user, :contest, :problem)
+                              .where.not(contests: {id: nil})
+                              .where.not(problems: {id: nil})
                               .order(epoch_second: :desc)
                               .page(params[:page])
                               .per(30)
@@ -56,7 +58,7 @@ class API::V1::TimelineController < API::V1::BaseController
     @atcoder_user = @user.atcoder_user
     @feed_atcoder_user_ids = @user.get_fol_ids << @atcoder_user.id
 
-    @contests = Contest.where(name: History.distinct.where(atcoder_user_id: @feed_atcoder_user_ids).pluck(:contest_name))
+    @contests = Contest.where(name: History.distinct.where(atcoder_user_id: @feed_atcoder_user_ids).select(:contest_name))
                         .order(start_epoch_second: :desc).page(params[:page]).per(30)
 
     render 'api/v1/timeline/contests.json.jb'
