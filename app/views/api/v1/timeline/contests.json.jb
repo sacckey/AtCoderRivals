@@ -1,0 +1,26 @@
+json = {
+  atcoder_user: @atcoder_user.atcoder_id
+}
+
+json[:contests] = @contests.map do |contest|
+  {
+    contest_name: contest.name,
+    start_epoch_second: contest.start_epoch_second,
+    duration_second: contest.duration_second,
+    title: contest.title,
+    rate_change: contest.rate_change,
+    histories: History.includes(:atcoder_user).where(contest_name: contest.name, atcoder_user_id: @feed_atcoder_user_ids).order(place: :asc).map do |history|
+    {
+      atcoder_id: history.atcoder_user.atcoder_id,
+      image_url: history.atcoder_user.image_url,
+      is_rated: history.is_rated,
+      place: history.place,
+      old_rating: history.old_rating,
+      new_rating: history.new_rating,
+      performance: history.performance,
+    }
+    end
+  }
+end
+
+json

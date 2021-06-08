@@ -1,0 +1,21 @@
+json = {
+  atcoder_user: @atcoder_user.atcoder_id
+}
+
+json[:submissions] = @submissions.map do |submission|
+  {
+    epoch_second: submission.epoch_second,
+    atcoder_id: submission.atcoder_user.atcoder_id,
+    image_url: submission.atcoder_user.image_url,
+    language: submission.language,
+    point: submission.point,
+    result: submission.result,
+    contest_name: submission.contest_name,
+    contest_title: submission.contest.title,
+    problem_name: submission.problem_name,
+    problem_title: submission.problem.title,
+    number: submission.number,
+  }
+end
+
+json

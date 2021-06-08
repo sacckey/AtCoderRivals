@@ -3,9 +3,10 @@ class User < ApplicationRecord
   has_many :following, through: :relationships, source: :followed
   belongs_to :atcoder_user
 
-  before_save { uid.downcase! }
+  # TODO: 設定する
+  # before_save { uid.downcase! }
   validates :provider, presence: true
-  validates :uid, presence: true, uniqueness: { case_sensitive: false }
+  validates :uid, presence: true, uniqueness: true
   validates :user_name, presence: true
   validates :image_url, presence: true
   validates :atcoder_user_id, presence: true
@@ -48,8 +49,13 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  # TODO: 名前を変える
   def get_fol_ids
     Relationship.where(follower_id: id).pluck(:followed_id)
+  end
+
+  def following_count
+    Relationship.where(follower_id: id).count
   end
 
   private

@@ -1,0 +1,10 @@
+json = {}
+
+json[:users] = @users.map do |user|
+  {
+    user_name: user.user_name,
+    image_url: user.image_url
+  }
+end
+
+json
