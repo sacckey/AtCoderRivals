@@ -50,31 +50,31 @@ class API::V1::UsersController < API::V1::BaseController
   #   render 'api/v1/users/show.json.jb'
   # end
 
-  # def submissions
-  #   @user = User.find(params[:id])
-  #   @atcoder_user = @user.atcoder_user
-  #   @submissions = Submission.where(atcoder_user_id: @atcoder_user.id)
-  #                               .includes(:contest, :problem, :atcoder_user)
-  #                               .order(epoch_second: :desc)
-  #                               .page(params[:page])
-  #                               .per(30)
-  #                               .without_count
+  def submissions
+    @user = User.find(params[:id])
+    @atcoder_user = @user.atcoder_user
+    @submissions = Submission.where(atcoder_user_id: @atcoder_user.id)
+                                .includes(:contest, :problem, :atcoder_user)
+                                .order(epoch_second: :desc)
+                                .page(params[:page])
+                                .per(30)
+                                .without_count
 
-  #   render 'api/v1/users/submissions.json.jb'
-  # end
+    render 'api/v1/users/submissions.json.jb'
+  end
 
-  # def contests
-  #   @user = User.find(params[:id])
-  #   @atcoder_user = @user.atcoder_user
-  #   @histories = History.where(atcoder_user_id: @atcoder_user.id)
-  #                       .includes(:contest)
-  #                       .order(end_time: :desc)
-  #                       .page(params[:page])
-  #                       .per(30)
-  #                       .without_count
+  def contests
+    @user = User.find(params[:id])
+    @atcoder_user = @user.atcoder_user
+    @histories = History.where(atcoder_user_id: @atcoder_user.id)
+                        .includes(:contest)
+                        .order(end_time: :desc)
+                        .page(params[:page])
+                        .per(30)
+                        .without_count
 
-  #   render 'api/v1/users/contests.json.jb'
-  # end
+    render 'api/v1/users/contests.json.jb'
+  end
 
   # TODO: jbも削除する
   # def atcoder_user
