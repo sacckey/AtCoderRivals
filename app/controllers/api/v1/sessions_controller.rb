@@ -1,7 +1,4 @@
 class API::V1::SessionsController < API::V1::BaseController
-  include API::V1::SessionsHelper
-
-  before_action :request_certificates_if_necessary, only: [:create, :sample_login]
   skip_before_action :authenticate_user, only: [:create, :sample_login]
 
   FIREBASE_API_KEY = ENV.fetch('FIREBASE_API_KEY')
