@@ -52,7 +52,7 @@ class API::V1::SessionsController < API::V1::BaseController
     @user.provider = payload['firebase']['sign_in_provider']
     @user.atcoder_user ||= AtcoderUser.find_by(atcoder_id: 'chokudai')
     @user.user_name = 'Sample User'
-    @user.image_url = 'https://pbs.twimg.com/profile_images/1210784522368774145/hKcB4I9j_normal.jpg'
+    @user.image_url = '/icon.png'
 
     if @user.save
       puts 'success'
