@@ -1,1 +1,1 @@
-REDIS = Redis.current = Redis.new(url: ENV.fetch('REDIS_URL'))
+REDIS = Redis.new(url: ENV.fetch('REDIS_URL'))
