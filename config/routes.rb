@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
       namespace :sessions do
         get :auth_user
+        post :sample_login
       end
       resources :sessions, only: [:create]
     end

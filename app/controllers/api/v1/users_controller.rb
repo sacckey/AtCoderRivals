@@ -119,11 +119,11 @@ class API::V1::UsersController < API::V1::BaseController
   #   render 'api/v1/success.json.jb', code: 200, message: 'User deleted'
   # end
 
-  # def following
-  #   @user = User.find(params[:id])
-  #   @atcoder_users = @user.following.page(params[:page]).per(30)
-  #   render 'api/v1/users/following.json.jb'
-  # end
+  def following
+    @user = User.find(params[:id])
+    @atcoder_users = @user.following.page(params[:page]).per(30)
+    render 'api/v1/users/following.json.jb'
+  end
 
   # private
   #   # TODO: 整備する

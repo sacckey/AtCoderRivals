@@ -9,7 +9,8 @@ json[:auth_user] =
     atcoder_id: @atcoder_user.atcoder_id,
     atcoder_user_image_url: @atcoder_user.image_url,
     rating: @atcoder_user.rating,
-    accepted_count: @atcoder_user.accepted_count
+    accepted_count: @atcoder_user.accepted_count,
+    token: @token
   }
 
 json

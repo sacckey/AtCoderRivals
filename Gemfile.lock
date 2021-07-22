@@ -569,6 +569,7 @@ DEPENDENCIES
   coffee-rails
   dotenv-rails
   faker
+  faraday
   firebase-auth-rails
   fog
   font-awesome-sass
