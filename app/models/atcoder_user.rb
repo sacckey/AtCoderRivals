@@ -10,6 +10,8 @@ class AtcoderUser < ApplicationRecord
 
   def set_info
     return unless set_image_url_and_rating
+
+    # TODO: AC数を取得する
   end
 
   def set_image_url_and_rating

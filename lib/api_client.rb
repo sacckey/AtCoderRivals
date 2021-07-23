@@ -160,7 +160,7 @@ class APIClient
     @logger.info("end: get_submissions\n")
   end
 
-  def get_user_submissions(atcoder_user, from_epoch_second: 1577804400)
+  def get_user_submissions(atcoder_user, from_epoch_second: Time.current.beginning_of_year.to_i)
     @logger.info("start: get #{atcoder_user.atcoder_id}'s submissions")
     submission_list = []
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=#{atcoder_user.atcoder_id}&from_second=#{from_epoch_second}")
