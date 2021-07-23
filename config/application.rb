@@ -24,5 +24,7 @@ module AtCoderRivals
 
     # ActiveJobのアダプターにsidekiqを使用する
     config.active_job.queue_adapter = :sidekiq
+
+    config.time_zone = 'Tokyo'
   end
 end
