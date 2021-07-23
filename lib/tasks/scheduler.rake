@@ -22,12 +22,6 @@ task user_submissions: :environment do
   APIClient.new.get_submissions
 end
 
-# 廃止
-# desc "AtCoderユーザーのAC数等を更新するタスク"
-# task atcoder_user_info: :environment do
-#   APIClient.new.update_atcoder_user_info
-# end
-
 desc "AtCoderユーザーのAC数を更新するタスク"
 task accepted_count: :environment do
   APIClient.new.fetch_accepted_count

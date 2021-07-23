@@ -10,9 +10,6 @@ class AtcoderUser < ApplicationRecord
 
   def set_info
     return unless set_image_url_and_rating
-
-    # API廃止のため削除
-    # @api_client.set_atcoder_user_info(self)
   end
 
   def set_image_url_and_rating

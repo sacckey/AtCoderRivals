@@ -2,20 +2,18 @@ class APIClient
   def initialize
     @logger = Logger.new(STDOUT)
     # @logger = Logger.new('log/crontab.log')
-    # sampleユーザーのuidカラムに、etagを保存する
-    # TODO: redisに保存するように変更する
-    @etag = User.find_by_id(1)&.uid || ""
+    @etag = REDIS.get('etag') || ""
   end
 
   def get_recent_submissions
     @logger.info("start: get_recent_submissions")
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{Time.now.to_i-3600}")
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{1.hour.ago.to_i}")
     submissions = call_api(uri)
     if submissions.blank?
       @logger.info("end: get_recent_submissions\n")
       return
     end
-    
+
     submission_list = []
     submissions.each do |submission|
       next if submission["result"] =~ /WJ|WR|\d.*/
@@ -24,7 +22,7 @@ class APIClient
       atcoder_user = AtcoderUser.find_by(atcoder_id: submission["user_id"])
       next if atcoder_user.nil?
 
-      submission_list << 
+      submission_list <<
         {
           atcoder_user_id: atcoder_user.id,
           number: submission["id"],
@@ -45,8 +43,7 @@ class APIClient
     @logger.info("start: get_contests")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
     contests = call_api(uri)
-    # TODO: redisに保存するように変更する
-    User.find(1).update_attribute(:uid, @etag)
+    REDIS.set('etag', @etag)
 
     if contests.blank?
       @logger.info("end: get_contests")
@@ -57,7 +54,7 @@ class APIClient
     contests.each do |contest|
       next if Contest.find_by(name: contest["id"])
 
-      contest_list << 
+      contest_list <<
         {
           name: contest["id"],
           start_epoch_second: contest["start_epoch_second"],
@@ -79,12 +76,12 @@ class APIClient
       @logger.info("end: get_problems")
       return
     end
-    
+
     problem_list = []
     problems.each do |problem|
       next if Problem.find_by(name: problem["id"])
 
-      problem_list << 
+      problem_list <<
       {
         name:  problem["id"],
         title: problem["title"],
@@ -103,11 +100,11 @@ class APIClient
       history = call_api(uri)
 
       next if history.blank?
-      
+
       history.each do |res|
         next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: res["ContestScreenName"][/(.*?)\./,1])
 
-        history_list << 
+        history_list <<
         {
           atcoder_user_id: atcoder_user.id,
           is_rated: res["IsRated"],
@@ -133,11 +130,11 @@ class APIClient
     history = call_api(uri)
 
     return if history.blank?
-    
+
     history.each do |res|
       next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: res["ContestScreenName"][/(.*?)\./,1])
 
-      history_list << 
+      history_list <<
       {
         atcoder_user_id: atcoder_user.id,
         is_rated: res["IsRated"],
@@ -155,18 +152,18 @@ class APIClient
     @logger.info("end: get #{atcoder_user.atcoder_id}'s history")
   end
 
-  def get_submissions
+  def get_submissions(from_epoch_second: 25.hours.ago.to_i)
     @logger.info("start: get_submissions")
     AtcoderUser.find_each do |atcoder_user|
-      get_user_submissions(atcoder_user)
+      get_user_submissions(atcoder_user, from_epoch_second: from_epoch_second)
     end
     @logger.info("end: get_submissions\n")
   end
 
-  def get_user_submissions(atcoder_user)
+  def get_user_submissions(atcoder_user, from_epoch_second: 1577804400)
     @logger.info("start: get #{atcoder_user.atcoder_id}'s submissions")
     submission_list = []
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/results?user=#{atcoder_user.atcoder_id}")
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=#{atcoder_user.atcoder_id}&from_second=#{from_epoch_second}")
     @etag = atcoder_user.etag
     submissions = call_api(uri)
     atcoder_user.update(etag: @etag)
@@ -175,9 +172,9 @@ class APIClient
       @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
       return
     end
-    
+
     submissions.each do |submission|
-      next if submission["epoch_second"] < 1569855600 || submission["result"] =~ /WJ|WR|\d.*/
+      next if submission["result"] =~ /WJ|WR|\d.*/
       next if Submission.find_by(number: submission["id"])
 
       submission_list <<
@@ -196,48 +193,13 @@ class APIClient
     @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
   end
 
+  # TODO: AtcoderUserクラスに移動する
   def update_rating
     AtcoderUser.find_each do |atcoder_user|
       next if atcoder_user.histories.blank?
       new_rating = atcoder_user.histories.order(end_time: :desc).first.new_rating
       atcoder_user.update_attribute(:rating, new_rating)
     end
-  end
-
-  # 廃止
-  # def update_atcoder_user_info
-  #   @logger.info("start: update_atcoder_user_info")
-  #   info_list = []
-  #   AtcoderUser.find_each do |atcoder_user|
-  #     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
-  #     # @etag = atcoder_user.etag
-  #     @etag = ""
-  #     info = call_api(uri)
-
-  #     next if info.blank?
-
-  #     atcoder_user.accepted_count = info["accepted_count"]
-  #     atcoder_user.accepted_count_rank = info["accepted_count_rank"]
-  #     atcoder_user.rated_point_sum = info["rated_point_sum"]
-  #     atcoder_user.rated_point_sum_rank = info["rated_point_sum_rank"]
-  #     info_list << atcoder_user
-  #   end
-  #   AtcoderUser.import info_list, on_duplicate_key_update: [:accepted_count, :accepted_count_rank, :rated_point_sum, :rated_point_sum_rank], validate: false
-  #   @logger.info("end: update_atcoder_user_info")
-  # end
-
-  # 廃止
-  def set_atcoder_user_info(atcoder_user)
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v2/user_info?user=#{atcoder_user.atcoder_id}")
-    # @etag = atcoder_user.etag
-    @etag = ""
-    user_info = call_api(uri)
-
-    return if user_info.blank?
-
-    atcoder_user.accepted_count = user_info["accepted_count"]
-    atcoder_user.rated_point_sum = user_info["rated_point_sum"]
-    # atcoder_user.save!
   end
 
   def fetch_contest_result(contest)
@@ -248,7 +210,7 @@ class APIClient
       next unless atcoder_user = AtcoderUser.find_by(atcoder_id: result["UserScreenName"])
       next if History.find_by(atcoder_user_id: atcoder_user.id, contest_name: contest.name)
 
-      history_list << 
+      history_list <<
       {
         atcoder_user_id: atcoder_user.id,
         is_rated: result["IsRated"],
@@ -267,18 +229,15 @@ class APIClient
   end
 
   def fetch_accepted_count
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/ac.json")
-    accepted_counts = call_api(uri)
-    atcoder_users = []
-    accepted_counts.each do |accepted_count|
-      atcoder_user = AtcoderUser.find_by(atcoder_id: accepted_count["user_id"])
-      next if atcoder_user.blank?
-
-      atcoder_user.accepted_count = accepted_count["problem_count"]
-      atcoder_users << atcoder_user
+    AtcoderUser.find_each do |atcoder_user|
+      fetch_users_accepted_count(atcoder_user)
     end
+  end
 
-    AtcoderUser.import! atcoder_users, on_duplicate_key_update: [:accepted_count]
+  def fetch_users_accepted_count(atcoder_user)
+    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=#{atcoder_user.atcoder_id}")
+    data = call_api(uri)
+    atcoder_user.update!(accepted_count: data['count']) if data.present?
   end
 
   def fetch_rated_point_sum
