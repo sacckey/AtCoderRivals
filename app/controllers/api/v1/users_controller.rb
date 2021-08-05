@@ -1,7 +1,7 @@
 class API::V1::UsersController < API::V1::BaseController
   # TODO: 設定する
   # before_action :logged_in_user
-  # before_action :correct_user, only: [:show,:edit,:update,:following,:atcoder_user]
+  before_action :correct_user, only: [:show, :edit, :update, :following, :atcoder_user]
   # before_action :admin_user, only: [:index,:destroy]
   # skip_before_action :authenticate_user, only: [:show, :submissions]
 
@@ -86,25 +86,19 @@ class API::V1::UsersController < API::V1::BaseController
   #   render 'api/v1/users/atcoder_user.json.jb'
   # end
 
-  # def update
-  #   @user = User.find(params[:id])
-  #   atcoder_id = params["atcoder_user"]["atcoder_id"]
-  #   # 入力されたidに';'か' 'が入っていた場合は、それよりも前の英数字列をidにして検索する
-  #   if m = /(\w*)[; ]/.match(atcoder_id)
-  #     atcoder_id = m[1]
-  #   end
-  #   @atcoder_user = AtcoderUser.find_or_create_by(atcoder_id: atcoder_id)
+  def update
+    @user ||= User.find(params[:id])
+    atcoder_id = params["atcoder_id"]
+    @atcoder_user = AtcoderUser.find_or_create_by(atcoder_id: atcoder_id)
 
-  #   if @atcoder_user.valid?
-  #     @user.update!(atcoder_user: @atcoder_user)
-  #     # flash[:success] = "Profile updated"
-  #     # redirect_to @user
-  #     # TODO: リダイレクトするように & message
-  #     render 'api/v1/users/atcoder_user.json.jb'
-  #   else
-  #     render 'api/v1/error.json.jb', code: 'code', message: 'message'
-  #   end
-  # end
+    if @atcoder_user.valid?
+      @user.update!(atcoder_user: @atcoder_user)
+
+      render 'api/v1/sessions/auth_user.json.jb'
+    else
+      error! status: 404, message: 'AtCoder IDが存在しません'
+    end
+  end
 
   # def index
   #   @users = User.order(id: :asc).page(params[:page]).per(30)
@@ -125,19 +119,12 @@ class API::V1::UsersController < API::V1::BaseController
     render 'api/v1/users/following.json.jb'
   end
 
-  # private
-  #   # TODO: 整備する
-  #   def user_params
-  #     params.require(:user).permit(:atcoder_user_id)
-  #   end
-
-  #   def correct_user
-  #     unless current_user.admin?
-  #       @user = User.find(params[:id])
-  #       # redirect_to(root_url) unless current_user?(@user)
-  #       render('api/v1/error.json.jb', code: 401, message: 'message') unless current_user?(@user)
-  #     end
-  #   end
+  private
+    # TODO: 整備する
+    def correct_user
+      @user = User.find(params[:id])
+      error!(status: 401, message: 'Unauthorized') if current_user != @user
+    end
 
   #   def admin_user
   #     # redirect_to(root_url) unless current_user.admin?
