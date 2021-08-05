@@ -13,6 +13,17 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :atcoder_users, only: [:index, :show] do
+        member do
+          post :follow
+          delete :unfollow
+        end
+      end
+
+      namespace :atcoder_users do
+        post :search
+      end
+
       namespace :timeline do
         get :feeds
         get :submissions

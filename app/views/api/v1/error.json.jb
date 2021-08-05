@@ -1,6 +1,3 @@
-json = {}
+json = { status: @status, message: @message }
 
-json[:error] = {
-  code: code,
-  message: message
-}
+json

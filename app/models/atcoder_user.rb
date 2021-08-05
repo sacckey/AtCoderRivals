@@ -15,6 +15,7 @@ class AtcoderUser < ApplicationRecord
   end
 
   def set_image_url_and_rating
+    # TODO: APIClient側で実行するようにする
     api_client = APIClient.new
     uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
     html = api_client.call_api(uri)

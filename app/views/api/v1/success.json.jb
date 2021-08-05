@@ -1,6 +1,3 @@
-json = {}
+json = { result: 'Success' }
 
-json[:success] = {
-  code: code,
-  message: message
-}
+json
