@@ -1,5 +1,4 @@
 json = {
-  id: @atcoder_user.id,
   atcoder_id: @atcoder_user.atcoder_id,
   accepted_count: @atcoder_user.accepted_count,
   rated_point_sum: @atcoder_user.rated_point_sum,

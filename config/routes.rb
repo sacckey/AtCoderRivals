@@ -3,25 +3,19 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # TODO: 不要なルーティングを消す
-      resources :users do
+      resources :users, only: [:update] do
         member do
           get :following
-          get :atcoder_user
-          get :feeds
-          get :submissions
-          get :contests
         end
       end
 
-      resources :atcoder_users, only: [:index, :show] do
+      resources :atcoder_users, only: [:show], param: :atcoder_id do
         member do
           post :follow
           delete :unfollow
+          get :submissions
+          get :contests
         end
-      end
-
-      namespace :atcoder_users do
-        post :search
       end
 
       namespace :timeline do
