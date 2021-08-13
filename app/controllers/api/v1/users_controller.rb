@@ -5,7 +5,6 @@ class API::V1::UsersController < API::V1::BaseController
   # skip_before_action :authenticate_user, only: [:show, :submissions]
 
   def update
-    @user ||= User.find(params[:id])
     atcoder_id = params["atcoder_id"]
     @atcoder_user = AtcoderUser.find_or_create_by(atcoder_id: atcoder_id)
 
@@ -32,18 +31,18 @@ class API::V1::UsersController < API::V1::BaseController
   # end
 
   def following
-    @user = User.find(params[:id])
-    @atcoder_users = @user.following.page(params[:page]).per(30)
+    # TODO: fromをrelationshipsにしたほうが良さそう？
+    @atcoder_users = @user.following.order("relationships.id desc").page(params[:page]).per(30)
     render 'api/v1/users/following.json.jb'
   end
 
   private
-    # TODO: 整備する
     def correct_user
       @user = User.find(params[:id])
       error!(status: 401, message: 'Unauthorized') if current_user != @user
     end
 
+    # TODO: 整備する
   #   def admin_user
   #     # redirect_to(root_url) unless current_user.admin?
   #     render('api/v1/error.json.jb', code: 403, message: 'Forbidden') unless current_user.admin?

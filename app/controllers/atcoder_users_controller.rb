@@ -5,7 +5,6 @@ class AtcoderUsersController < ApplicationController
     return unless atcoder_id = params[:search]
 
     # 入力されたidに';'か' 'が入っていた場合は、それよりも前の英数字列をidにして検索する
-    # TODO: ifなしでできない？
     if m = /(\w*)[; ]/.match(atcoder_id)
       atcoder_id = m[1]
     end
