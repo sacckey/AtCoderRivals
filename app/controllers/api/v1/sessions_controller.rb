@@ -16,27 +16,23 @@ class API::V1::SessionsController < API::V1::BaseController
 
     twitter_uid = payload['firebase']['identities']['twitter.com'].first
     @user = User.find_or_initialize_by(twitter_uid: twitter_uid)
-    first_login = @user.new_record?
+    @is_first_login = @user.new_record?
+    @atcoder_user = @user.atcoder_user || AtcoderUser.find_by(atcoder_id: 'chokudai')
 
     @user.provider = payload['firebase']['sign_in_provider']
     @user.uid = payload['sub']
     @user.user_name = payload['name']
     @user.image_url = payload['picture']
-    @user.atcoder_user ||= AtcoderUser.find_by(atcoder_id: 'chokudai')
+    @user.atcoder_user = @atcoder_user
 
     if @user.save
-      puts 'success'
-      # TODO: first_loginかどうかを返す
-      # render json: @user, status: :ok
+      render 'api/v1/sessions/auth_user.json.jb'
     else
-      puts 'error'
-      p @user.errors
+      # TODO: error message確認
+      # p @user.errors
       # render json: @user.errors, status: :unprocessable_entity
+      error!(status: 404, message: 'AtCoder IDが存在しません')
     end
-
-    # render 'api/v1/success.json.jb'
-    @atcoder_user = @user.atcoder_user
-    render 'api/v1/sessions/auth_user.json.jb'
   end
 
   def sample_login
@@ -45,26 +41,22 @@ class API::V1::SessionsController < API::V1::BaseController
 
     uid = payload['sub']
     @user = User.find_or_initialize_by(uid: uid)
+    @atcoder_user = @user.atcoder_user || AtcoderUser.find_by(atcoder_id: 'chokudai')
 
     @user.provider = payload['firebase']['sign_in_provider']
-    @user.atcoder_user ||= AtcoderUser.find_by(atcoder_id: 'chokudai')
+    @user.atcoder_user = @atcoder_user
     @user.user_name = 'Sample User'
     @user.image_url = '/icon.png'
 
     if @user.save
-      puts 'success'
-      # TODO: first_loginかどうかを返す
-      # render json: @user, status: :ok
+      @token = REDIS.get('sample_user:token')
+      render 'api/v1/sessions/auth_user.json.jb'
     else
-      puts 'error'
-      p @user.errors
+      # TODO: error message確認
+      # p @user.errors
       # render json: @user.errors, status: :unprocessable_entity
+      error!(status: 404, message: 'AtCoder IDが存在しません')
     end
-
-    # render 'api/v1/success.json.jb'
-    @atcoder_user = @user.atcoder_user
-    @token = REDIS.get('sample_user:token')
-    render 'api/v1/sessions/auth_user.json.jb'
   end
 
   private

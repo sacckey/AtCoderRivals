@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   def home
+    flash[:warning] = "AtCoder Rivalsはhttps://atcoder-rivals.web.app/に移行予定です。移行先の利用をお願いいたします。(アカウントの情報は引き継がれます)"
     if logged_in?
       @user = current_user
       @feed_atcoder_user_ids = @user.get_fol_ids << @user.atcoder_user.id
