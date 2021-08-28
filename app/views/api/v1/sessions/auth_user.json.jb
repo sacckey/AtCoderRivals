@@ -11,7 +11,8 @@ json[:auth_user] =
     rating: @atcoder_user.rating,
     accepted_count: @atcoder_user.accepted_count,
     token: @token,
-    is_first_login: @is_first_login
+    is_first_login: @is_first_login,
+    is_admin: @user.admin?
   }
 
 json

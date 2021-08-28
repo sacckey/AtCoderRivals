@@ -1,0 +1,18 @@
+json = {}
+
+json[:count] = @count
+
+json[:atcoder_users] = @atcoder_users.map do |atcoder_user|
+  {
+    id: atcoder_user.id,
+    atcoder_id: atcoder_user.atcoder_id,
+    accepted_count: atcoder_user.accepted_count,
+    rated_point_sum: atcoder_user.rated_point_sum,
+    image_url: atcoder_user.image_url,
+    rating: atcoder_user.rating,
+    created_at: atcoder_user.created_at,
+    updated_at: atcoder_user.updated_at
+  }
+end
+
+json

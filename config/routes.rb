@@ -29,6 +29,15 @@ Rails.application.routes.draw do
         post :sample_login
       end
       resources :sessions, only: [:create]
+
+      namespace :admin do
+        resources :users, only: [:index]
+        resources :atcoder_users, only: [:index]
+        resources :contests, only: [:index]
+        resources :problems, only: [:index]
+        resources :submissions, only: [:index]
+        resources :histories, only: [:index]
+      end
     end
   end
 

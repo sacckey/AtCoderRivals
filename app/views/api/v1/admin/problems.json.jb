@@ -1,0 +1,16 @@
+json = {}
+
+json[:count] = @count
+
+json[:problems] = @problems.map do |problem|
+  {
+    id: problem.id,
+    name: problem.name,
+    title: problem.title,
+    contest_name: problem.contest_name,
+    created_at: problem.created_at,
+    updated_at: problem.updated_at
+  }
+end
+
+json
