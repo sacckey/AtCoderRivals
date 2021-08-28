@@ -32,7 +32,7 @@ class API::V1::UsersController < API::V1::BaseController
 
   def following
     # TODO: fromをrelationshipsにしたほうが良さそう？
-    @atcoder_users = @user.following.order("relationships.id desc").page(params[:page]).per(30)
+    @atcoder_users = @user.following.order("relationships.id desc").page(params[:page]).per(30).without_count
     render 'api/v1/users/following.json.jb'
   end
 

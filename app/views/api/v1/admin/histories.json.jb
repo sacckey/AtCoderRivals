@@ -1,0 +1,23 @@
+json = {}
+
+json[:count] = @count
+
+json[:histories] = @histories.map do |history|
+  {
+    id: history.id,
+    is_rated: history.is_rated,
+    place: history.place,
+    old_rating: history.old_rating,
+    new_rating: history.new_rating,
+    performance: history.performance,
+    inner_performance: history.inner_performance,
+    contest_screen_name: history.contest_screen_name,
+    end_time: history.end_time,
+    atcoder_user_id: history.atcoder_user_id,
+    contest_name: history.contest_name,
+    created_at: history.created_at,
+    updated_at: history.updated_at
+  }
+end
+
+json

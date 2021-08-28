@@ -1,0 +1,18 @@
+json = {}
+
+json[:count] = @count
+
+json[:contests] = @contests.map do |contest|
+  {
+    id: contest.id,
+    name: contest.name,
+    start_epoch_second: contest.start_epoch_second,
+    duration_second: contest.duration_second,
+    title: contest.title,
+    rate_change: contest.rate_change,
+    created_at: contest.created_at,
+    updated_at: contest.updated_at
+  }
+end
+
+json

@@ -1,0 +1,17 @@
+json = {}
+
+json[:count] = @count
+
+json[:users] = @users.map do |user|
+  {
+    id: user.id,
+    user_name: user.user_name,
+    image_url: user.image_url,
+    created_at: user.created_at,
+    updated_at: user.updated_at,
+    atcoder_user_id: user.atcoder_user_id,
+    twitter_uid: user.twitter_uid
+  }
+end
+
+json
