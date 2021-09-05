@@ -1,16 +1,15 @@
 class APIClient
   def initialize
     @logger = Logger.new(STDOUT)
-    # @logger = Logger.new('log/crontab.log')
     @etag = REDIS.get('etag') || ""
   end
 
-  def get_recent_submissions
-    @logger.info("start: get_recent_submissions")
+  def fetch_recent_submissions
+    @logger.info("start: fetch_recent_submissions")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{1.hour.ago.to_i}")
     submissions = call_api(uri)
     if submissions.blank?
-      @logger.info("end: get_recent_submissions\n")
+      @logger.info("end: fetch_recent_submissions\n")
       return
     end
 
@@ -36,17 +35,17 @@ class APIClient
     end
 
     Submission.import! submission_list
-    @logger.info("end: get_recent_submissions\n")
+    @logger.info("end: fetch_recent_submissions\n")
   end
 
-  def get_contests
-    @logger.info("start: get_contests")
+  def fetch_contests
+    @logger.info("start: fetch_contests")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
     contests = call_api(uri)
     REDIS.set('etag', @etag)
 
     if contests.blank?
-      @logger.info("end: get_contests")
+      @logger.info("end: fetch_contests")
       return
     end
 
@@ -64,16 +63,18 @@ class APIClient
         }
     end
     Contest.import! contest_list
-    @logger.info("end: get_contests")
+    @logger.info("end: fetch_contests")
+
+    return contest_list
   end
 
-  def get_problems
-    @logger.info("start: get_problems")
+  def fetch_problems
+    @logger.info("start: fetch_problems")
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
     problems = call_api(uri)
 
     if problems.blank?
-      @logger.info("end: get_problems")
+      @logger.info("end: fetch_problems")
       return
     end
 
@@ -89,11 +90,11 @@ class APIClient
       }
     end
     Problem.import! problem_list
-    @logger.info("end: get_problems")
+    @logger.info("end: fetch_problems")
   end
 
-  def get_histories
-    @logger.info("start: get_histories")
+  def fetch_histories
+    @logger.info("start: fetch_histories")
     history_list = []
     AtcoderUser.find_each do |atcoder_user|
       uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
@@ -120,11 +121,11 @@ class APIClient
       end
     end
     History.import! history_list
-    @logger.info("end: get_histories")
+    @logger.info("end: fetch_histories")
   end
 
-  def get_user_history(atcoder_user)
-    @logger.info("start: get #{atcoder_user.atcoder_id}'s history")
+  def fetch_user_history(atcoder_user)
+    @logger.info("start: fetch #{atcoder_user.atcoder_id}'s history")
     history_list = []
     uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
     history = call_api(uri)
@@ -149,19 +150,19 @@ class APIClient
       }
     end
     History.import! history_list
-    @logger.info("end: get #{atcoder_user.atcoder_id}'s history")
+    @logger.info("end: fetch #{atcoder_user.atcoder_id}'s history")
   end
 
-  def get_submissions(from_epoch_second: 25.hours.ago.to_i)
-    @logger.info("start: get_submissions")
+  def fetch_submissions(from_epoch_second: 25.hours.ago.to_i)
+    @logger.info("start: fetch_submissions")
     AtcoderUser.find_each do |atcoder_user|
-      get_user_submissions(atcoder_user, from_epoch_second: from_epoch_second)
+      fetch_user_submissions(atcoder_user, from_epoch_second: from_epoch_second)
     end
-    @logger.info("end: get_submissions\n")
+    @logger.info("end: fetch_submissions\n")
   end
 
-  def get_user_submissions(atcoder_user, from_epoch_second: Time.current.beginning_of_year.to_i)
-    @logger.info("start: get #{atcoder_user.atcoder_id}'s submissions")
+  def fetch_user_submissions(atcoder_user, from_epoch_second: Time.current.beginning_of_year.to_i)
+    @logger.info("start: fetch #{atcoder_user.atcoder_id}'s submissions")
     submission_list = []
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=#{atcoder_user.atcoder_id}&from_second=#{from_epoch_second}")
     @etag = atcoder_user.etag
@@ -169,7 +170,7 @@ class APIClient
     atcoder_user.update(etag: @etag)
 
     if submissions.blank?
-      @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
+      @logger.info("end: fetch #{atcoder_user.atcoder_id}'s submissions")
       return
     end
 
@@ -191,15 +192,6 @@ class APIClient
     end
     Submission.import! submission_list
     @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
-  end
-
-  # TODO: AtcoderUserクラスに移動する
-  def update_rating
-    AtcoderUser.find_each do |atcoder_user|
-      next if atcoder_user.histories.blank?
-      new_rating = atcoder_user.histories.order(end_time: :desc).first.new_rating
-      atcoder_user.update_attribute(:rating, new_rating)
-    end
   end
 
   def fetch_contest_result(contest)
@@ -230,32 +222,23 @@ class APIClient
 
   def fetch_accepted_count
     AtcoderUser.find_each do |atcoder_user|
-      fetch_users_accepted_count(atcoder_user)
+      fetch_user_accepted_count(atcoder_user)
     end
   end
 
-  def fetch_users_accepted_count(atcoder_user)
+  def fetch_user_accepted_count(atcoder_user)
     uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=#{atcoder_user.atcoder_id}")
     data = call_api(uri)
     atcoder_user.update!(accepted_count: data['count']) if data.present?
   end
 
-  def fetch_rated_point_sum
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/sums.json")
-    rated_point_sums = call_api(uri)
-    atcoder_users = []
-    rated_point_sums.each do |rated_point_sum|
-      atcoder_user = AtcoderUser.find_by(atcoder_id: rated_point_sum["user_id"])
-      next if atcoder_user.blank?
-
-      atcoder_user.rated_point_sum = rated_point_sum["point_sum"]
-      atcoder_users << atcoder_user
-    end
-
-    AtcoderUser.import! atcoder_users, on_duplicate_key_update: [:rated_point_sum]
+  def fetch_atcoder_user_page(atcoder_id)
+    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
+    html = call_api(uri)
+    return html
   end
 
-  # private
+  private
 
   def call_api(uri)
     sleep 1

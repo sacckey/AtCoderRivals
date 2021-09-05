@@ -5,30 +5,28 @@ class AtcoderUser < ApplicationRecord
 
   validates :atcoder_id, presence: { message: "ID does not exist." }
 
-  after_initialize :set_info, if: :new_record?
-  after_create :get_history_and_submissions
+  after_initialize :fetch_image_url_and_rating, if: :new_record?
+  after_create :fetch_atcoder_user_info
 
-  def set_info
-    return unless set_image_url_and_rating
-
-    # TODO: AC数を取得する
-  end
-
-  def set_image_url_and_rating
-    # TODO: APIClient側で実行するようにする
-    api_client = APIClient.new
-    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
-    html = api_client.call_api(uri)
+  def fetch_image_url_and_rating
+    html = APIClient.new.fetch_atcoder_user_page(self.atcoder_id)
     return self.atcoder_id = nil if html.blank?
 
     doc = Nokogiri::HTML.parse(html)
     self.image_url = doc.at_css('.avatar').attribute('src').value
-    # TODO: ragingはここではなくhistoryの情報から取得するようにする(default: 0にする)
     self.rating = doc.css("#main-container > div.row > div.col-md-9.col-sm-12 > table > tr:nth-child(2) > td > span").children.text.to_i
   end
 
-  def get_history_and_submissions
-    FetchHistoryAndSubmissionsJob.perform_later(self)
+  def fetch_atcoder_user_info
+    FetchAtcoderUserInfoJob.perform_later(self)
+  end
+
+  def update_rating
+    AtcoderUser.find_each do |atcoder_user|
+      next if atcoder_user.histories.blank?
+      new_rating = atcoder_user.histories.order(end_time: :desc).first.new_rating
+      atcoder_user.update!(rating: new_rating)
+    end
   end
 
   private
