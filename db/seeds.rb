@@ -11,6 +11,6 @@ User.create!(
   twitter_uid: "12345"
 )
 
-api_client.get_contests
-api_client.get_problems
-api_client.update_rating
+api_client.fetch_contests
+api_client.fetch_problems
+AtcoderUser.update_rating
