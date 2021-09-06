@@ -9,7 +9,7 @@ task contests: :environment do
   api_client = APIClient.new
 
   new_contests = api_client.fetch_contests
-  return if new_contests.blank?
+  next if new_contests.blank?
 
   # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
   api_client.fetch_problems

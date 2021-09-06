@@ -6,7 +6,7 @@ class APIClient
 
   def fetch_recent_submissions
     @logger.info("start: fetch_recent_submissions")
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{1.hour.ago.to_i}")
+    uri = "https://kenkoooo.com/atcoder/atcoder-api/v3/from/#{1.hour.ago.to_i}"
     submissions = call_api(uri)
     if submissions.blank?
       @logger.info("end: fetch_recent_submissions\n")
@@ -40,7 +40,7 @@ class APIClient
 
   def fetch_contests
     @logger.info("start: fetch_contests")
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/contests.json")
+    uri = "https://kenkoooo.com/atcoder/resources/contests.json"
     contests = call_api(uri)
     REDIS.set('etag', @etag)
 
@@ -70,7 +70,7 @@ class APIClient
 
   def fetch_problems
     @logger.info("start: fetch_problems")
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/resources/problems.json")
+    uri = "https://kenkoooo.com/atcoder/resources/problems.json"
     problems = call_api(uri)
 
     if problems.blank?
@@ -97,7 +97,7 @@ class APIClient
     @logger.info("start: fetch_histories")
     history_list = []
     AtcoderUser.find_each do |atcoder_user|
-      uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
+      uri = "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json"
       history = call_api(uri)
 
       next if history.blank?
@@ -127,7 +127,7 @@ class APIClient
   def fetch_user_history(atcoder_user)
     @logger.info("start: fetch #{atcoder_user.atcoder_id}'s history")
     history_list = []
-    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json")
+    uri = "https://atcoder.jp/users/#{atcoder_user.atcoder_id}/history/json"
     history = call_api(uri)
 
     return if history.blank?
@@ -164,7 +164,7 @@ class APIClient
   def fetch_user_submissions(atcoder_user, from_epoch_second: Time.current.beginning_of_year.to_i)
     @logger.info("start: fetch #{atcoder_user.atcoder_id}'s submissions")
     submission_list = []
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=#{atcoder_user.atcoder_id}&from_second=#{from_epoch_second}")
+    uri = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=#{atcoder_user.atcoder_id}&from_second=#{from_epoch_second}"
     @etag = atcoder_user.etag
     submissions = call_api(uri)
     atcoder_user.update(etag: @etag)
@@ -195,7 +195,7 @@ class APIClient
   end
 
   def fetch_contest_result(contest)
-    uri = URI.parse(URI.encode "https://atcoder.jp/contests/#{contest.name}/results/json")
+    uri = "https://atcoder.jp/contests/#{contest.name}/results/json"
     results = call_api(uri)
     history_list = []
     results.each do |result|
@@ -227,13 +227,13 @@ class APIClient
   end
 
   def fetch_user_accepted_count(atcoder_user)
-    uri = URI.parse(URI.encode "https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=#{atcoder_user.atcoder_id}")
+    uri = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank?user=#{atcoder_user.atcoder_id}"
     data = call_api(uri)
     atcoder_user.update!(accepted_count: data['count']) if data.present?
   end
 
   def fetch_atcoder_user_page(atcoder_id)
-    uri = URI.parse(URI.encode "https://atcoder.jp/users/#{atcoder_id}")
+    uri = "https://atcoder.jp/users/#{atcoder_id}"
     html = call_api(uri)
     return html
   end
@@ -242,6 +242,7 @@ class APIClient
 
   def call_api(uri)
     sleep 1
+    uri = URI.parse(uri)
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     https.open_timeout = 5
@@ -261,7 +262,7 @@ class APIClient
       when Net::HTTPRedirection
         @logger.info("cached: #{uri}")
       else
-        @logger.error("HTTP ERROR: code=#{res.code} message=#{res.message}")
+        @logger.error("HTTP ERROR: code=#{res.code} message=#{res.message} uri=#{uri}")
       end
 
     rescue IOError => e
