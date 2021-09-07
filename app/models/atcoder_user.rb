@@ -9,6 +9,8 @@ class AtcoderUser < ApplicationRecord
   after_create :fetch_atcoder_user_info
 
   def fetch_image_url_and_rating
+    return self.atcoder_id = nil if self.atcoder_id.match?(/[^A-Za-z0-9_]+/)
+
     html = APIClient.new.fetch_atcoder_user_page(self.atcoder_id)
     return self.atcoder_id = nil if html.blank?
 
