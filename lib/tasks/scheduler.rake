@@ -33,6 +33,6 @@ desc "AtCoderユーザーのratingとimage_urlを更新するタスク"
 task image_url_and_rating: :environment do
   AtcoderUser.find_each do |atcoder_user|
     atcoder_user.fetch_image_url_and_rating
-    atcoder_user.save
+    atcoder_user.save! if atcoder_user.valid?
   end
 end
