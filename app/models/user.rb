@@ -3,8 +3,6 @@ class User < ApplicationRecord
   has_many :following, through: :relationships, source: :followed
   belongs_to :atcoder_user
 
-  # TODO: 設定する
-  # before_save { uid.downcase! }
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: true
   validates :user_name, presence: true
@@ -36,20 +34,19 @@ class User < ApplicationRecord
 
   # ユーザーをフォローする
   def follow(other_user)
-    following << other_user
+    Relationship.create!(follower_id: id, followed_id: other_user.id)
   end
 
   # ユーザーをフォロー解除する
   def unfollow(other_user)
-    relationships.find_by(followed_id: other_user.id).destroy
+    Relationship.find_by(follower_id: id, followed_id: other_user.id).destroy!
   end
 
   # 現在のユーザーがフォローしてたらtrueを返す
   def following?(other_user)
-    following.include?(other_user)
+    Relationship.where(follower_id: id, followed_id: other_user.id).exists?
   end
 
-  # TODO: 名前を変える
   def get_fol_ids
     Relationship.where(follower_id: id).pluck(:followed_id)
   end

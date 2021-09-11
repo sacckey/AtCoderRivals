@@ -1,10 +1,7 @@
 class API::V1::TimelineController < API::V1::BaseController
   def submissions
-    @user = current_user
-    @atcoder_user = @user.atcoder_user
-
-    @submissions = Submission.where(atcoder_user_id: Relationship.where(follower_id: @user.id).select(:followed_id))
-                              .or(Submission.where(atcoder_user_id: @atcoder_user.id))
+    @submissions = Submission.where(atcoder_user_id: Relationship.where(follower_id: current_user.id).select(:followed_id))
+                              .or(Submission.where(atcoder_user_id: current_user.atcoder_user.id))
                               .includes(:atcoder_user, :contest, :problem)
                               .where.not(contests: {id: nil})
                               .where.not(problems: {id: nil})
@@ -17,9 +14,7 @@ class API::V1::TimelineController < API::V1::BaseController
   end
 
   def contests
-    @user = current_user
-    @atcoder_user = @user.atcoder_user
-    @feed_atcoder_user_ids = @user.get_fol_ids << @atcoder_user.id
+    @feed_atcoder_user_ids = current_user.get_fol_ids << current_user.atcoder_user.id
 
     @contests = Contest.where(name: History.distinct.where(atcoder_user_id: @feed_atcoder_user_ids).select(:contest_name))
                         .order(start_epoch_second: :desc).page(params[:page]).per(30).without_count
