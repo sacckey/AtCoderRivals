@@ -28,7 +28,7 @@ class API::V1::SessionsController < API::V1::BaseController
     if @user.save
       render 'api/v1/sessions/auth_user.json.jb'
     else
-      error!(status: 404, message: 'AtCoder IDが存在しません')
+      error!(status: 500, message: 'ログインに失敗しました')
     end
   end
 
@@ -49,7 +49,7 @@ class API::V1::SessionsController < API::V1::BaseController
       @token = REDIS.get('sample_user:token')
       render 'api/v1/sessions/auth_user.json.jb'
     else
-      error!(status: 404, message: 'AtCoder IDが存在しません')
+      error!(status: 500, message: 'ログインに失敗しました')
     end
   end
 
