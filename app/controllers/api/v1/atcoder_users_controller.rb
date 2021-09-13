@@ -11,6 +11,8 @@ class API::V1::AtcoderUsersController < API::V1::BaseController
   def submissions
     @submissions = Submission.where(atcoder_user_id: @atcoder_user.id)
                                 .includes(:contest, :problem, :atcoder_user)
+                                .where.not(contests: {id: nil})
+                                .where.not(problems: {id: nil})
                                 .order(epoch_second: :desc)
                                 .page(params[:page])
                                 .per(30)

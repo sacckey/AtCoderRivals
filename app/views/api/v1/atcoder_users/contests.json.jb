@@ -1,6 +1,4 @@
-json = {
-  atcoder_user: @atcoder_user.atcoder_id
-}
+json = {}
 
 json[:contests] = @histories.map do |history|
   contest = history.contest

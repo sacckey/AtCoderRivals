@@ -2,7 +2,6 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      # TODO: 不要なルーティングを消す
       resources :users, only: [:update] do
         member do
           get :following
@@ -19,7 +18,6 @@ Rails.application.routes.draw do
       end
 
       namespace :timeline do
-        get :feeds
         get :submissions
         get :contests
       end
