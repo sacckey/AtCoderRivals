@@ -23,7 +23,7 @@ class AtcoderUser < ApplicationRecord
     FetchAtcoderUserInfoJob.perform_later(self)
   end
 
-  def update_rating
+  def self.update_rating
     AtcoderUser.find_each do |atcoder_user|
       next if atcoder_user.histories.blank?
       new_rating = atcoder_user.histories.order(end_time: :desc).first.new_rating

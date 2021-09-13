@@ -14,7 +14,7 @@ task contests: :environment do
   # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
   api_client.fetch_problems
   new_contests.each do |new_contest|
-    api_client.fetch_contest_result(contest)
+    api_client.fetch_contest_result(new_contest)
   end
   AtcoderUser.update_rating
 end
@@ -31,6 +31,8 @@ end
 
 desc "AtCoderユーザーのratingとimage_urlを更新するタスク"
 task image_url_and_rating: :environment do
+  next unless Time.current.monday?
+
   AtcoderUser.find_each do |atcoder_user|
     atcoder_user.fetch_image_url_and_rating
     atcoder_user.save! if atcoder_user.valid?
