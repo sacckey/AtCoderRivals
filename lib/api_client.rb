@@ -64,8 +64,6 @@ class APIClient
     end
     Contest.import! contest_list
     @logger.info("end: fetch_contests")
-
-    return contest_list
   end
 
   def fetch_problems
@@ -191,10 +189,11 @@ class APIClient
       }
     end
     Submission.import! submission_list
-    @logger.info("end: get #{atcoder_user.atcoder_id}'s submissions")
+    @logger.info("end: fetch #{atcoder_user.atcoder_id}'s submissions")
   end
 
   def fetch_contest_result(contest)
+    @logger.info("start: fetch #{contest.name} result")
     uri = "https://atcoder.jp/contests/#{contest.name}/results/json"
     results = call_api(uri)
     history_list = []
@@ -218,6 +217,7 @@ class APIClient
     end
 
     History.import! history_list
+    @logger.info("end: fetch #{contest.name} result")
   end
 
   def fetch_accepted_count
