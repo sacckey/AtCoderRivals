@@ -8,13 +8,15 @@ desc "コンテストを取得するタスク"
 task contests: :environment do
   api_client = APIClient.new
 
-  new_contests = api_client.fetch_contests
-  next if new_contests.blank?
+  last_id = Contest.last.id
+  api_client.fetch_contests
 
-  # 新しいコンテストを取得したら、問題/コンテスト参加履歴/提出/新レートも取得する
+  next if Contest.last.id == last_id
+
+  # 新しいコンテストを取得した場合は問題とコンテスト結果も取得し、レーティングを更新する
   api_client.fetch_problems
-  new_contests.each do |new_contest|
-    api_client.fetch_contest_result(new_contest)
+  Contest.where("id > ?", last_id).each do |contest|
+    api_client.fetch_contest_result(contest)
   end
   AtcoderUser.update_rating
 end
