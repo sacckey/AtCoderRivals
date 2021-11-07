@@ -1,0 +1,41 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
+# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+# 参考: https://hai3.net/blog/rails-rspec-postgres-github-action/
+name: make release branch
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  make-release-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        git checkout worker-master
+        git pull origin master
+
+# 不要かも
+
+    - name: Fix heroku.yml
+      run: |
+        echo 'RAILS_ENV=test' >> $GITHUB_ENV
+        echo 'DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_database' >> $GITHUB_ENV
+        echo 'REDIS_URL=redis://localhost:6379' >> $GITHUB_ENV
+
+    - name: setup DB
+      run: |
+        bundle exec rails db:schema:load
+
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.1.0
+
+    - name: Run tests
+      run: bundle exec rails test
