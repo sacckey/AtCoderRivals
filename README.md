@@ -9,6 +9,8 @@
 $ git clone https://github.com/sacckey/AtCoderRivals.git
 $ cd AtCoderRivals
 $ docker-compose up
+$ docker-compose exec web rails db:create
+$ docker-compose exec web rails db:migrate
 $ docker-compose exec web rails db:seed
 ```
 
