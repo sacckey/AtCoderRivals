@@ -9,9 +9,9 @@
 $ git clone https://github.com/sacckey/AtCoderRivals.git
 $ cd AtCoderRivals
 $ docker-compose up
-$ docker-compose exec web bundle rails db:create
-$ docker-compose exec web bundle rails db:migrate
-$ docker-compose exec web bundle rails db:seed
+$ docker-compose exec web bundle exec rails db:create
+$ docker-compose exec web bundle exec rails db:migrate
+$ docker-compose exec web bundle exec rails db:seed
 ```
 
 サーバー起動後、http://localhost:3000/ にアクセスすることで、アプリケーションを動かすことができます。<br>
