@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.7.2'
 
-gem 'rails',                   '6.0.4.1'
+gem 'rails',                   '7.0.2.4'
 gem 'actionview'
 gem 'bcrypt'
 gem 'faker'
